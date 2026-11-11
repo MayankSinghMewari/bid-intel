@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" font-family="Helvetica, Arial, sans-serif" font-size="14">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#444"/>
+    </marker>
+    <style>
+      .box { fill: #f5f7fb; stroke: #3b5b92; stroke-width: 1.5; rx: 8; }
+      .agent { fill: #fff4e5; stroke: #b36b00; stroke-width: 1.5; rx: 8; }
+      .store { fill: #eef8f0; stroke: #2e7d32; stroke-width: 1.5; rx: 8; }
+      .title { font-weight: bold; font-size: 15px; fill: #1d2a44; }
+      .sub { font-size: 12px; fill: #555; }
+      .lbl { font-size: 12px; fill: #333; }
+    </style>
+  </defs>
+  <text x="20" y="28" class="title" font-size="18">Bid Intelligence: architecture</text>
+  <text x="20" y="48" class="sub">Solid arrows: data flow. Dashed: message passing between agents.</text>
+
+  <!-- Interfaces -->
+  <rect x="30" y="80" width="250" height="90" class="box"/>
+  <text x="45" y="106" class="title">Interfaces</text>
+  <text x="45" y="128" class="sub">CLI: ingest, ask, extract, eval, serve</text>
+  <text x="45" y="146" class="sub">FastAPI: /ask, /extract, /extraction</text>
+
+  <!-- Ingestion -->
+  <rect x="30" y="230" width="250" height="110" class="box"/>
+  <text x="45" y="256" class="title">Ingestion pipeline</text>
+  <text x="45" y="278" class="sub">PDF to pages (pdftotext / pypdf)</text>
+  <text x="45" y="296" class="sub">Q&amp;A parser (sequential numbering)</text>
+  <text x="45" y="314" class="sub">Chunker: qa or word windows</text>
+
+  <!-- Stores -->
+  <rect x="30" y="400" width="250" height="90" class="store"/>
+  <text x="45" y="426" class="title">Bid folder (on disk)</text>
+  <text x="45" y="448" class="sub">items.json, addendum PDF</text>
+  <text x="45" y="466" class="sub">extraction.json, agent trace</text>
+
+  <!-- Search engine -->
+  <rect x="340" y="230" width="270" height="110" class="box"/>
+  <text x="355" y="256" class="title">RAG search engine</text>
+  <text x="355" y="278" class="sub">Pure-Python BM25 index (k1, b)</text>
+  <text x="355" y="296" class="sub">Top-k hits with normalized score</text>
+  <text x="355" y="314" class="sub">Recall@k and MRR evaluation</text>
+
+  <!-- Agents -->
+  <rect x="340" y="80" width="580" height="110" class="agent"/>
+  <text x="355" y="106" class="title">Multi-agent extraction (orchestrator sequences per field)</text>
+  <rect x="355" y="120" width="160" height="56" rx="6" fill="#ffffff" stroke="#b36b00"/>
+  <text x="365" y="142" class="lbl" font-weight="bold">Retriever</text>
+  <text x="365" y="160" class="sub">BM25 query per field</text>
+  <rect x="535" y="120" width="160" height="56" rx="6" fill="#ffffff" stroke="#b36b00"/>
+  <text x="545" y="142" class="lbl" font-weight="bold">Extractor</text>
+  <text x="545" y="160" class="sub">Rule match, citation</text>
+  <rect x="715" y="120" width="190" height="56" rx="6" fill="#ffffff" stroke="#b36b00"/>
+  <text x="725" y="142" class="lbl" font-weight="bold">Verifier</text>
+  <text x="725" y="160" class="sub">Span, qnums, rule re-check</text>
+
+  <!-- Writer / output -->
+  <rect x="650" y="230" width="270" height="110" class="agent"/>
+  <text x="665" y="256" class="title">Writer and confidence</text>
+  <text x="665" y="278" class="sub">Confidence = 0.4 retrieval</text>
+  <text x="665" y="296" class="sub">+ 0.4 source + 0.2 verified</text>
+  <text x="665" y="314" class="sub">Writes JSON + trace</text>
+
+  <!-- Ask path -->
+  <rect x="340" y="400" width="580" height="90" class="box"/>
+  <text x="355" y="426" class="title">Ask path (no LLM in this version)</text>
+  <text x="355" y="448" class="sub">Question to BM25 to top-k passages, returned with citations and a confidence share.</text>
+  <text x="355" y="466" class="sub">Plug an LLM into service.ask() to generate answers from these passages.</text>
+
+  <!-- Arrows -->
+  <line x1="155" y1="170" x2="155" y2="230" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="280" y1="285" x2="340" y2="285" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="155" y1="340" x2="155" y2="400" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="475" y1="230" x2="475" y2="190" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="610" y1="285" x2="650" y2="285" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="635" y1="140" x2="650" y2="230" stroke="#444" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <line x1="280" y1="125" x2="340" y2="125" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="475" y1="176" x2="475" y2="230" stroke="#444" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)"/>
+  <line x1="340" y1="440" x2="280" y2="440" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="155" y1="170" x2="155" y2="230" stroke="none"/>
+
+  <!-- Labels -->
+  <text x="300" y="118" class="lbl">requests</text>
+  <text x="290" y="278" class="lbl">items</text>
+  <text x="620" y="278" class="lbl">results</text>
+  <text x="485" y="208" class="lbl">queries and hits</text>
+  <text x="495" y="222" class="lbl" font-size="11">(dashed = agent messages)</text>
+  <text x="292" y="436" class="lbl" font-size="11">search</text>
+</svg>

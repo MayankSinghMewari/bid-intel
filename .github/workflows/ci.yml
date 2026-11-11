@@ -1,0 +1,19 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get install -y poppler-utils
+      - run: pip install -r requirements.txt
+      - run: pytest -q
+      - name: Retrieval evaluation
+        run: python -m bid_intel eval --bid JA-207652
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: eval/report.md

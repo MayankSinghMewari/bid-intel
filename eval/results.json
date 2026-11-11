@@ -1,0 +1,82 @@
+{
+  "configs": [
+    {
+      "chunking": "qa",
+      "k1": 1.2,
+      "b": 0.75,
+      "chunks": 39,
+      "Recall@1": 0.8889,
+      "Recall@3": 0.9861,
+      "Recall@5": 1.0,
+      "MRR": 0.9722,
+      "questions": 36
+    },
+    {
+      "chunking": "qa",
+      "k1": 1.5,
+      "b": 0.3,
+      "chunks": 39,
+      "Recall@1": 0.8611,
+      "Recall@3": 1.0,
+      "Recall@5": 1.0,
+      "MRR": 0.9583,
+      "questions": 36
+    },
+    {
+      "chunking": "window:40:20",
+      "k1": 1.2,
+      "b": 0.75,
+      "chunks": 93,
+      "Recall@1": 0.8194,
+      "Recall@3": 0.9861,
+      "Recall@5": 0.9861,
+      "MRR": 0.9259,
+      "questions": 36
+    },
+    {
+      "chunking": "window:40:20",
+      "k1": 1.5,
+      "b": 0.3,
+      "chunks": 93,
+      "Recall@1": 0.8611,
+      "Recall@3": 0.9861,
+      "Recall@5": 0.9861,
+      "MRR": 0.9537,
+      "questions": 36
+    },
+    {
+      "chunking": "window:80:40",
+      "k1": 1.2,
+      "b": 0.75,
+      "chunks": 46,
+      "Recall@1": 0.9028,
+      "Recall@3": 0.9861,
+      "Recall@5": 1.0,
+      "MRR": 0.9722,
+      "questions": 36
+    },
+    {
+      "chunking": "window:80:40",
+      "k1": 1.5,
+      "b": 0.3,
+      "chunks": 46,
+      "Recall@1": 0.9167,
+      "Recall@3": 0.9861,
+      "Recall@5": 1.0,
+      "MRR": 0.9861,
+      "questions": 36
+    }
+  ],
+  "best": {
+    "chunking": "window:80:40",
+    "k1": 1.5,
+    "b": 0.3,
+    "chunks": 46,
+    "Recall@1": 0.9167,
+    "Recall@3": 0.9861,
+    "Recall@5": 1.0,
+    "MRR": 0.9861,
+    "questions": 36
+  },
+  "misses": []
+}
