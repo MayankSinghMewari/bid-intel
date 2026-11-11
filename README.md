@@ -1,5 +1,7 @@
 # RFP Intelligence Platform: RAG Search Engine and Multi-Agent Extraction
 
+**Live demo:** https://bid-document-analyzer.streamlit.app (read-only: LLM generation and uploads are off in the public demo; the first visit after it sleeps takes 1-3 minutes while the search index is built).
+
 Indexes bid folders (HTML bid pages and PDFs, including addendums), searches them with hybrid retrieval and cited results, and runs a multi-agent pipeline that writes one JSON record per bid with the 20 required fields, each with sources and a confidence score.
 
 Tested on the two provided folders, `data/bid_folders/Bid1` (Dallas ISD JA-207652: bid page, RFP, Addendum 1, Addendum 2) and `data/bid_folders/Bid2` (Maryland Treasurer BPM044557: bid page, PORFP, specs, two affidavits). Nothing in the code names these bids; a new folder with a similar structure runs with the same command.
@@ -17,6 +19,14 @@ pip install -r requirements.txt
 The first run downloads the embedding model (`BAAI/bge-small-en-v1.5`, about 70 MB) and embeds every chunk into a persistent Chroma vector store at `.cache/chroma` (about a minute for Bid1's 63-page RFP on a 4-core CPU). Later runs only embed new or changed chunks.
 
 LLM (the generation step of RAG): copy `.env.example` to `.env` and set `GEMINI_API_KEY` (free key from https://aistudio.google.com/apikey; model `GEMINI_MODEL`, default `gemini-3.5-flash`) or `ANTHROPIC_API_KEY`. `.env` is git-ignored. With a key, Q&A answers and the Bid Summary field are written by the LLM from retrieved passages / validated fields only, and every answer must cite passages as [n] or it is rejected. Without a key, or when the LLM call fails (timeout, 503, quota), the system falls back to the validated extraction record and cited sentences, and the trace records the reason. Tests run with the LLM disabled.
+
+## Public demo hosting
+
+The demo runs on Streamlit Community Cloud, which redeploys `app.py` from this repository on every push to `main`.
+On Community Cloud the app forces demo mode on (`BID_INTEL_DEMO`): LLM and tracing off, uploads and re-runs hidden.
+`packages.txt` installs `poppler-utils` there. An optional CI job (`deploy-demo`) can instead deploy the tested Docker
+image to a Hugging Face Space with a live health check; it needs a Hugging Face PRO plan and runs only when the
+repository variable `HF_DEPLOY=true`.
 
 ## Run with Docker (no Python setup)
 
