@@ -1,0 +1,323 @@
+{
+  "_format": "expect: list of groups; every group must match, a group matches if ANY of its strings appears in the value (case-insensitive). absent: the value must be null (also_accept lists acceptable non-null phrasings). skip: not scored, with the reason. Labels were checked against the source documents by hand.",
+  "Bid1": {
+    "Bid Number": {
+      "expect": [
+        [
+          "JA-207652"
+        ]
+      ]
+    },
+    "Title": {
+      "expect": [
+        [
+          "Student and Staff Computing Devices"
+        ]
+      ]
+    },
+    "Due Date": {
+      "expect": [
+        [
+          "July 9, 2024",
+          "07/09/2024",
+          "09-JUL-2024",
+          "July 9 2024"
+        ],
+        [
+          "2:00",
+          "02:00",
+          "3:00",
+          "03:00",
+          "14:00"
+        ]
+      ],
+      "why": "Addendum 2 extends the due date from June 27, 2024 to July 9, 2024 2:00 PM CST (= 3:00 PM EDT on the bid page)"
+    },
+    "Bid Submission Type": {
+      "expect": [
+        [
+          "iSupplier",
+          "online",
+          "electronic",
+          "sealed",
+          "manual",
+          "hard copy"
+        ]
+      ]
+    },
+    "Term of Bid": {
+      "expect": [
+        [
+          "3",
+          "three"
+        ],
+        [
+          "renew",
+          "extension",
+          "extend"
+        ]
+      ],
+      "why": "3-year initial term with two 1-year renewals ('extensions' in the RFP text)"
+    },
+    "Pre Bid Meeting": {
+      "expect": [
+        [
+          "June 10",
+          "06/10/2024",
+          "10-JUN-2024"
+        ]
+      ]
+    },
+    "Installation": {
+      "expect": [
+        [
+          "deploy",
+          "white glove",
+          "asset",
+          "imag",
+          "install",
+          "etch"
+        ]
+      ]
+    },
+    "Bid Bond Requirement": {
+      "absent": true,
+      "also_accept": [
+        "not required"
+      ],
+      "why": "the RFP only mentions bid bonds generically ('as noted elsewhere'); no bond is specified"
+    },
+    "Delivery Date": {
+      "expect": [
+        [
+          "September",
+          "coordinate",
+          "schedule"
+        ]
+      ],
+      "why": "Addendum 1 Q4: quotes from awarded vendors start in September 2024; deliveries are scheduled with ED TECH"
+    },
+    "Payment Terms": {
+      "absent": true,
+      "why": "only prime-to-subcontractor payment clauses appear"
+    },
+    "Any Additional Documentation Required": {
+      "expect": [
+        [
+          "1295"
+        ]
+      ]
+    },
+    "MFG for Registration": {
+      "skip": "resellers must submit factory-authorized certifications, but no manufacturer is named"
+    },
+    "Contract or Cooperative to use": {
+      "expect": [
+        [
+          "Educational Purchasing Cooperative",
+          "EPCNT"
+        ]
+      ]
+    },
+    "Model_no": {
+      "absent": true,
+      "why": "vendors propose their own make and model"
+    },
+    "Part_no": {
+      "absent": true,
+      "why": "vendors propose their own make and model"
+    },
+    "Product": {
+      "expect": [
+        [
+          "laptop"
+        ],
+        [
+          "monitor",
+          "desktop",
+          "tablet"
+        ]
+      ]
+    },
+    "contact_info": {
+      "expect": [
+        [
+          "dallasisd.org",
+          "972-925-3700"
+        ]
+      ]
+    },
+    "company_name": {
+      "expect": [
+        [
+          "Dallas Independent School District",
+          "Dallas ISD"
+        ]
+      ]
+    },
+    "Product Specification": {
+      "expect": [
+        [
+          "i5",
+          "Celeron",
+          "processor"
+        ],
+        [
+          "GB"
+        ]
+      ]
+    },
+    "Bid Summary": {
+      "skip": "generated text"
+    }
+  },
+  "Bid2": {
+    "Bid Number": {
+      "expect": [
+        [
+          "BPM044557",
+          "E20P4600040"
+        ]
+      ]
+    },
+    "Title": {
+      "expect": [
+        [
+          "Dell Laptop"
+        ]
+      ]
+    },
+    "Due Date": {
+      "expect": [
+        [
+          "06/10/2024",
+          "June 10, 2024",
+          "10-JUN-2024",
+          "6/10/2024"
+        ],
+        [
+          "2:00",
+          "02:00",
+          "14:00"
+        ]
+      ]
+    },
+    "Bid Submission Type": {
+      "expect": [
+        [
+          "eMMA",
+          "eMaryland"
+        ]
+      ]
+    },
+    "Term of Bid": {
+      "absent": true,
+      "also_accept": [
+        "90 days"
+      ],
+      "why": "no contract term; only a 90-day quote validity"
+    },
+    "Pre Bid Meeting": {
+      "absent": true
+    },
+    "Installation": {
+      "skip": "spec sheet lists factory software configuration items; no installation service is requested"
+    },
+    "Bid Bond Requirement": {
+      "absent": true
+    },
+    "Delivery Date": {
+      "expect": [
+        [
+          "45 days"
+        ]
+      ]
+    },
+    "Payment Terms": {
+      "expect": [
+        [
+          "invoice"
+        ]
+      ]
+    },
+    "Any Additional Documentation Required": {
+      "expect": [
+        [
+          "Mercury"
+        ],
+        [
+          "Contract Affidavit"
+        ]
+      ]
+    },
+    "MFG for Registration": {
+      "expect": [
+        [
+          "Dell"
+        ]
+      ]
+    },
+    "Contract or Cooperative to use": {
+      "expect": [
+        [
+          "060B5400007",
+          "Master Contract"
+        ]
+      ]
+    },
+    "Model_no": {
+      "expect": [
+        [
+          "5550"
+        ],
+        [
+          "WD22TB4"
+        ]
+      ]
+    },
+    "Part_no": {
+      "expect": [
+        [
+          "CC7802",
+          "210-BLYZ"
+        ]
+      ]
+    },
+    "Product": {
+      "expect": [
+        [
+          "Latitude"
+        ]
+      ]
+    },
+    "contact_info": {
+      "expect": [
+        [
+          "hawkins"
+        ]
+      ]
+    },
+    "company_name": {
+      "expect": [
+        [
+          "Treasurer"
+        ]
+      ]
+    },
+    "Product Specification": {
+      "expect": [
+        [
+          "Core Ultra 5",
+          "125U"
+        ],
+        [
+          "16 GB",
+          "16GB"
+        ]
+      ]
+    },
+    "Bid Summary": {
+      "skip": "generated text"
+    }
+  }
+}

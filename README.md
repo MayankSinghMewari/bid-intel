@@ -35,6 +35,9 @@ python -m bid_intel ask-bids "What is the submission deadline for Bid1 after all
 # Retrieval evaluation (writes eval/bid_report.md and eval/bid_results.json)
 python -m bid_intel eval-bids
 
+# Extraction accuracy vs hand-checked labels, rules only vs rules + LLM (eval/extraction_report.md)
+python -m bid_intel eval-extraction                 # --modes rules  (no LLM calls)
+
 # REST API on http://127.0.0.1:8000 (docs at /docs)
 python -m bid_intel serve
 #   POST /index {"folder": "data/bid_folders/Bid1"}
@@ -94,7 +97,12 @@ Shared state is a Pydantic `BidState` (plan, evidence, draft fields, validation,
 
 **Agent framework.** Own orchestration in `bid_intel/bid_agents.py` rather than LangGraph or CrewAI: the flow is a fixed plan with a bounded retry loop, which is short to write and easy to trace and test, and it adds no dependencies.
 
-**Extraction.** Each of the 20 fields (`bid_intel/fields.py`) declares a retrieval query, preferred document types, bid-page fact keys, and a deterministic rule that reads the value from a retrieved passage. Rules use general RFP vocabulary (dates, "bid bond", "authorized reseller", "Master Contract", affidavit names), not text from these two bids. Extraction is deterministic and every value points at the passage it came from. The cost is recall: values phrased in unexpected ways are missed and reported as "Not found in documents".
+**Extraction.** Two layers of specialists per field group (identity, dates, commercial, product):
+
+1. *Rule specialists* (`bid_intel/fields.py`): each field declares a retrieval query, preferred document types, bid-page fact keys and a deterministic rule with exclusion patterns. Free, fast, reproducible, and the fallback when no LLM is available.
+2. *LLM specialists* (`bid_intel/llm_extract.py`): one structured-output call per group (4 calls per bid, not 20). Evidence is gathered with the search engine as a tool: passages the rule specialists already cited (shared state), the bid page, the top passages for each field's keyword query (suits BM25), its natural-language question (suits embeddings), and the best addendum passage (addenda override and clarify the RFP). The LLM must return a Pydantic schema per field: value or null, cited passage numbers, a verbatim quote, and a note. The validator rejects values whose quote does not appear in the cited passages (whitespace/quote/case normalised), invalid citations and malformed dates; rejected fields are sent back once with the reason, and only those fields are re-asked. A validated LLM value replaces the rule value (confidence 0.95 if both agree, 0.85 otherwise, and the note records the rule value when they differ); otherwise the rule value stays.
+
+The LLM layer is what generalises to unseen bids: the rules were written while reading these two bids, so their accuracy here overstates how they would do on a new one.
 
 **Addendum reconciliation.** Addendum sentences with change verbs (extend, revise, replace, new due date ...) are collected into `addendum_changes`. If an addendum states a new due date, the latest one overrides the base value and the note records the previous value.
 
@@ -127,13 +135,16 @@ Hybrid search gives the best top-1 accuracy. The re-ranker finds every gold pass
 
 Examples: Bid1 due date "July 9, 2024 at 2:00 PM CST", taken from Addendum 2 with the original bid-page date in the note; Bid2 delivery "Delivery within 45 days of Award", MFG "Dell", cooperative "Desktop, Laptop and Tablet 2015 Master Contract, 060B5400007", models "Latitude 5550; WD22TB4", specs "CPU: Intel Core Ultra 5 125U; RAM: 16 GB DDR5; Storage: 256 GB NVMe SSD; Display: 15.6\" FHD ...".
 
+**Extraction accuracy** (`eval/extraction_report.md`, labels in `eval/extraction_gold.json`, checked against the documents; ambiguous fields are marked skip with the reason): rules only score 35/36 scored fields (97%). The only miss is Bid1 Delivery Date, which is answered in Addendum 1 Q4 ("quotes from awarded vendors starting in September 2024"). The report counts how many fields actually came from the LLM in each run, so a run where the LLM was unavailable cannot be mistaken for LLM accuracy. During development the LLM values were qualitatively richer (submission "iSupplier portal (preferred) or sealed envelope", pre-bid meeting "non-mandatory", product quantities) and evaluation exposed three issues that were fixed generally: missing spec evidence (now shared from the rule specialists), model vs SKU confusion (clearer field descriptions), and keyword-only retrieval missing Q&A addenda (natural-language and addendum-restricted queries). The free Gemini quota ran out before a clean LLM run; re-run `eval-extraction` to add the LLM row.
+
 Validation of normalised fields (Term of Bid, Product Specification) checks each component value against the cited passage, since the combined string does not appear verbatim.
 
 **Q&A answers.** The Q&A agent first answers from the validated extraction record when the question maps to a field (deadline, bond, affidavits, delivery, contact ...), citing the field's source, then adds the best-matching retrieved sentences. Open questions ("compare the warranty requirements") are answered from retrieved sentences only; with `ANTHROPIC_API_KEY` set, Claude writes the answer from the same passages.
 
 ## Known limitations
 
-- Field extraction is rule-based; the LLM writes Q&A answers and the Bid Summary. LLM-based field extraction (Pydantic structured output behind the same validator) is the next step.
+- LLM extraction is implemented and tested offline (validator and feedback loop), but the free-tier quota ran out before a clean accuracy run with the LLM; the committed outputs are rule-based plus Gemini summaries.
+- After a quota error the LLM is switched off for 10 minutes (circuit breaker) and every step falls back to rules or extractive answers; the trace records why.
 - The free Gemini tier rate-limits (429) and returns 503 under load; calls retry with backoff and then fall back. `logs/bid_qa_log.md` was generated with Gemini; `outputs/Bid2.json` has a template summary because the quota ran out during that run.
 - Rule-based extraction will miss values phrased in ways the rules do not cover on an unseen bid; those fields come back as "Not found in documents" rather than wrong values.
 - Bid1's RFP specifies several device tiers; Product Specification reports one tier.

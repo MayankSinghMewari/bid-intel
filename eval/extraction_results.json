@@ -1,0 +1,220 @@
+{
+  "rules": {
+    "Bid1": {
+      "correct": 17,
+      "scored": 18,
+      "accuracy": 0.944,
+      "llm_fields": 0,
+      "rows": [
+        {
+          "field": "Bid Number",
+          "value": "JA-207652",
+          "correct": true
+        },
+        {
+          "field": "Title",
+          "value": "Student and Staff Computing Devices",
+          "correct": true
+        },
+        {
+          "field": "Due Date",
+          "value": "July 9, 2024 at 2:00 PM CST",
+          "correct": true
+        },
+        {
+          "field": "Bid Submission Type",
+          "value": "Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time stated.",
+          "correct": true
+        },
+        {
+          "field": "Term of Bid",
+          "value": "Initial term 3 year(s); 2 renewal option(s) of 1, 1 year(s)",
+          "correct": true
+        },
+        {
+          "field": "Pre Bid Meeting",
+          "value": "06/10/2024 03:00 PM EDT",
+          "correct": true
+        },
+        {
+          "field": "Installation",
+          "value": "to \"describe your company's ability to perform each of the deployment services,\" etc.",
+          "correct": true
+        },
+        {
+          "field": "Bid Bond Requirement",
+          "value": null,
+          "correct": true
+        },
+        {
+          "field": "Delivery Date",
+          "value": null,
+          "correct": false
+        },
+        {
+          "field": "Payment Terms",
+          "value": null,
+          "correct": true
+        },
+        {
+          "field": "Any Additional Documentation Required",
+          "value": "FORM 1295; CERTIFICATE OF INTERESTED PARTIES; certificate of insurance; Form 1295",
+          "correct": true
+        },
+        {
+          "field": "MFG for Registration",
+          "value": null,
+          "correct": null
+        },
+        {
+          "field": "Contract or Cooperative to use",
+          "value": "member of the Educational Purchasing Cooperative of North Texas (EPCNT)",
+          "correct": true
+        },
+        {
+          "field": "Model_no",
+          "value": null,
+          "correct": true
+        },
+        {
+          "field": "Part_no",
+          "value": null,
+          "correct": true
+        },
+        {
+          "field": "Product",
+          "value": "Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Proposal (RFP) may submit proposals for one, several, or all categories of devices required by the District. Within each category of device, the District reserves the right to award contracts to a single vendor or multiple vendors. The specifications listed in t",
+          "correct": true
+        },
+        {
+          "field": "contact_info",
+          "value": "Procurement Services; 972-925-3700; ProcurementCS@dallasisd.org",
+          "correct": true
+        },
+        {
+          "field": "company_name",
+          "value": "Dallas Independent School District",
+          "correct": true
+        },
+        {
+          "field": "Product Specification",
+          "value": "CPU: Intel i5 Processor, 14th Gen or equiva; RAM: 16GB RAM DDR5 Memory; Storage: 256 GB NVMe; Display: 10.2\" Retina Integrated Camera: 8MP Wide came; OS: Windows 11 Pro",
+          "correct": true
+        },
+        {
+          "field": "Bid Summary",
+          "value": "Dallas Independent School District has issued bid JA-207652 for Student and Staff Computing Devices. Scope: Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Pr. Responses are due July 9, 2024 at 2:00 PM CST via Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time s. Contract term: Initial term 3 year(s); 2 renewal option(s) of 1, 1 year(s). Required documents include FORM 1295; CERTIFICATE OF INTERESTED PARTIES; certificate of insurance; Form 1295. 2 addendum(s) modify the original documents.",
+          "correct": null
+        }
+      ]
+    },
+    "Bid2": {
+      "correct": 18,
+      "scored": 18,
+      "accuracy": 1.0,
+      "llm_fields": 0,
+      "rows": [
+        {
+          "field": "Bid Number",
+          "value": "BPM044557",
+          "correct": true
+        },
+        {
+          "field": "Title",
+          "value": "Dell Laptops w/Extended Warranty",
+          "correct": true
+        },
+        {
+          "field": "Due Date",
+          "value": "06/10/2024 02:00 PM EDT",
+          "correct": true
+        },
+        {
+          "field": "Bid Submission Type",
+          "value": "BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the State's eMaryland Marketplace Advantage (eMMA) e-Procurement system.",
+          "correct": true
+        },
+        {
+          "field": "Term of Bid",
+          "value": null,
+          "correct": true
+        },
+        {
+          "field": "Pre Bid Meeting",
+          "value": null,
+          "correct": true
+        },
+        {
+          "field": "Installation",
+          "value": null,
+          "correct": null
+        },
+        {
+          "field": "Bid Bond Requirement",
+          "value": null,
+          "correct": true
+        },
+        {
+          "field": "Delivery Date",
+          "value": "Delivery within 45 days of Award",
+          "correct": true
+        },
+        {
+          "field": "Payment Terms",
+          "value": "Invoice(s) shall be submitted within 10 days of delivering the equipment and shall include at a minimum the following: Contractor name, mailing address, social security number or Federal Tax ID number, and phone number.",
+          "correct": true
+        },
+        {
+          "field": "Any Additional Documentation Required",
+          "value": "MERCURY AFFIDAVIT; Mercury Affidavit; Contract Affidavit",
+          "correct": true
+        },
+        {
+          "field": "MFG for Registration",
+          "value": "Dell",
+          "correct": true
+        },
+        {
+          "field": "Contract or Cooperative to use",
+          "value": "Desktop, Laptop and Tablet 2015 Master Contract, 060B5400007",
+          "correct": true
+        },
+        {
+          "field": "Model_no",
+          "value": "Latitude 5550; WD22TB4",
+          "correct": true
+        },
+        {
+          "field": "Part_no",
+          "value": "365-0257; CC7802; 210-BLYZ",
+          "correct": true
+        },
+        {
+          "field": "Product",
+          "value": "1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024",
+          "correct": true
+        },
+        {
+          "field": "contact_info",
+          "value": "Tamaira Hawkins; 410-260-7533; Thawkins@treasurer.state.md.us",
+          "correct": true
+        },
+        {
+          "field": "company_name",
+          "value": "State of Maryland Treasurer's Office",
+          "correct": true
+        },
+        {
+          "field": "Product Specification",
+          "value": "CPU: Intel Core Ultra 5 125U processor (12 MB cache, 12 co; RAM: 16 GB: 2 x 8 GB, DDR5; Storage: 256 GB, M.2 2230, TLC, Gen 4 PCIe NVMe; Display: 15.6\", FHD 1920x1080, 60Hz, IPS, Non-Touch, A; Battery: 3-cell, 54 Wh; Wireless: Wi-Fi 6E (6 where 6E unavailable); OS: Windows 11 Pro",
+          "correct": true
+        },
+        {
+          "field": "Bid Summary",
+          "value": "State of Maryland Treasurer's Office has issued bid BPM044557 for Dell Laptops w/Extended Warranty. Scope: 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024. Responses are due 06/10/2024 02:00 PM EDT via BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the Stat. Required documents include MERCURY AFFIDAVIT; Mercury Affidavit; Contract Affidavit.",
+          "correct": null
+        }
+      ]
+    }
+  }
+}

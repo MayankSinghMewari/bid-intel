@@ -10,10 +10,12 @@ falls back to the extractive passage.
 """
 from __future__ import annotations
 
+import json
 import os
 import re
 import time
 from pathlib import Path
+
 
 def _load_dotenv() -> None:
     """Read KEY=VALUE lines from a project .env file (git-ignored) without overriding real env vars."""
@@ -30,6 +32,18 @@ MODEL = os.environ.get("BID_INTEL_LLM_MODEL", "claude-opus-5-5")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
 
 
+_breaker = {"open_until": 0.0, "reason": ""}  # circuit breaker after quota errors
+
+
+def trip_breaker(reason: str, seconds: float = 600) -> None:
+    """Stop calling the LLM for a while (e.g. daily quota exhausted); callers use their fallbacks."""
+    _breaker.update(open_until=time.time() + seconds, reason=reason)
+
+
+def breaker_reason() -> str | None:
+    return _breaker["reason"] if time.time() < _breaker["open_until"] else None
+
+
 def provider() -> str | None:
     """'gemini' if GEMINI_API_KEY is set, else 'anthropic' if Anthropic credentials exist, else None.
     BID_INTEL_LLM=off disables both. BID_INTEL_LLM_PROVIDER forces one."""
@@ -43,43 +57,62 @@ def provider() -> str | None:
     return "anthropic" if _anthropic_credentials() else None
 
 
-def _complete(system: str, user: str, max_tokens: int = 2048) -> dict:
-    """One completion from the configured provider: {"text", "model", "input_tokens", "output_tokens"}.
-    Raises on API errors; callers fall back to extractive answers."""
+def _complete(system: str, user: str, max_tokens: int = 2048, schema: type | None = None,
+              timeout_s: int = 30) -> dict:
+    """One completion from the configured provider:
+    {"text", "model", "input_tokens", "output_tokens", "thinking_tokens", "parsed"}.
+    With schema (a Pydantic model class) the reply is constrained to that JSON schema and returned
+    parsed in "parsed". Raises on API errors or invalid JSON; callers fall back without crashing."""
     if provider() == "gemini":
         from google import genai
-        from google.genai import types
+        from google.genai import errors, types
         client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"),
-                              http_options=types.HttpOptions(timeout=30_000))  # ms; slow calls fall back
+                              http_options=types.HttpOptions(timeout=timeout_s * 1000))
         # Gemini 3.x models think before answering and thinking tokens count against
         # max_output_tokens, so leave generous headroom over the visible answer length
-        from google.genai import errors
-        config = types.GenerateContentConfig(system_instruction=system, max_output_tokens=max(max_tokens, 8192),
-                                             temperature=0)
-        for attempt in range(3):  # free tier returns 503/504 under load; back off and retry
+        config = types.GenerateContentConfig(
+            system_instruction=system, max_output_tokens=max(max_tokens, 8192), temperature=0,
+            **({"response_mime_type": "application/json", "response_schema": schema} if schema else {}))
+        for attempt in range(3):
             try:
                 r = client.models.generate_content(model=GEMINI_MODEL, contents=user, config=config)
                 break
-            except errors.ServerError:
+            except errors.ServerError:  # 503 overloaded / 504 deadline: back off 2 s, then 6 s
                 if attempt == 2:
                     raise
-                time.sleep(2 * 3 ** attempt)  # 2 s, then 6 s
+                time.sleep(2 * 3 ** attempt)
+            except errors.ClientError as exc:
+                if getattr(exc, "code", None) != 429:
+                    raise
+                if "quota" in str(exc).lower() and "per minute" not in str(exc).lower() or attempt > 0:
+                    trip_breaker("LLM quota exhausted (429)")  # daily quota: stop calling for this run
+                    raise
+                time.sleep(30)  # per-minute rate limit: wait once
         finish = r.candidates[0].finish_reason if r.candidates else None
         if finish is not None and getattr(finish, "name", str(finish)) == "MAX_TOKENS":
             raise RuntimeError("Gemini response truncated at max_output_tokens")
         u = r.usage_metadata
-        return {"text": (r.text or "").strip(), "model": GEMINI_MODEL,
+        text = (r.text or "").strip()
+        parsed = None
+        if schema:
+            parsed = r.parsed if isinstance(r.parsed, schema) else schema.model_validate_json(text)
+        return {"text": text, "model": GEMINI_MODEL, "parsed": parsed,
                 "input_tokens": getattr(u, "prompt_token_count", None),
                 "output_tokens": getattr(u, "candidates_token_count", None),
                 "thinking_tokens": getattr(u, "thoughts_token_count", None)}
     import anthropic
+    if schema:
+        system += ("\n\nReturn only a JSON object, with no prose and no code fences, that validates against "
+                   f"this JSON schema:\n{json.dumps(schema.model_json_schema())}")
     r = anthropic.Anthropic().beta.messages.create(
-        model=MODEL, max_tokens=max_tokens, system=system, output_config={"effort": "low"},
+        model=MODEL, max_tokens=max(max_tokens, 8192), system=system, output_config={"effort": "low"},
         betas=["server-side-fallback-2026-07-01"], fallbacks="default",
         messages=[{"role": "user", "content": user}])
     if r.stop_reason == "refusal":
         raise RuntimeError("refusal")
-    return {"text": "".join(b.text for b in r.content if b.type == "text").strip(), "model": r.model,
+    text = "".join(b.text for b in r.content if b.type == "text").strip()
+    parsed = schema.model_validate_json(re.sub(r"^```(?:json)?|```$", "", text).strip()) if schema else None
+    return {"text": text, "model": r.model, "parsed": parsed, "thinking_tokens": None,
             "input_tokens": r.usage.input_tokens, "output_tokens": r.usage.output_tokens}
 
 SYSTEM_PROMPT = """You answer questions about a public-sector bid document (an RFP addendum of vendor \
@@ -95,7 +128,7 @@ question, say that the vendor stated it.
 
 
 def enabled() -> bool:
-    return provider() is not None
+    return provider() is not None and breaker_reason() is None
 
 
 def _anthropic_credentials() -> bool:

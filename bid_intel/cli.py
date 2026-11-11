@@ -64,6 +64,9 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("eval-bids", help="retrieval evaluation over the bid folders (Recall@k, MRR)")
 
+    ee = sub.add_parser("eval-extraction", help="field accuracy vs eval/extraction_gold.json")
+    ee.add_argument("--modes", nargs="+", default=["rules", "rules+llm"], choices=["rules", "rules+llm"])
+
     sub.add_parser("bid-qalog", help="write logs/bid_qa_log.md from the sample questions")
 
     sv = sub.add_parser("serve", help="start the HTTP API")
@@ -112,6 +115,11 @@ def main(argv: list[str] | None = None) -> int:
         folders = sorted(f for f in bids.FOLDERS.iterdir() if f.is_dir())
         print(json.dumps(bid_eval.run(folders, service.ROOT / "eval" / "bid_questions.json",
                                       service.ROOT / "eval"), indent=2))
+    elif args.cmd == "eval-extraction":
+        from . import bids, extraction_eval
+        folders = sorted(f for f in bids.FOLDERS.iterdir() if f.is_dir())
+        print(json.dumps(extraction_eval.run(folders, service.ROOT / "eval" / "extraction_gold.json",
+                                             service.ROOT / "eval", tuple(args.modes)), indent=2))
     elif args.cmd == "bid-qalog":
         from . import bids
         for i, r in enumerate(bids.write_qa_log(service.ROOT / "logs" / "bid_qa_log.md"), 1):

@@ -21,7 +21,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from .docs import DocChunk, ingest_folder
-from .fields import DATETIME, FIELDS, FieldSpec, _sentences
+from .fields import DATE, DATETIME, FIELDS, FieldSpec, _sentences
 from .search import BidSearch, SearchHit
 
 MAX_RETRIES = 2
@@ -176,11 +176,19 @@ class ReconcileAgent:
                           rf"[^.]{{0,40}}?({DATETIME})", ch["change"], re.I)
             if m:
                 old = state.fields.get("Due Date")
+                src = Source(file=ch["file"], page=ch["page"], doc_type="addendum",
+                             chunk_id=f"{state.bid_id}:addendum{ch['addendum']}", evidence=ch["change"][:400])
+                new_date = re.search(rf"{DATE}", m.group(1)).group(0)
+                if old and old.value and new_date.lower() in old.value.lower():
+                    # the extractor already applied this addendum: confirm instead of overwriting
+                    if not any(s.file == ch["file"] for s in old.sources):
+                        old.sources.insert(0, src)
+                    old.notes += f"; confirmed by reconciler: Addendum {ch['addendum']} sets this date"
+                    old.confidence = max(old.confidence, 0.95)
+                    break
                 note = f"Updated by Addendum {ch['addendum']}"
                 if old and old.value:
                     note += f" (previously stated: {old.value})"
-                src = Source(file=ch["file"], page=ch["page"], doc_type="addendum",
-                             chunk_id=f"{state.bid_id}:addendum{ch['addendum']}", evidence=ch["change"][:400])
                 state.fields["Due Date"] = FieldResult(
                     value=m.group(1), sources=[src] + (old.sources if old else []), confidence=0.93, notes=note,
                     validated=True)
@@ -227,9 +235,30 @@ class ValidatorAgent:
         return r
 
 
+def _tokens(s: str) -> set[str]:
+    return set(re.findall(r"[a-z0-9]{2,}", s.lower()))
+
+
+def _agree(rule_val: str, llm_val: str) -> bool:
+    """Rule and LLM values agree when most of the rule value's tokens appear in the LLM value."""
+    rt = _tokens(rule_val)
+    return bool(rt) and len(rt & _tokens(llm_val)) / len(rt) >= 0.5
+
+
+def _quote_source(h: SearchHit, quote: str | None) -> Source:
+    c = h.chunk
+    flat = re.sub(r"\s+", " ", c.text)
+    pos = flat.lower().find(re.sub(r"\s+", " ", quote or "").lower()[:60]) if quote else -1
+    start = max(0, pos - 120) if pos >= 0 else 0
+    return Source(file=c.file_name, page=c.page, doc_type=c.doc_type, chunk_id=c.chunk_id,
+                  evidence=flat[start:start + 450])
+
+
 class Orchestrator:
-    def __init__(self, folder: Path, bid_id: str | None = None, engine: BidSearch | None = None):
+    def __init__(self, folder: Path, bid_id: str | None = None, engine: BidSearch | None = None,
+                 use_llm: bool | None = None):
         self.folder = folder
+        self.use_llm = use_llm  # None: use the LLM when a key is configured
         self.bid_id = bid_id or folder.name
         self.state = BidState(bid_id=self.bid_id)
         self.tracer = Tracer(self.state)
@@ -268,7 +297,7 @@ class Orchestrator:
     def _summary(self) -> FieldResult:
         f = {k: v.value for k, v in self.state.fields.items()}
         from . import llm
-        llm_on = llm.enabled()
+        llm_on = llm.enabled() if self.use_llm is None else (self.use_llm and llm.enabled())
         if llm_on:
             t0 = time.perf_counter()
             facts = "\n".join(f"{k}: {v}" for k, v in f.items() if v)
@@ -309,6 +338,48 @@ class Orchestrator:
                                  ("call failed, see trace)" if llm_on else "not configured)"),
                            validated=bool(parts))
 
+    def _llm_extract(self, groups: dict[str, list[FieldSpec]]) -> None:
+        """LLM specialists (one structured-output call per group, in parallel) refine the rule results."""
+        from . import llm, llm_extract
+        if not (llm.enabled() if self.use_llm is None else self.use_llm and llm.enabled()):
+            return
+        with ThreadPoolExecutor(max_workers=len(groups)) as pool:
+            futs = {g: pool.submit(llm_extract.extract_group, self.engine, self.bid_id, g, specs, self.tracer.log,
+                                   [src.chunk_id for sp in specs for src in self.state.fields[sp.name].sources])
+                    for g, specs in groups.items()}
+        model = llm.GEMINI_MODEL if llm.provider() == "gemini" else llm.MODEL
+        for g, fut in futs.items():
+            try:
+                results = fut.result()
+            except Exception as exc:  # a failed group keeps its rule-based values
+                self.tracer.log("orchestrator", "llm_group_error", {"group": g}, {"error": str(exc)[:200]},
+                                time.perf_counter())
+                continue
+            for name, (fv, passages, ok, reason, attempts) in results.items():
+                rule = self.state.fields.get(name)
+                rule_val = rule.value if rule is not None and rule.validated else None
+                if fv is not None and ok and fv.value is not None:
+                    agree = rule_val is not None and _agree(rule_val, fv.value)
+                    notes = [f"LLM extraction ({model}); quote verified in cited passage"]
+                    if fv.note:
+                        notes.append(fv.note)
+                    if agree:
+                        notes.append("agrees with rule-based value")
+                    elif rule_val:
+                        notes.append(f"rule-based value was: {rule_val[:120]}")
+                    if attempts > 1:
+                        notes.append("accepted after validator feedback")
+                    srcs = [_quote_source(passages[n - 1], fv.quote) for n in dict.fromkeys(fv.citations)][:5]
+                    self.state.fields[name] = FieldResult(value=fv.value, sources=srcs,
+                                                          confidence=0.95 if agree else 0.85, notes="; ".join(notes),
+                                                          validated=True, attempts=attempts)
+                elif rule_val is not None:
+                    rule.notes += "; LLM: " + ("not stated in its evidence" if fv is not None and fv.value is None
+                                               else f"rejected ({reason})")
+                elif fv is not None and fv.value is None and ok:
+                    self.state.fields[name] = FieldResult(value=None, confidence=0.85,
+                                                          notes=NOT_FOUND + " (rules and LLM agree)")
+
     def run(self) -> dict:
         t_start = time.perf_counter()
         chunks = self._ingest()
@@ -329,6 +400,7 @@ class Orchestrator:
             except Exception as exc:  # one failing field must not crash the pipeline
                 self.state.fields[name] = FieldResult(value=None, notes=f"error: {type(exc).__name__}: {exc}")
 
+        self._llm_extract(groups)
         ReconcileAgent(self.tracer).run(chunks, self.state)
         self.state.fields["Bid Summary"] = self._summary()
 

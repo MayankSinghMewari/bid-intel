@@ -151,7 +151,7 @@ FIELDS: list[FieldSpec] = [
               _first_sentence(r"\b(installation|imaging|deployment|asset tagging|set-?up)\b")),
     FieldSpec("Bid Bond Requirement", "commercial", "bid bond bid security guarantee amount percent required",
               _bond),
-    FieldSpec("Delivery Date", "dates", "delivery within days of award shipping lead time",
+    FieldSpec("Delivery Date", "dates", "when delivered by delivery date delivery within days of award shipping lead time",
               _any(_regex(r"(deliver(?:y|ed)?\s+within\s+[\w\s()]{1,25}?days?\s+(?:of|after|from)\s+(?:award|receipt[\w\s]{0,20}|order))"),
                    _first_sentence(r"deliver(y|ed)?\b[^.]{0,40}\bwithin\b[^.]{0,30}\b(days|weeks)\b",
                                    exclude=r"notify|certified mail|default|terminat|penalt|liquidated|subcontract"))),
