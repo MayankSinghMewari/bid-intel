@@ -1,102 +1,134 @@
-# Bid Intelligence
+# RFP Intelligence Platform: RAG Search Engine and Multi-Agent Extraction
 
-Ingests public-sector bid documents, searches them with cited retrieval, and runs a multi-agent extraction that writes one JSON file per bid with values, citations and confidence scores.
+Indexes bid folders (HTML bid pages and PDFs, including addendums), searches them with hybrid retrieval and cited results, and runs a multi-agent pipeline that writes one JSON record per bid with the 20 required fields, each with sources and a confidence score.
 
-Tested on Dallas ISD RFP JA-207652 Addendum No. 1 (39 vendor questions). This is the only document in the repository. Results on other bids are unknown.
-
-## Contents
-- `bid_intel/`: ingestion, BM25 search, schema, agents, service layer, CLI, API
-- `tests/`: 17 tests (ingestion, retrieval, extraction, API)
-- `eval/`: question set, retrieval evaluation report, configuration results
-- `logs/`: sample Q&A log (12 questions), full agent trace for one extraction run
-- `data/bids/JA-207652/`: source PDF, parsed items, extraction JSON
-- `docs/architecture.svg`: architecture diagram (`architecture.md` has the Mermaid version)
-- `DEMO_SCRIPT.md`: outline for the 5 to 10 minute walkthrough
+Tested on the two provided folders, `data/bid_folders/Bid1` (Dallas ISD JA-207652: bid page, RFP, Addendum 1, Addendum 2) and `data/bid_folders/Bid2` (Maryland Treasurer BPM044557: bid page, PORFP, specs, two affidavits). Nothing in the code names these bids; a new folder with a similar structure runs with the same command.
 
 ## Setup
 
-Requirements: Python 3.10+, and `pdftotext` (poppler) if available. Without it the code falls back to `pypdf`.
+Python 3.10+. `pdftotext` (poppler) is used when installed, otherwise `pypdf`.
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
+python -m venv .venv
+# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+The first run downloads the embedding model (`BAAI/bge-small-en-v1.5`, about 70 MB). Embeddings are cached in `.cache/`, so later runs only embed new chunks.
+
+Optional LLM: set `ANTHROPIC_API_KEY` (model from `BID_INTEL_LLM_MODEL`, default `claude-opus-5-5`). With a key, Q&A answers are written by Claude from the retrieved passages only and must cite them; without a key the system returns the best-matching cited sentences. No secrets are stored in code.
 
 ## How to run
 
 ```bash
-# 1. Ingest a bid document (writes data/bids/<BID>/items.json)
-python -m bid_intel ingest data/bids/JA-207652/addendum_1.pdf --bid JA-207652
+# Extraction mode: ONE COMMAND per bid folder -> outputs/<bid>.json and logs/<bid>_trace.json
+python -m bid_intel run --bid data/bid_folders/Bid1
+python -m bid_intel run --bid data/bid_folders/Bid2
 
-# 2. Search and get cited passages (CLI)
-python -m bid_intel ask --bid JA-207652 "Is accidental damage protection required?"
+# Search (hybrid, with metadata filters)
+python -m bid_intel search "bid bond" --bid-id Bid2
+python -m bid_intel search "due date" --bid-id Bid1 --doc-type addendum
 
-# 3. Run the multi-agent extraction (writes data/bids/<BID>/extraction.json)
-python -m bid_intel extract --bid JA-207652 --trace logs/agent_trace.json
+# Question-answering mode (cited answers; names like "Bid1" in the question restrict the search)
+python -m bid_intel ask-bids "What is the submission deadline for Bid1 after all addendums?"
 
-# 4. Retrieval evaluation across six configurations (writes eval/report.md)
-python -m bid_intel eval --bid JA-207652
+# Retrieval evaluation (writes eval/bid_report.md and eval/bid_results.json)
+python -m bid_intel eval-bids
 
-# 5. HTTP API on http://127.0.0.1:8000 (interactive docs at /docs)
+# REST API on http://127.0.0.1:8000 (docs at /docs)
 python -m bid_intel serve
-curl -X POST localhost:8000/bids/JA-207652/ask -H 'content-type: application/json' \
-     -d '{"question":"When will the RFP be awarded?"}'
-curl -X POST localhost:8000/bids/JA-207652/extract
-curl localhost:8000/bids/JA-207652/extraction
+#   POST /index {"folder": "data/bid_folders/Bid1"}
+#   GET  /search?q=bid+bond&bid_id=Bid2&top_k=5&doc_type=rfp
+#   POST /ask {"question": "Which affidavits are required for the Dell laptop bid?"}
+#   POST /extract/Bid1
 
 # Tests
 pytest -q
 ```
 
-## Modes
-| Mode | Command | Output |
-|---|---|---|
-| Ingestion | `ingest` | `items.json` per bid folder |
-| RAG search (CLI) | `ask` | cited passages, confidence |
-| Multi-agent extraction | `extract` | `extraction.json` and an agent trace |
-| Evaluation | `eval` | `eval/results.json`, `eval/report.md` |
-| API | `serve` | JSON over HTTP |
+## Deliverables in this repository
+
+| Deliverable | Location |
+|---|---|
+| JSON output, one per bid | `outputs/Bid1.json`, `outputs/Bid2.json` |
+| Retrieval evaluation report | `eval/bid_report.md` (questions: `eval/bid_questions.json`) |
+| Sample Q&A log (12 questions) | `logs/bid_qa_log.md` |
+| Agent trace of a full extraction run | `logs/Bid1_trace.json` (also `logs/Bid2_trace.json`) |
+| Architecture diagram | "Architecture" section below (the earlier prototype diagram is in `docs/architecture.svg`) |
+
+## Architecture
+
+```
+Bid folder (HTML + PDF)
+   |
+[IngestionAgent] docs.py: detect doc type, parse HTML (BeautifulSoup) / PDF (pdftotext), strip repeated
+   |              headers/footers, fix hyphenation, attach metadata, log unreadable/empty files
+   v
+[Chunking: 180-word windows, 40-word overlap, per page] -> [BM25 index] + [dense index: bge-small]
+   ^                                                             (incremental: new bids are appended)
+   | search tool: hybrid RRF, metadata filters, query expansion, optional cross-encoder rerank
+   |
+[Orchestrator] plans field groups -> runs them in parallel (thread pool)
+   |-> RetrievalAgent    query expansion + filters (bid, doc type), widens on retry
+   |-> ExtractionAgent   one specialist per group: identity, dates, commercial, product
+   |-> ValidatorAgent    citation present, value found verbatim in cited evidence, date format
+   |      rejected -> back to RetrievalAgent (max 2 retries)
+   |-> ReconcileAgent    lists addendum changes, applies the latest change (e.g. extended due date)
+   v
+outputs/<bid>.json (fields + sources + confidence + addendum_changes + validation) and trace
+```
+
+Shared state is a Pydantic `BidState` (plan, evidence, draft fields, validation, trace). Agent messages are Pydantic models (`FieldResult`, `Source`, `TraceStep`). Every step logs agent, action, input, output and latency.
 
 ## Design decisions
 
-**Ingestion.** `pdftotext -layout` keeps the numbered list structure. The parser accepts a question number only when it is the next expected number (1, 2, 3 ...). That stops numbered lines inside answers, such as "5 business days", from being read as new questions. Header and footer lines are removed. The parser stops at the signature block.
+**Ingestion.** HTML bid pages are parsed into label/value facts (solicitation number, title, closing date, contact, issuing organization), which are the most reliable source for those fields. PDFs are read page by page so every chunk keeps its page number. Lines repeated on more than half of a document's pages are removed as headers/footers. Document type comes from the file name (`addendum N`, `affidavit`, `spec`, `.html` = bid page, otherwise `rfp`). Files that fail to parse, or pages with no text (scanned), are recorded in the ingestion log and skipped instead of stopping the run.
 
-**Chunking.** Three strategies are supported and evaluated:
-- `qa` (default): one chunk per Q&A pair. This matches how the District answers, keeps each citation exact, and gives 39 chunks.
-- `window:40:20` and `window:80:40`: overlapping word windows. Each chunk records every question number it spans, so citations stay correct.
+**Chunking.** 180-word windows with 40-word overlap, never crossing a page boundary. RFPs mix short form fields, clauses and spec lists; 180 words holds one clause or a short table while keeping citations to a single page. The overlap keeps sentences that straddle a boundary retrievable.
 
-I chose `qa` as the default because citations map directly to a question number. The evaluation shows the window chunking with k1=1.5, b=0.3 scores marginally higher (MRR 0.986 against 0.972), a difference of one question, so the choice is not conclusive.
+**Embedding model.** `BAAI/bge-small-en-v1.5` through fastembed (ONNX, CPU, no API key). Small enough to run on a laptop, and strong on retrieval benchmarks for its size.
 
-**Embedding model.** None in this version. Retrieval is BM25, implemented in pure Python so it runs with no model download and no network. Dense embeddings are the natural next step for paraphrased questions. The addendum uses similar vocabulary to vendor questions, which is why lexical search works well here. This is a limitation for other bids, not a finding.
+**Retrieval.** BM25 (pure Python, keeps negations and numbers such as model and part numbers) plus dense cosine search, merged with reciprocal rank fusion (k=60). Metadata filters restrict by bid, document type and addendum number. Query expansion adds RFP synonyms ("deadline" -> due date, closing date, submission). A cross-encoder re-ranker (`ms-marco-MiniLM-L-6-v2`) is available but off by default, because on this evaluation it lowered MRR and cost about 5 s per query.
 
-**Retrieval strategy.** BM25 with stopword removal. Negation words ("not", "no") and version numbers ("3.1") are kept, because they change the meaning of RFP answers. Recall@k and MRR use gold labels from `eval/questions.json`.
+**Agent framework.** Own orchestration in `bid_intel/bid_agents.py` rather than LangGraph or CrewAI: the flow is a fixed plan with a bounded retry loop, which is short to write and easy to trace and test, and it adds no dependencies.
 
-**Agent framework.** No framework. Four roles (Orchestrator, Retriever, Extractor, Verifier) pass messages on a shared in-memory bus, and every message is recorded in the trace. A framework like LangGraph or AutoGen would add dependencies without changing the behavior, and the roles are small enough to read in one file.
+**Extraction.** Each of the 20 fields (`bid_intel/fields.py`) declares a retrieval query, preferred document types, bid-page fact keys, and a deterministic rule that reads the value from a retrieved passage. Rules use general RFP vocabulary (dates, "bid bond", "authorized reseller", "Master Contract", affidavit names), not text from these two bids. Extraction is deterministic and every value points at the passage it came from. The cost is recall: values phrased in unexpected ways are missed and reported as "Not found in documents".
 
-**Extraction rules.** Each field in `bid_intel/schema.py` has a retrieval query and a regular-expression rule with a named `value` group. Rules are deterministic, so extraction is reproducible and fully auditable. The cost is that a new bid with different wording needs new rules. An LLM extractor could replace the rule step, with the verifier unchanged.
+**Addendum reconciliation.** Addendum sentences with change verbs (extend, revise, replace, new due date ...) are collected into `addendum_changes`. If an addendum states a new due date, the latest one overrides the base value and the note records the previous value.
 
-**Verification.** The verifier re-checks each candidate with three tests: the cited span appears verbatim in the cited chunk, the cited question numbers exist in the document, and the field rule gives the same value on that chunk. Be clear about what this does: it confirms the citation and the rule are consistent. It does not check that the rule captures the right meaning. Semantic checking needs an LLM or a human.
+**Validation and confidence.** The validator rejects values without a citation, values not found verbatim in the cited evidence, and malformed dates. Rejected fields are retried with a wider search. Confidence: 0.9 for bid-page facts, 0.55 + 0.35/rank for rule matches, 0.93 for addendum overrides, multiplied by 0.6 if validation fails. These are heuristics, not calibrated probabilities.
 
-**Confidence.** `0.4 x retrieval strength + 0.4 x evidence location + 0.2 x verified`. Evidence location is 1.0 if the value comes from the District's answer and 0.5 if it appears only in the vendor's question. Example: the charger wattage (65W) appears only in the vendor's question, so its confidence is 0.8, not 1.0. This is a documented heuristic, not a calibrated probability. The mean reported value (0.98) is high because the rules are strict on this document, not because the system is reliable on other bids.
+**Prompts.** The LLM prompts are in `bid_intel/llm.py`. They require answers only from the numbered passages, an explicit "Not found in documents", and a citation on every claim; answers that cite passages that were not provided are rejected.
 
-**Prompts.** No LLM prompts exist in this version, so there are none to document. The rules in `schema.py` play that role.
+## Retrieval evaluation
 
-## Known limitations and assumptions
-- One document tested. The schema is written for this addendum's wording and will miss values phrased differently in other bids.
-- Extraction rules are hand-written. Each new bid needs schema work or an LLM extractor.
-- Ask mode is extractive. It returns the best passage with a citation and does not generate an answer.
-- Confidence is a heuristic.
-- Gold labels were written by the team that built the system.
-- Dense retrieval, OCR of scanned PDFs, the comparison agent, the go/no-go recommendation, caching, and cost tracking are not implemented.
-- The Docker image and CI workflow were written but not run in this environment because Docker is not available here.
-- Field values in the example output come from a 2024 addendum. Dates and requirements in the current bid may differ.
+20 questions (10 per bid) with gold file and page. Each search is filtered to the question's bid.
 
-## Repository layout
-```
-bid_intel/   package (ingest, bm25, retrieval, schema, agents, service, cli, api, evaluation)
-tests/       pytest suite
-eval/        questions.json, report.md, results.json
-logs/        qa_log.md, agent_trace.json
-data/bids/   per-bid folders
-docs/        architecture diagram
-```
+| Configuration | Recall@1 | Recall@3 | Recall@5 | MRR | ms/query |
+|---|---|---|---|---|---|
+| bm25 | 0.65 | 0.9 | 0.9 | 0.758 | 0.9 |
+| bm25 + query expansion | 0.65 | 0.9 | 0.95 | 0.777 | 0.9 |
+| dense (bge-small) | 0.75 | 0.9 | 0.95 | 0.835 | 59.1 |
+| **hybrid RRF (default)** | **0.85** | 0.9 | 0.95 | **0.879** | 24.7 |
+| hybrid RRF + cross-encoder rerank | 0.65 | 0.95 | 1.0 | 0.804 | 5235.7 |
+
+Hybrid search gives the best top-1 accuracy. The re-ranker finds every gold passage within 5 but ranks it first less often. With 20 questions, one question is 0.05, so small differences are not significant.
+
+## Extraction results
+
+| | Passed validation | Failed validation | Not found |
+|---|---|---|---|
+| Bid1 | 14 | 2 | 4 |
+| Bid2 | 12 | 4 | 4 |
+
+Correct examples: Bid1 due date "July 9, 2024 at 2:00 PM CST", taken from Addendum 2 with the original bid-page date in the note; Bid2 delivery "Delivery within 45 days of Award", MFG "Dell", cooperative "Desktop, Laptop and Tablet 2015 Master Contract, 060B5400007", models "Latitude 5550; WD22TB4".
+
+## Known limitations
+
+- No LLM key was available while building, so extraction is rule-based and Q&A answers are extracted sentences. The summary field is generated from a template over the extracted fields. With `ANTHROPIC_API_KEY` set, Q&A uses Claude; LLM-based field extraction is the natural next step and plugs into `ExtractionAgent`.
+- Some fields are wrong or weak on Bid1: "Delivery Date" picks an unrelated sentence, "Payment Terms" picks a subcontractor-payment clause, Model_no and Part_no are not found (the RFP lists device tiers, not models).
+- Bid1's RFP specifies several device tiers; Product Specification reports one tier.
+- Tables are read as text in layout order; there is no cell-level table extraction. No OCR (scanned pages are logged and skipped).
+- The 20 evaluation questions and their labels were written by the author.
+- The Docker image and CI workflow were not run locally.
+- `docs/addendum_prototype.md` documents the earlier Addendum-1-only prototype (the `ingest`, `ask`, `extract`, `eval` commands), which is still included.

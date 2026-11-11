@@ -1,0 +1,22 @@
+[
+ {"id": "b1-01", "bid_id": "Bid1", "question": "What is the submission deadline after all addendums?", "file": "Addendum 2", "anchor": "new due date"},
+ {"id": "b1-02", "bid_id": "Bid1", "question": "When is the pre-proposal meeting and how is it held?", "file": "FINAL", "anchor": "pre-proposal meeting will be held"},
+ {"id": "b1-03", "bid_id": "Bid1", "question": "How long is the initial contract term and how many renewals?", "file": "FINAL", "anchor": "Initial Term"},
+ {"id": "b1-04", "bid_id": "Bid1", "question": "Is accidental damage protection required for purchased devices?", "file": "Addendum 1", "anchor": "Accidental Damage Protection"},
+ {"id": "b1-05", "bid_id": "Bid1", "question": "Which disclosure of interested parties form must be filed?", "file": "FINAL", "anchor": "FORM 1295"},
+ {"id": "b1-06", "bid_id": "Bid1", "question": "Which purchasing cooperative is the district a member of?", "file": "FINAL", "anchor": "Educational Purchasing Cooperative"},
+ {"id": "b1-07", "bid_id": "Bid1", "question": "Can proposals be submitted by fax or email?", "file": "FINAL", "anchor": "No fax or email submissions"},
+ {"id": "b1-08", "bid_id": "Bid1", "question": "What services such as asset tagging and device setup are included?", "file": "FINAL", "anchor": "asset tagging"},
+ {"id": "b1-09", "bid_id": "Bid1", "question": "Who is the procurement contact for the Dallas ISD bid?", "file": "BidNet", "anchor": "ProcurementCS@dallasisd.org"},
+ {"id": "b1-10", "bid_id": "Bid1", "question": "What is the minimum USB port version for display monitors?", "file": "Addendum 1", "anchor": "USB 3.1 is a minimum"},
+ {"id": "b2-01", "bid_id": "Bid2", "question": "When are proposals due for the Dell laptop bid?", "file": "PORFP", "anchor": "PROPOSAL DUE"},
+ {"id": "b2-02", "bid_id": "Bid2", "question": "Which affidavits are required for the Dell laptop bid?", "file": "PORFP", "anchor": "Mercury Affidavit"},
+ {"id": "b2-03", "bid_id": "Bid2", "question": "How must bids be submitted for the Maryland PORFP?", "file": "PORFP", "anchor": "eMaryland Marketplace Advantage"},
+ {"id": "b2-04", "bid_id": "Bid2", "question": "What is the required delivery time after award?", "file": "PORFP", "anchor": "Delivery within 45 days"},
+ {"id": "b2-05", "bid_id": "Bid2", "question": "How should invoices be submitted?", "file": "PORFP", "anchor": "STOaccountspayable"},
+ {"id": "b2-06", "bid_id": "Bid2", "question": "Which master contract must bidders hold?", "file": "PORFP", "anchor": "060B5400007"},
+ {"id": "b2-07", "bid_id": "Bid2", "question": "Who is the agency point of contact?", "file": "PORFP", "anchor": "Tamaira Hawkins"},
+ {"id": "b2-08", "bid_id": "Bid2", "question": "Which manufacturer must the contractor be an authorized reseller for?", "file": "PORFP", "anchor": "authorized reseller for Dell"},
+ {"id": "b2-09", "bid_id": "Bid2", "question": "What processor and memory does the Dell Latitude 5550 have?", "file": "Specs", "anchor": "Processor"},
+ {"id": "b2-10", "bid_id": "Bid2", "question": "What does the mercury affidavit certify?", "file": "Mercury", "anchor": "mercury"}
+]

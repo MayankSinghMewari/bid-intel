@@ -1,7 +1,7 @@
 {
   "bid_id": "JA-207652",
   "schema_version": "1.0",
-  "generated_at": "2026-11-11T06:01:36+00:00",
+  "generated_at": "2026-11-11T06:44:07+00:00",
   "source_document": "addendum_1.pdf",
   "engine": {
     "retrieval": "BM25 (pure Python)",

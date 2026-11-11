@@ -1,0 +1,434 @@
+{
+  "bid_id": "Bid1",
+  "generated_at": "2026-11-11T06:48:35+00:00",
+  "fields": {
+    "Bid Number": {
+      "value": "JA-207652",
+      "sources": [
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "solicitation number: JA-207652"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "from bid page field 'solicitation number'",
+      "validated": true
+    },
+    "Title": {
+      "value": "Student and Staff Computing Devices",
+      "sources": [
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "title: Student and Staff Computing Devices **SOURCING #168884**"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "from bid page field 'title'",
+      "validated": true
+    },
+    "Due Date": {
+      "value": "July 9, 2024 at 2:00 PM CST",
+      "sources": [
+        {
+          "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 1,
+          "doc_type": "addendum",
+          "chunk_id": "Bid1:addendum2",
+          "evidence": "The new due date for this RFP will be July 9, 2024 at 2:00 PM CST."
+        },
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "closing date: 07/09/2024 03:00 PM EDT"
+        }
+      ],
+      "confidence": 0.93,
+      "notes": "Updated by Addendum 2 (previously stated: 07/09/2024 03:00 PM EDT)",
+      "validated": true
+    },
+    "Bid Submission Type": {
+      "value": "Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time stated.",
+      "sources": [
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 9,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:2",
+          "evidence": "possible to allow time for electronic responses. Submissions may be submitted manually. Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time stated. No fax or email submissions will be accepted. Only one format is needed. The manual submission shall consist of one (1) original hard copy. The Offeror may submit a manual response by p"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "rule match in retrieved passage (rank 1)",
+      "validated": true
+    },
+    "Term of Bid": {
+      "value": "Initial term 3 year(s); 2 renewal option(s) of 1, 1 year(s)",
+      "sources": [
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 2,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p2:0",
+          "evidence": "Buyer ALZATE, JASMINE Email JALZATE@dallasisd.org 1 Header Information 1.1 General Information First Advertisement Date/Issue Date 26-MAY-2024 08:00:00 Second Advertisement Date 02-JUN-2024 08:00:00 Pre-Proposal Meeting 10-JUN-2024 14:00:00 Questions Deadline 11-JUN-2024 16:00:00 Questions Response from the District 13-JUN-2024 18:00:00 Solicitation Due 27-JUN-2024 14:00:00 Anticipated Evaluation "
+        }
+      ],
+      "confidence": 0.35,
+      "notes": "rule match in retrieved passage (rank 11); validator: value not found verbatim in cited evidence",
+      "validated": false
+    },
+    "Pre Bid Meeting": {
+      "value": "06/10/2024 03:00 PM EDT",
+      "sources": [
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "prebid conference: 06/10/2024 03:00 PM EDT"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "from bid page field 'prebid conference'",
+      "validated": true
+    },
+    "Installation": {
+      "value": "to \"describe your company's ability to perform each of the deployment services,\" etc.",
+      "sources": [
+        {
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "doc_type": "addendum",
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:1",
+          "evidence": "to \"describe your company's ability to perform each of the deployment services,\" etc. How should vendors comply with the requirement to use the PDF version of the solicitation and yet respond to such attributes in the very limited space provided under the instruction to \"Provide our answer below\"? Answer: If responding electronically, a pdf version is not required. Manual responses should have dir"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "rule match in retrieved passage (rank 1)",
+      "validated": true
+    },
+    "Bid Bond Requirement": {
+      "value": null,
+      "sources": [],
+      "confidence": 0.8,
+      "notes": "Not found in documents",
+      "validated": false
+    },
+    "Delivery Date": {
+      "value": "The offeror must notify the District, in writing, by certified mail or personal delivery, within ten (10) days after the Offeror knew or should have known of any changes that materially affect the insurance/bond coverage.",
+      "sources": [
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+          "evidence": "work take precedence over any and all contents of the certificate of insurance/bond including, but not limited to, disclaimers, qualifications, etc. Failure to provide insurance/bond under the Contract may be cause for termination for default and other remedies allowed by law and/or equity. The offeror must notify the District, in writing, by certified mail or personal delivery, within ten (10) da"
+        }
+      ],
+      "confidence": 0.73,
+      "notes": "rule match in retrieved passage (rank 2)",
+      "validated": true
+    },
+    "Payment Terms": {
+      "value": "vendors must pay all submitted invoices, including retainage to subcontractors, suppliers, or entities within 10 days of receiving payment from the district;",
+      "sources": [
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 51,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p51:1",
+          "evidence": "vendors must pay all submitted invoices, including retainage to subcontractors, suppliers, or entities within 10 days of receiving payment from the district; No Prime vendor shall withhold a non-disputed subcontractor payment; No Prime vendor may withhold retainage greater than 5% from the subcontractor. Contract Execution between Prime Vendor and Subcontractor. Prime vendor agrees to establish a "
+        }
+      ],
+      "confidence": 0.73,
+      "notes": "rule match in retrieved passage (rank 2)",
+      "validated": true
+    },
+    "Any Additional Documentation Required": {
+      "value": "FORM 1295; CERTIFICATE OF INTERESTED PARTIES; certificate of insurance; Form 1295",
+      "sources": [
+        {
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "doc_type": "addendum",
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
+          "evidence": "31. FORM 1295 - CERTIFICATE OF INTERESTED PARTIES: The RFP states that \"This form must then be signed and attached to the Response Attachments, prior to any business transaction.\" Referring to \"Response Attachments,\" does Form 1295 have to be submitted with the RFP response or after award, \"prior to any business transaction\"? Answer: The Form 1295 should be submitted with the RFP response. 32. INS"
+        },
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
+          "evidence": "PROPOSAL REQUIREMENT - The following attributes require a response Type ............................................................................................................................................... Circle one from the response values below: Yes - I agree No - I Do not agree . The District shall consider a NO response a basis for non-award and/or cancellation and/or termination of"
+        },
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+          "evidence": "work take precedence over any and all contents of the certificate of insurance/bond including, but not limited to, disclaimers, qualifications, etc. Failure to provide insurance/bond under the Contract may be cause for termination for default and other remedies allowed by law and/or equity. The offeror must notify the District, in writing, by certified mail or personal delivery, within ten (10) da"
+        },
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:1",
+          "evidence": "PARTIES Pursuant HB 1295 (2015), the addition of section 2252.908 of the Government Code, all awarded vendors must fill out electronically, with the Texas Ethics Commission's online filing application https://www.ethics.state.tx.us/whatsnew/elf_info_form1295.htm. The law states that a governmental entity or state may not enter into certain contracts with a business entity unless the business entit"
+        },
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:0",
+          "evidence": "REFERENCES Type ............................................................................................................................................... Provide your answer below PROPOSAL REQUIREMENT - The following attributes require a response GENERAL TERMS AND CONDITIONS The offeror agrees to the General Terms and Conditions and any Special Terms and Conditions (if applicable) of this so"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "rule match in retrieved passage (rank 1)",
+      "validated": true
+    },
+    "MFG for Registration": {
+      "value": null,
+      "sources": [],
+      "confidence": 0.8,
+      "notes": "Not found in documents",
+      "validated": false
+    },
+    "Contract or Cooperative to use": {
+      "value": "member of the Educational Purchasing Cooperative of North Texas (EPCNT)",
+      "sources": [
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 19,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p19:1",
+          "evidence": "Dallas ISD is a member of the Educational Purchasing Cooperative of North Texas (EPCNT). Members of EPCNT add this possible rider to their solicitation documents. If the Vendor chooses \"YES\"; to allow EPCNT members to \"ride\" this Agreement (if any) the following will apply: Governmental entities utilizing Internal Governmental contracts with the Dallas ISD will be eligible, but not obligated, to p"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "rule match in retrieved passage (rank 1)",
+      "validated": true
+    },
+    "Model_no": {
+      "value": null,
+      "sources": [],
+      "confidence": 0.8,
+      "notes": "Not found in documents",
+      "validated": false
+    },
+    "Part_no": {
+      "value": null,
+      "sources": [],
+      "confidence": 0.8,
+      "notes": "Not found in documents",
+      "validated": false
+    },
+    "Product": {
+      "value": "Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Proposal (RFP) may submit proposals for one, several, or all categories of devices required by the District. Within each category of device, the District reserves the right to award contracts to a single vendor or multiple vendors. The specifications listed in t",
+      "sources": [
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "description: Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Proposal (RFP) may submit proposals for one, several, or all categories of devices required by the District. Within each category of device, the Dist"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "from bid page field 'description'",
+      "validated": true
+    },
+    "contact_info": {
+      "value": "Procurement Services; 972-925-3700; ProcurementCS@dallasisd.org",
+      "sources": [
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "contact information: Procurement Services; 972-925-3700; ProcurementCS@dallasisd.org"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "from bid page field 'contact information'",
+      "validated": true
+    },
+    "company_name": {
+      "value": "Dallas Independent School District",
+      "sources": [
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "issuing organization: Dallas Independent School District"
+        }
+      ],
+      "confidence": 0.9,
+      "notes": "from bid page field 'issuing organization'",
+      "validated": true
+    },
+    "Bid Summary": {
+      "value": "Dallas Independent School District has issued bid JA-207652 for Student and Staff Computing Devices. Scope: Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Pr. Responses are due July 9, 2024 at 2:00 PM CST via Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time s. Contract term: Initial term 3 year(s); 2 renewal option(s) of 1, 1 year(s). Required documents include FORM 1295; CERTIFICATE OF INTERESTED PARTIES; certificate of insurance; Form 1295. 2 addendum(s) modify the original documents.",
+      "sources": [
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "title: Student and Staff Computing Devices **SOURCING #168884**"
+        },
+        {
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "doc_type": "bid_page",
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "evidence": "description: Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Proposal (RFP) may submit proposals for one, several, or all categories of devices required by the District. Within each category of device, the Dist"
+        },
+        {
+          "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 1,
+          "doc_type": "addendum",
+          "chunk_id": "Bid1:addendum2",
+          "evidence": "The new due date for this RFP will be July 9, 2024 at 2:00 PM CST."
+        }
+      ],
+      "confidence": 0.7,
+      "notes": "generated from the extracted fields (template summary; no LLM key configured)",
+      "validated": true
+    },
+    "Product Specification": {
+      "value": "CPU: Intel i5 Processor, 14th Gen or equiva; RAM: 16GB RAM DDR5 Memory; Storage: 256 GB NVMe; Display: 10.2\" Retina Integrated Camera: 8MP Wide came; OS: Windows 11 Pro",
+      "sources": [
+        {
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 5,
+          "doc_type": "rfp",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p5:0",
+          "evidence": "SCOPE AND SPECIFICATIONS OF THE PROPOSAL Screen Resolution 1920-1080 Non-Touch Memory: Minimum 16GB RAM DDR5 Memory Wireless: 802.11AX WiFi-6E and Bluetooth 5.1 Power Supply: Type C, 65W Battery Life: Minimum 10 Hours Ports, Minimum 2 USB 3.0; 1 Type C; 65HDMI; 1 headphone/microphone combo Storage: 256 GB NVMe SSD Windows 11 Pro Warranty: 3-year minimum Student Tablet Minimum Requirements Enterpri"
+        }
+      ],
+      "confidence": 0.54,
+      "notes": "rule match in retrieved passage (rank 1); validator: value not found verbatim in cited evidence",
+      "validated": false
+    }
+  },
+  "addendum_changes": [
+    {
+      "addendum": 1,
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 1,
+      "change": "When DISD does have this type of damage, does Dallas choose to replace those units with new orders, new purchase order?"
+    },
+    {
+      "addendum": 1,
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 1,
+      "change": "Will DISD consider extending the submission deadline out a few more weeks to allow sufficient time for vendors to complete a compliant response after the addendum(s) has been posted?"
+    },
+    {
+      "addendum": 1,
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 1,
+      "change": "Answer: Dallas ISD does not anticipate extending the submission deadline."
+    },
+    {
+      "addendum": 1,
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 2,
+      "change": "In RFP Section 2.1 Line Information (pricing table), will you please clarify what information is being requested"
+    },
+    {
+      "addendum": 1,
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 3,
+      "change": "In RFP Section 2.1 Line Information (pricing table) #11, will you please clarify if you would like us to include a minimum price for one of the optional warranty line items in the \"quoted price\" field then include the various additional warranty options (tier based) in an attachment."
+    },
+    {
+      "addendum": 1,
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 3,
+      "change": "Also, can you clarify what should be included in the \"quote value\" field of the Oracle RFP input tool."
+    },
+    {
+      "addendum": 1,
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 3,
+      "change": "In RFP Section 2.1 Line Information (pricing table) #12, will you please clarify if you would like us to include a minimum price for one of the deployment services line items in the \"quoted price\" field then include the various additional deployment service options (tier based) in an attachment?"
+    },
+    {
+      "addendum": 1,
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 5,
+      "change": "The information in this Addendum is hereby incorporated and made part of any contract awarded pursuant to this solicitation."
+    },
+    {
+      "addendum": 2,
+      "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 1,
+      "change": "2 RFP JA-207652 Student and Staff Computing Devices The Purpose of this Addendum is to extend the due date of this RFP."
+    },
+    {
+      "addendum": 2,
+      "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 1,
+      "change": "The new due date for this RFP will be July 9, 2024 at 2:00 PM CST."
+    },
+    {
+      "addendum": 2,
+      "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "page": 1,
+      "change": "The information in this Addendum is hereby incorporated and made part of any contract awarded pursuant to this solicitation."
+    }
+  ],
+  "validation": {
+    "passed": 14,
+    "failed": 2,
+    "not_found": 4
+  },
+  "ingestion": [
+    {
+      "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "doc_type": "addendum",
+      "addendum_number": 1,
+      "pages": 6,
+      "empty_pages": 1,
+      "chunks": 16,
+      "status": "ok"
+    },
+    {
+      "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
+      "doc_type": "addendum",
+      "addendum_number": 2,
+      "pages": 2,
+      "empty_pages": 1,
+      "chunks": 1,
+      "status": "ok"
+    },
+    {
+      "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+      "doc_type": "rfp",
+      "addendum_number": null,
+      "pages": 63,
+      "empty_pages": 7,
+      "chunks": 157,
+      "status": "ok"
+    },
+    {
+      "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+      "doc_type": "bid_page",
+      "addendum_number": null,
+      "pages": 1,
+      "empty_pages": 0,
+      "chunks": 2,
+      "status": "ok"
+    }
+  ]
+}

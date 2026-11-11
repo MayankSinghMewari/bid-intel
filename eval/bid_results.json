@@ -1,0 +1,50 @@
+{
+  "configs": [
+    {
+      "config": "bm25",
+      "Recall@1": 0.65,
+      "Recall@3": 0.9,
+      "Recall@5": 0.9,
+      "MRR": 0.758,
+      "questions": 20,
+      "ms_per_query": 0.9
+    },
+    {
+      "config": "bm25 + query expansion",
+      "Recall@1": 0.65,
+      "Recall@3": 0.9,
+      "Recall@5": 0.95,
+      "MRR": 0.777,
+      "questions": 20,
+      "ms_per_query": 0.9
+    },
+    {
+      "config": "dense (bge-small)",
+      "Recall@1": 0.75,
+      "Recall@3": 0.9,
+      "Recall@5": 0.95,
+      "MRR": 0.835,
+      "questions": 20,
+      "ms_per_query": 59.1
+    },
+    {
+      "config": "hybrid RRF",
+      "Recall@1": 0.85,
+      "Recall@3": 0.9,
+      "Recall@5": 0.95,
+      "MRR": 0.879,
+      "questions": 20,
+      "ms_per_query": 24.7
+    },
+    {
+      "config": "hybrid RRF + cross-encoder rerank",
+      "Recall@1": 0.65,
+      "Recall@3": 0.95,
+      "Recall@5": 1.0,
+      "MRR": 0.804,
+      "questions": 20,
+      "ms_per_query": 5235.7
+    }
+  ],
+  "unlabeled": []
+}
