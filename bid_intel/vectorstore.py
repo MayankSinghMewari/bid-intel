@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 
 from . import embeddings
-from .docs import DocChunk
+from .ingest import DocChunk
 
 DEFAULT_PATH = Path(os.environ.get("BID_INTEL_CHROMA", Path(__file__).resolve().parent.parent / ".cache" / "chroma"))
 COLLECTION = "bid_chunks"

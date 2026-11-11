@@ -10,7 +10,7 @@ from functools import lru_cache
 
 from . import embeddings
 from .bm25 import BM25, tokenize
-from .docs import DocChunk
+from .ingest import DocChunk
 
 RRF_K = 60
 RERANK_MODEL = os.environ.get("BID_INTEL_RERANK_MODEL", "Xenova/ms-marco-MiniLM-L-6-v2")

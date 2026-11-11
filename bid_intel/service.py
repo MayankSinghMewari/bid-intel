@@ -1,83 +1,228 @@
-"""Service layer shared by the CLI and the API."""
+"""Service layer for bid folders: index, search, extract, ask. Shared by the CLI and the API."""
 from __future__ import annotations
 
 import json
-import time
-from datetime import datetime, timezone
+import os
+import re
 from pathlib import Path
 
-from . import embeddings, llm
+from . import llm
 from .agents import Orchestrator
-from .ingest import Chunk, build_chunks, load_items
-from .retrieval import SearchEngine
-from .schema import FIELDS
+from .ingest import ingest_folder
+from .search import BidSearch
 
 ROOT = Path(__file__).resolve().parent.parent
-BIDS_DIR = ROOT / "data" / "bids"
-DEFAULT_CHUNKING = "qa"
-# hybrid retrieval when the embedding model is installed; BM25 otherwise
-DEFAULT_MODE = "hybrid" if embeddings.available() else "bm25"
+FOLDERS = ROOT / "data" / "bid_folders"
+OUT = ROOT / "outputs"
+
+_engine: BidSearch | None = None
+LAST_TRACE_URL: str | None = None  # Langfuse link of the last extraction run (not stored in outputs)
 
 
-def bid_dir(bid_id: str) -> Path:
-    d = BIDS_DIR / bid_id
-    if not (d / "items.json").exists():
-        raise FileNotFoundError(f"bid {bid_id} is not ingested; run: python -m bid_intel ingest")
-    return d
+def engine() -> BidSearch:
+    """One shared index; each bid folder is added once (incremental indexing)."""
+    global _engine
+    if _engine is None:
+        # BID_INTEL_DENSE=off: keyword-only index (tests/CI without the embedding model)
+        _engine = BidSearch(dense=False if os.environ.get("BID_INTEL_DENSE", "").lower() == "off" else None)
+    return _engine
 
 
-def make_engine(bid_id: str, chunking: str = DEFAULT_CHUNKING, k1: float = 1.2, b: float = 0.75,
-                mode: str = "bm25") -> SearchEngine:
-    _, items = load_items(bid_dir(bid_id))
-    return SearchEngine(build_chunks(items, chunking), k1=k1, b=b, mode=mode)
+def index_folder(folder: Path, bid_id: str | None = None) -> dict:
+    bid_id = bid_id or folder.name
+    eng = engine()
+    if any(c.bid_id == bid_id for c in eng.chunks):
+        return {"bid_id": bid_id, "status": "already indexed", "chunks": sum(c.bid_id == bid_id for c in eng.chunks)}
+    chunks, report = ingest_folder(folder, bid_id)
+    eng.add(chunks)
+    return {"bid_id": bid_id, "status": "indexed", "chunks": len(chunks), "files": report}
 
 
-def ask(bid_id: str, question: str, k: int = 3, chunking: str = DEFAULT_CHUNKING,
-        mode: str | None = None, use_llm: bool = True) -> dict:
-    mode = mode or DEFAULT_MODE
-    engine = make_engine(bid_id, chunking, mode=mode)
-    t0 = time.perf_counter()
-    hits = engine.search(question, k)
-    retrieval_s = round(time.perf_counter() - t0, 3)
-    if not hits:
-        return {"question": question, "answer": None, "confidence": 0.0, "citations": [],
-                "method": f"{mode} retrieval, no match"}
-    top = hits[0].chunk
-    passage = top.text.split(" Answer: ", 1)[1] if " Answer: " in top.text else top.text
-    total = sum(h.score for h in hits)
-    generated = llm.generate_answer(question, hits) if use_llm else None
-    if generated and "answer" in generated:
-        answer, method = generated["answer"], f"{mode} retrieval + LLM answer ({generated['model']})"
-    else:
-        answer, method = passage, f"{mode} retrieval + extractive answer (top passage)"
-    return {
-        "question": question,
-        "answer": answer,
-        "confidence": round(hits[0].score / total, 2),  # top hit's share of the top-k score mass
-        "method": method,
-        "retrieval": engine.describe(),
-        "timing": {"retrieval_s": retrieval_s, **({k_: v for k_, v in generated.items()
-                                                    if k_ in ("latency_s", "input_tokens", "output_tokens")}
-                                                 if generated and "answer" in generated else {})},
-        **({"llm_fallback_reason": generated["error"]} if generated and "error" in generated else {}),
-        "extractive_passage": passage,
-        "citations": [
-            {"rank": h.rank, "score": round(h.score, 3), "chunk_id": h.chunk.chunk_id,
-             "qnums": h.chunk.qnums, "page": h.chunk.page,
-             "text": "Addendum No. 1, " + ", ".join(f"Q{q}" for q in h.chunk.qnums) + f", p. {h.chunk.page}",
-             "passage": h.chunk.text}
-            for h in hits
-        ],
-    }
+def ensure_indexed(bid_id: str | None = None) -> None:
+    for f in sorted(FOLDERS.iterdir()):
+        if f.is_dir() and (bid_id is None or f.name == bid_id):
+            index_folder(f)
 
 
-def extract(bid_id: str, k1: float = 1.2, b: float = 0.75) -> tuple[dict, list[dict]]:
-    """Run the multi-agent extraction. Writes extraction.json and returns (result, trace)."""
-    d = bid_dir(bid_id)
-    meta, items = load_items(d)
-    engine = SearchEngine(build_chunks(items, DEFAULT_CHUNKING), k1=k1, b=b)
-    orch = Orchestrator(engine, {i.qnum for i in items}, FIELDS)
-    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    result = orch.run(bid_id, meta["source"], now)
-    (d / "extraction.json").write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
+def search(q: str, bid_id: str | None = None, top_k: int = 5, doc_types: list[str] | None = None,
+           mode: str = "hybrid", rerank: bool = False) -> list[dict]:
+    ensure_indexed(bid_id)
+    hits = engine().search(q, top_k=top_k, bid_id=bid_id, doc_types=doc_types, mode=mode, rerank=rerank)
+    return [{"rank": h.rank, "score": h.score, "bid_id": h.chunk.bid_id, **h.citation()} for h in hits]
+
+
+def extract(folder: Path, bid_id: str | None = None) -> tuple[dict, list[dict]]:
+    ensure_indexed()
+    global LAST_TRACE_URL
+    orch = Orchestrator(folder, bid_id, engine=engine())
+    result = orch.run()
+    LAST_TRACE_URL = orch.trace_url
+    OUT.mkdir(exist_ok=True)
+    (OUT / f"{orch.bid_id}.json").write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     return result, orch.trace()
+
+
+GENERIC_WORDS = {"student", "staff", "computing", "devices", "device", "laptops", "laptop", "warranty",
+                  "extended", "and", "the", "for", "with", "sourcing", "rfp", "bid", "state", "office",
+                  "district", "school", "independent", "county", "city"}
+
+
+def _bids_in(question: str) -> list[str] | None:
+    """Which bids a question is about: explicit folder names first, then distinctive words from each
+    bid's extracted title / issuer (e.g. "Dell", "Dallas", "Maryland"); "both"/"compare" means all bids."""
+    known = [f.name for f in sorted(FOLDERS.iterdir()) if f.is_dir()]
+    named = [b for b in known if re.search(rf"\b{re.escape(b)}\b", question, re.I)]
+    if named:
+        return named
+    if re.search(r"\b(both|compare|each bid|all bids|across bids)\b", question, re.I):
+        return known
+    q_words = set(re.findall(r"[a-z]{3,}", question.lower()))
+    matched = []
+    for b in known:
+        path = OUT / f"{b}.json"
+        if not path.exists():
+            continue
+        f = json.loads(path.read_text(encoding="utf-8"))["fields"]
+        words = set(re.findall(r"[a-z]{3,}", " ".join(str(f.get(k, {}).get("value") or "")
+                                                       for k in ("Title", "company_name", "Bid Number")).lower()))
+        if (words - GENERIC_WORDS) & q_words:
+            matched.append(b)
+    return matched or None
+
+
+def ask(question: str, bid_id: str | None = None, top_k: int = 5) -> dict:
+    from . import observability
+    ensure_indexed()
+    with observability.trace("answer-question", input={"question": question}, tags=["qa"],
+                             metadata={"bid_id": bid_id or "auto"}) as root:
+        result = _ask(question, bid_id, top_k)
+        observability.set_output(root, {"answer": result["answer"], "method": result["method"],
+                                        "citations": [f"{c['bid_id']} / {c['file']} p.{c['page']}"
+                                                      for c in result["citations"]]})
+        result["trace_url"] = observability.trace_url(root)
+    return result
+
+
+def _ask(question: str, bid_id: str | None, top_k: int) -> dict:
+    from . import observability
+    bids = [bid_id] if bid_id else (_bids_in(question) or [None])
+    hits = []
+    with observability.span("search-passages", "retriever", input={"question": question, "bids": bids}) as rs:
+        for b in bids:  # "compare both bids" style questions retrieve per bid so each is represented
+            hits += search(question, bid_id=b, top_k=top_k if len(bids) == 1 else 4)
+        observability.set_output(rs, [f"{h['bid_id']} / {h['file']} p.{h['page']} (score {h['score']})"
+                                      for h in hits])
+    generated = llm.answer_from_citations(question, hits)
+    record = _from_records(question, bids)
+    llm_answered = generated and "answer" in generated
+    if llm_answered and not (generated["answer"].startswith("Not found") and record):
+        answer, method = generated["answer"], f"hybrid search + LLM ({generated['model']})"
+    elif record:
+        answer = record + " Supporting passages: " + (_best_sentences(question, hits) if hits else "none")
+        method = "extracted bid record (validated fields) + hybrid search passages"
+        if llm_answered:
+            method += " (LLM found no answer in the retrieved passages)"
+    else:
+        answer = _best_sentences(question, hits) if hits else "Not found in documents"
+        method = "hybrid search + extractive answer" + ("" if llm.enabled() else " (no LLM key configured)")
+    return {"question": question, "answer": answer, "method": method,
+            **({"llm_fallback_reason": generated["error"]} if generated and "error" in generated else {}),
+            "citations": [{"n": i + 1, "bid_id": h["bid_id"], "file": h["file"], "page": h["page"],
+                           "passage": h["text"][:500]} for i, h in enumerate(hits)]}
+
+
+# question keywords -> fields of the extracted JSON record (the Q&A agent reuses validated extraction)
+FIELD_HINTS = {
+    "Due Date": r"deadline|due date|due|closing|submission date",
+    "Bid Bond Requirement": r"bond|bid security",
+    "Any Additional Documentation Required": r"affidavit|forms?|documents? (are )?required|certificat",
+    "Delivery Date": r"deliver",
+    "Payment Terms": r"payment|invoice",
+    "Pre Bid Meeting": r"pre-?(bid|proposal)|meeting|conference",
+    "Bid Submission Type": r"how (must|should|do|are) .*submit|submission method|submitted",
+    "Term of Bid": r"term|renewal|duration|how long",
+    "MFG for Registration": r"manufacturer|reseller|oem",
+    "Contract or Cooperative to use": r"cooperative|master contract|interlocal|piggyback",
+    "contact_info": r"contact|procurement officer|email|phone",
+    "Product Specification": r"spec|processor|memory|ram|storage",
+    "Model_no": r"model",
+    "Installation": r"install|imaging|deploy",
+}
+
+
+def _from_records(question: str, bids: list[str | None]) -> str | None:
+    names = [b for b in bids if b] or [f.stem for f in sorted(OUT.glob("*.json"))]
+    parts = []
+    for field, pat in FIELD_HINTS.items():
+        if not re.search(pat, question, re.I):
+            continue
+        for b in names:
+            path = OUT / f"{b}.json"
+            if not path.exists():
+                continue
+            f = json.loads(path.read_text(encoding="utf-8"))["fields"].get(field)
+            if not f:
+                continue
+            if f["value"] and f.get("validated"):
+                src = f["sources"][0]
+                note = f" ({f['notes']})" if f["notes"].startswith("Updated") else ""
+                parts.append(f"{b} {field}: {f['value']}{note} [source: {src['file']}, p. {src['page']}].")
+            elif f["value"] is None:
+                parts.append(f"{b} {field}: Not found in documents.")
+        if parts:
+            break  # answer with the first (most specific) matching field
+    return " ".join(parts) or None
+
+
+def _best_sentences(question: str, hits: list[dict], n: int = 2) -> str:
+    from .bm25 import tokenize
+    from .fields import _sentences
+    from .search import expand_query
+    q = set(tokenize(expand_query(question)))
+    scored = []
+    for i, h in enumerate(hits[:3]):
+        for s in _sentences(h["text"]):
+            if len(s.split()) < 6:
+                continue
+            overlap = len(q & set(tokenize(s)))
+            if overlap:
+                scored.append((overlap - 0.5 * i, f"{s[:300]} [{i + 1}]"))
+    scored.sort(key=lambda t: -t[0])
+    return " ".join(s for _, s in scored[:n]) or hits[0]["text"][:300] + " [1]"
+
+
+SAMPLE_QUESTIONS = [
+    "What is the submission deadline for Bid1 after all addendums?",
+    "Which affidavits are required for the Dell laptop bid?",
+    "Compare the warranty requirements of both bids.",
+    "Is a bid bond required for Bid1 or Bid2, and if so, how much?",
+    "What changed in Addendum 2 compared to the original RFP?",
+    "When is the pre-proposal meeting for Bid1?",
+    "How must proposals be submitted for Bid2?",
+    "What is the delivery requirement for Bid2?",
+    "Which manufacturer must Bid2 bidders be authorized resellers for?",
+    "What are the minimum specifications for staff laptops in Bid1?",
+    "Who is the procurement contact for Bid1?",
+    "What cooperative purchasing program does Bid1 reference?",
+]
+
+
+def write_qa_log(path: Path, questions: list[str] = SAMPLE_QUESTIONS) -> list[dict]:
+    model = llm.GEMINI_MODEL if llm.provider() == "gemini" else (llm.MODEL if llm.enabled() else "none")
+    lines = ["# Sample Q&A Log: Bid1 + Bid2", "",
+             "Generated with `python -m bid_intel bid-qalog` (each entry equals `python -m bid_intel ask-bids \"...\"`).",
+             "", f"Retrieval: hybrid BM25 + dense (RRF), filtered to the bid(s) the question is about. Generation: "
+             f"LLM `{model}` answers only from the numbered passages and must cite them as [n]; answers without "
+             "valid citations are rejected. If the LLM finds no answer but the validated extraction record has one, "
+             "the record is returned with its source.", ""]
+    results = []
+    for i, q in enumerate(questions, 1):
+        r = ask(q)
+        results.append(r)
+        lines += [f"## Q{i}. {q}", "", f"**Answer:** {r['answer']}", "", "**Citations:**"]
+        lines += [f"- [{c['n']}] {c['bid_id']} / {c['file']}, p. {c['page']}" for c in r["citations"]]
+        reason = f" (LLM fallback reason: {r['llm_fallback_reason']})" if r.get("llm_fallback_reason") else ""
+        lines += ["", f"_Method: {r['method']}{reason}_", ""]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines), encoding="utf-8")
+    return results

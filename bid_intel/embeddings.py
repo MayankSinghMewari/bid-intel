@@ -1,9 +1,8 @@
 """Sentence embeddings with fastembed (ONNX, CPU, no API key).
 
 Model: BAAI/bge-small-en-v1.5 (384 dimensions, about 70 MB, downloaded once on first use).
-Vectors are L2-normalised, so cosine similarity is a dot product. Vectors for the bid folders are
-stored in the Chroma vector store (vectorstore.py); DenseIndex is the small in-memory index used by
-the earlier single-addendum prototype (retrieval.py).
+Vectors are L2-normalised, so cosine similarity is a dot product. Passage vectors are stored in the
+Chroma vector store (vectorstore.py); query vectors are cached in memory.
 """
 from __future__ import annotations
 
@@ -56,17 +55,3 @@ def _embed_query_cached(query: str) -> tuple[float, ...]:
 
 def embed_query(query: str) -> np.ndarray:
     return np.array(_embed_query_cached(query), dtype=np.float32)
-
-
-class DenseIndex:
-    """In-memory index for the prototype's 39-chunk addendum; the bid folders use Chroma."""
-
-    def __init__(self, texts: list[str]):
-        self.matrix = embed_passages(texts)
-
-    def add(self, texts: list[str]) -> None:
-        if texts:
-            self.matrix = np.vstack([self.matrix, embed_passages(texts)])
-
-    def scores(self, query: str) -> list[float]:
-        return (self.matrix @ embed_query(query)).tolist()

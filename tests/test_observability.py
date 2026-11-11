@@ -5,8 +5,8 @@ from contextlib import contextmanager
 from pathlib import Path
 
 from bid_intel import llm, observability
-from bid_intel.bid_agents import Orchestrator
-from bid_intel.docs import ingest_folder
+from bid_intel.agents import Orchestrator
+from bid_intel.ingest import ingest_folder
 from bid_intel.search import BidSearch
 
 BID2 = Path(__file__).resolve().parent.parent / "data" / "bid_folders" / "Bid2"

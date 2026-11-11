@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 from statistics import mean
 
-from .docs import ingest_folder
+from .ingest import ingest_folder
 from .search import BidSearch
 
 CONFIGS = [
@@ -56,10 +56,10 @@ def run(folders: list[Path], questions_path: Path, out_dir: Path, ks=(1, 3, 5)) 
                      "MRR": round(mean(rr), 3), "questions": n,
                      "ms_per_query": round((time.perf_counter() - t0) * 1000 / max(n, 1), 1)})
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "bid_results.json").write_text(json.dumps({"configs": rows, "unlabeled": unlabeled}, indent=2))
+    (out_dir / "retrieval_results.json").write_text(json.dumps({"configs": rows, "unlabeled": unlabeled}, indent=2))
     n1 = sum(q["bid_id"] == "Bid1" for q in questions)
     lines = ["# Retrieval Evaluation: Bid1 + Bid2", "",
-             f"{len(questions)} questions ({n1} Bid1, {len(questions) - n1} Bid2) in `eval/bid_questions.json`. "
+             f"{len(questions)} questions ({n1} Bid1, {len(questions) - n1} Bid2) in `eval/retrieval_questions.json`. "
              "A hit is a retrieved chunk from the gold file and page. Each search is filtered to the question's bid.",
              "", "Recall@k = share of questions with at least one gold passage in the top k. "
              "MRR = mean reciprocal rank of the first gold passage.", "",
@@ -71,5 +71,5 @@ def run(folders: list[Path], questions_path: Path, out_dir: Path, ks=(1, 3, 5)) 
         lines += ["", f"Questions skipped because their anchor was not found: {unlabeled}"]
     lines += ["", "Limitations: 20 questions written by the system's author. With this sample size a difference "
               "of one question (0.05) is not significant."]
-    (out_dir / "bid_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (out_dir / "retrieval_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return {"configs": rows, "unlabeled": unlabeled}

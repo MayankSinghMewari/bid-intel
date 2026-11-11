@@ -2,7 +2,7 @@
 
 Tabs: Extraction (20 fields with citations), Search (hybrid search with filters), Ask (cited chat over the
 bids), Add bid (upload a new folder, index and extract it), Evaluation (retrieval and extraction results).
-The UI calls the same service layer as the CLI and the REST API (bid_intel/bids.py)."""
+The UI calls the same service layer as the CLI and the REST API (bid_intel/service.py)."""
 from __future__ import annotations
 
 import json
@@ -12,7 +12,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from bid_intel import bids, llm, observability
+from bid_intel import llm, observability, service
 
 ROOT = Path(__file__).resolve().parent
 DOC_TYPES = ["bid_page", "rfp", "addendum", "specs", "affidavit"]
@@ -22,16 +22,16 @@ st.set_page_config(page_title="RFP Intelligence", page_icon=":material/descripti
 
 @st.cache_resource(show_spinner="Indexing bid folders (first run embeds every chunk; later runs reuse the index)...")
 def warm_index() -> int:
-    bids.ensure_indexed()
-    return len(bids.engine().chunks)
+    service.ensure_indexed()
+    return len(service.engine().chunks)
 
 
 def bid_ids() -> list[str]:
-    return sorted(f.name for f in bids.FOLDERS.iterdir() if f.is_dir())
+    return sorted(f.name for f in service.FOLDERS.iterdir() if f.is_dir())
 
 
 def load_record(bid: str) -> dict | None:
-    path = bids.OUT / f"{bid}.json"
+    path = service.OUT / f"{bid}.json"
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
@@ -67,10 +67,10 @@ with tab_extract:
     if col_run.button("Run extraction", icon=":material/play_arrow:", width="stretch",
                       help="Runs the LangGraph agents on this folder and overwrites outputs/<bid>.json"):
         with st.status(f"Extracting {bid}...", expanded=False) as status:
-            result, trace = bids.extract(bids.FOLDERS / bid)
+            result, trace = service.extract(service.FOLDERS / bid)
             status.update(label=f"Done: {result['validation']}", state="complete")
-        if bids.LAST_TRACE_URL:
-            st.link_button("Open Langfuse trace", bids.LAST_TRACE_URL, icon=":material/open_in_new:")
+        if service.LAST_TRACE_URL:
+            st.link_button("Open Langfuse trace", service.LAST_TRACE_URL, icon=":material/open_in_new:")
     record = load_record(bid) if bid else None
     if record is None:
         st.info("No extraction yet for this bid. Click **Run extraction**.")
@@ -129,7 +129,7 @@ with tab_search:
     s_rerank = st.toggle("Cross-encoder re-ranking", help="Slower (first use downloads the model); "
                                                           "lowered MRR on the evaluation set")
     if q:
-        hits = bids.search(q, None if s_bid == "All bids" else s_bid, int(s_k), s_types or None,
+        hits = service.search(q, None if s_bid == "All bids" else s_bid, int(s_k), s_types or None,
                            s_mode or "hybrid", s_rerank)
         if not hits:
             st.warning("No matching passages.")
@@ -159,7 +159,7 @@ with tab_ask:
     if prompt := st.chat_input("Ask about the bids, e.g. Which affidavits are required for the Dell laptop bid?"):
         st.session_state.chat.append({"role": "user", "content": prompt})
         with st.spinner("Searching and answering..."):
-            r = bids.ask(prompt)
+            r = service.ask(prompt)
         method = r["method"] + (f" (LLM fallback: {r['llm_fallback_reason'][:80]})"
                                 if r.get("llm_fallback_reason") else "")
         st.session_state.chat.append({"role": "assistant", "content": r["answer"], "citations": r["citations"],
@@ -178,27 +178,27 @@ with tab_add:
     if st.button("Index and extract", icon=":material/rocket_launch:", disabled=not (new_id and files)):
         if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", new_id):
             st.error("Use letters, digits, '-' or '_' only (max 40 characters).")
-        elif (bids.FOLDERS / new_id).exists():
+        elif (service.FOLDERS / new_id).exists():
             st.error(f"A bid folder named {new_id} already exists.")
         else:
-            folder = bids.FOLDERS / new_id
+            folder = service.FOLDERS / new_id
             folder.mkdir(parents=True)
             for f in files:
                 (folder / Path(f.name).name).write_bytes(f.getvalue())  # basename only: no path traversal
             with st.status(f"Processing {new_id}...", expanded=True) as status:
-                st.write(bids.index_folder(folder)["status"])
-                result, _ = bids.extract(folder)
+                st.write(service.index_folder(folder)["status"])
+                result, _ = service.extract(folder)
                 status.update(label=f"{new_id}: {result['validation']}", state="complete")
             st.success(f"Done. Open the **Extraction** tab and pick {new_id}.")
 
 # ---------------------------------------------------------------- evaluation
 with tab_eval:
     st.subheader("Retrieval (Recall@k, MRR)")
-    rpath = ROOT / "eval" / "bid_results.json"
+    rpath = ROOT / "eval" / "retrieval_results.json"
     if rpath.exists():
         st.dataframe(pd.DataFrame(json.loads(rpath.read_text(encoding="utf-8"))["configs"]), hide_index=True,
                      width="stretch")
-        st.caption("20 questions over Bid1 and Bid2, gold file and page. `python -m bid_intel eval-bids`")
+        st.caption("20 questions over Bid1 and Bid2, gold file and page. `python -m bid_intel eval-retrieval`")
     st.subheader("Extraction accuracy")
     epath = ROOT / "eval" / "extraction_results.json"
     if epath.exists():

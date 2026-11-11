@@ -38,17 +38,17 @@ def score_bid(result: dict, gold: dict) -> dict:
 
 
 def run(folders: list[Path], gold_path: Path, out_dir: Path, modes=("rules", "rules+llm")) -> dict:
-    from . import bids
-    from .bid_agents import Orchestrator
+    from . import service
+    from .agents import Orchestrator
 
     gold = json.loads(gold_path.read_text(encoding="utf-8"))
-    bids.ensure_indexed()
+    service.ensure_indexed()
     report: dict = {}
     for mode in modes:
         for folder in folders:
             if folder.name not in gold:
                 continue
-            orch = Orchestrator(folder, engine=bids.engine(), use_llm=(mode != "rules"))
+            orch = Orchestrator(folder, engine=service.engine(), use_llm=(mode != "rules"))
             report.setdefault(mode, {})[folder.name] = score_bid(orch.run(), gold[folder.name])
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "extraction_results.json").write_text(json.dumps(report, indent=2, ensure_ascii=False),

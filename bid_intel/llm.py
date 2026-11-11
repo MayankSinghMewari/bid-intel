@@ -1,12 +1,15 @@
-"""LLM answer generation over retrieved passages (the "G" in RAG), using Claude.
+"""LLM layer: the generation step of RAG and the LLM extraction specialists' calls.
 
-Enabled when Anthropic credentials are available (ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN, or an
-`ant auth login` profile). Without credentials, or with BID_INTEL_LLM=off, callers fall back to the
-extractive answer, so the CLI, API, tests and CI all work offline.
+Providers: Gemini (GEMINI_API_KEY, model GEMINI_MODEL, default gemini-3.5-flash) or Anthropic
+(ANTHROPIC_API_KEY or an `ant auth login` profile, model BID_INTEL_LLM_MODEL). Keys come from the
+environment or the git-ignored .env file. Without a key, with BID_INTEL_LLM=off, or while the circuit
+breaker is open after a quota error, callers fall back to rules and extractive answers, so the CLI, API,
+UI, tests and CI work offline.
 
-Grounding check: the answer must cite at least one question number, and every cited number must
-belong to a passage that was actually provided. Otherwise the answer is rejected and the caller
-falls back to the extractive passage.
+Every call goes through _complete(): optional Pydantic structured output, retries with backoff on
+503/504, one wait on per-minute 429s, truncation detection, and a Langfuse generation per call.
+answer_from_citations() answers a question from numbered passages and rejects answers that do not cite
+them.
 """
 from __future__ import annotations
 
@@ -131,18 +134,6 @@ def _call(system: str, user: str, max_tokens: int = 2048, schema: type | None = 
     return {"text": text, "model": r.model, "parsed": parsed, "thinking_tokens": None,
             "input_tokens": r.usage.input_tokens, "output_tokens": r.usage.output_tokens}
 
-SYSTEM_PROMPT = """You answer questions about a public-sector bid document (an RFP addendum of vendor \
-questions and District answers).
-
-Rules:
-- Use only the numbered passages provided. Do not use outside knowledge.
-- Prefer the District's answer over the vendor's question. If a fact appears only in the vendor's \
-question, say that the vendor stated it.
-- Cite every claim with the question number in square brackets, for example [Q9].
-- If the passages do not answer the question, reply exactly: Not stated in the document.
-- Answer in one to three sentences. No preamble."""
-
-
 def enabled() -> bool:
     return provider() is not None and breaker_reason() is None
 
@@ -156,57 +147,6 @@ def _anthropic_credentials() -> bool:
             or os.environ.get("ANTHROPIC_PROFILE"):
         return True
     return (Path.home() / ".config" / "anthropic").exists()
-
-
-def _passages(hits) -> str:
-    blocks = []
-    for h in hits:
-        label = ", ".join(f"Q{q}" for q in h.chunk.qnums)
-        blocks.append(f"<passage cite=\"{label}\" page=\"{h.chunk.page}\">\n{h.chunk.text}\n</passage>")
-    return "\n\n".join(blocks)
-
-
-def generate_answer(question: str, hits) -> dict | None:
-    """Return {"answer", "model", "latency_s", "input_tokens", "output_tokens", "cited_qnums"},
-    or None when the LLM is disabled, fails, or produces an ungrounded answer."""
-    if provider() != "anthropic" or not hits:
-        return None
-    import anthropic
-
-    client = anthropic.Anthropic()
-    start = time.perf_counter()
-    try:
-        response = client.beta.messages.create(
-            model=MODEL,
-            max_tokens=1024,
-            system=SYSTEM_PROMPT,
-            output_config={"effort": "low"},  # short grounded lookups do not need deep reasoning
-            # on a safety decline, the API re-runs the request on a fallback model in the same call
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
-            messages=[{"role": "user", "content":
-                       f"{_passages(hits)}\n\nQuestion: {question}"}],
-        )
-    except anthropic.APIError as exc:  # auth, rate limit, network, server errors: fall back
-        return {"error": f"{type(exc).__name__}: {exc}"}
-    latency = time.perf_counter() - start
-    if response.stop_reason == "refusal":
-        return {"error": "refusal"}
-
-    text = "".join(b.text for b in response.content if b.type == "text").strip()
-    cited = sorted({int(n) for n in re.findall(r"\[Q(\d+)", text)})
-    provided = {q for h in hits for q in h.chunk.qnums}
-    not_stated = text.startswith("Not stated in the document")
-    if not not_stated and (not cited or not set(cited) <= provided):
-        return {"error": f"ungrounded answer rejected (cited {cited}, provided {sorted(provided)})"}
-    return {
-        "answer": text,
-        "model": response.model,
-        "latency_s": round(latency, 2),
-        "input_tokens": response.usage.input_tokens,
-        "output_tokens": response.usage.output_tokens,
-        "cited_qnums": cited,
-    }
 
 
 def answer_from_citations(question: str, hits: list[dict]) -> dict | None:

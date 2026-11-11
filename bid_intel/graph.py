@@ -23,9 +23,9 @@ from . import observability as obs
 from .fields import FIELDS
 
 if TYPE_CHECKING:
-    from .bid_agents import Orchestrator
+    from .agents import Orchestrator
 
-from .bid_agents import MAX_RETRIES  # noqa: E402  (single source of truth)
+from .agents import MAX_RETRIES  # noqa: E402  (single source of truth)
 SPECS = {s.name: s for s in FIELDS}
 
 
@@ -52,7 +52,7 @@ class FieldTask(TypedDict):
 
 def build_graph(o: "Orchestrator"):
     from . import llm_extract as llm_specialists  # not "llm_extract": that name is the graph node below
-    from .bid_agents import (NOT_FOUND, ExtractionAgent, FieldResult, ReconcileAgent, RetrievalAgent,
+    from .agents import (NOT_FOUND, ExtractionAgent, FieldResult, ReconcileAgent, RetrievalAgent,
                              ValidatorAgent)
 
     retriever = RetrievalAgent(o.engine, o.tracer) if o.engine else None

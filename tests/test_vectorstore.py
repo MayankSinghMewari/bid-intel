@@ -8,7 +8,7 @@ import pytest
 pytest.importorskip("chromadb")
 
 from bid_intel import embeddings, vectorstore  # noqa: E402
-from bid_intel.docs import DocChunk  # noqa: E402
+from bid_intel.ingest import DocChunk  # noqa: E402
 from bid_intel.search import BidSearch  # noqa: E402
 
 

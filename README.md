@@ -36,10 +36,10 @@ python -m bid_intel search "bid bond" --bid-id Bid2
 python -m bid_intel search "due date" --bid-id Bid1 --doc-type addendum
 
 # Question-answering mode (cited answers; names like "Bid1" in the question restrict the search)
-python -m bid_intel ask-bids "What is the submission deadline for Bid1 after all addendums?"
+python -m bid_intel ask "What is the submission deadline for Bid1 after all addendums?"
 
-# Retrieval evaluation (writes eval/bid_report.md and eval/bid_results.json)
-python -m bid_intel eval-bids
+# Retrieval evaluation (writes eval/retrieval_report.md and eval/retrieval_results.json)
+python -m bid_intel eval-retrieval
 
 # Extraction accuracy vs hand-checked labels, rules only vs rules + LLM (eval/extraction_report.md)
 python -m bid_intel eval-extraction                 # --modes rules  (no LLM calls)
@@ -60,11 +60,11 @@ pytest -q
 | Deliverable | Location |
 |---|---|
 | JSON output, one per bid | `outputs/Bid1.json`, `outputs/Bid2.json` |
-| Retrieval evaluation report | `eval/bid_report.md` (questions: `eval/bid_questions.json`) |
-| Sample Q&A log (12 questions) | `logs/bid_qa_log.md` |
+| Retrieval evaluation report | `eval/retrieval_report.md` (questions: `eval/retrieval_questions.json`) |
+| Sample Q&A log (12 questions) | `logs/qa_log.md` |
 | Agent trace of a full extraction run | `logs/Bid1_trace.json` (also `logs/Bid2_trace.json`) |
 | Web UI (bonus) | `app.py` (`streamlit run app.py`) |
-| Architecture diagram | "Architecture" section below (the earlier prototype diagram is in `docs/architecture.svg`) |
+| Architecture diagram | "Architecture" section below; agent graph generated from the code: `docs/agent_graph.md` |
 
 ## Architecture
 
@@ -73,7 +73,7 @@ Search engine and agents (the agent part is a LangGraph state graph; diagram gen
 ```
 Bid folder (HTML + PDF)
    |
- ingest      docs.py: detect doc type, parse HTML (BeautifulSoup) / PDF (pdftotext), strip repeated headers,
+ ingest      ingest.py: detect doc type, parse HTML (BeautifulSoup) / PDF (pdftotext), strip repeated headers,
    |         fix hyphenation, attach metadata, log unreadable/empty files; index into
    |         BM25 (in memory) + Chroma (bge-small embeddings + metadata, persistent, incremental)
  plan        orchestrator splits the 19 extracted fields into 4 groups: identity, dates, commercial, product
@@ -164,14 +164,41 @@ Validation of normalised fields (Term of Bid, Product Specification) checks each
 
 **Q&A answers.** The Q&A agent first answers from the validated extraction record when the question maps to a field (deadline, bond, affidavits, delivery, contact ...), citing the field's source, then adds the best-matching retrieved sentences. Open questions ("compare the warranty requirements") are answered from retrieved sentences only; with `ANTHROPIC_API_KEY` set, Claude writes the answer from the same passages.
 
+## Repository layout
+
+```
+app.py                 Streamlit UI
+bid_intel/
+  ingest.py            bid-folder ingestion: HTML/PDF parsing, cleaning, metadata, chunking
+  bm25.py              lexical index
+  embeddings.py        bge-small embeddings (fastembed)
+  vectorstore.py       Chroma vector store: metadata filters, incremental upsert
+  search.py            hybrid search: BM25 + dense (RRF), filters, query expansion, re-ranking
+  fields.py            the 20 fields: queries, rules, descriptions
+  agents.py            agents (retrieval, rule extraction, validator, reconciler), Orchestrator, shared state
+  llm_extract.py       LLM extraction specialists: structured output, quote validation, feedback loop
+  graph.py             LangGraph workflow wiring the agents
+  llm.py               LLM providers (Gemini / Anthropic), retries, circuit breaker, cited answers
+  observability.py     Langfuse tracing
+  service.py           service layer used by the CLI, API and UI: index, search, ask, extract
+  cli.py, api.py       command line and REST API
+  eval_retrieval.py    Recall@k / MRR across search configurations
+  eval_extraction.py   field accuracy vs hand-checked labels
+data/bid_folders/      one folder per bid (Bid1, Bid2)
+outputs/               one JSON record per bid
+eval/                  question sets, gold labels, reports
+logs/                  agent traces, sample Q&A log
+docs/agent_graph.md    agent graph (generated)
+tests/                 offline test suite
+```
+
 ## Known limitations
 
 - LLM extraction is implemented and tested offline (validator and feedback loop), but the free-tier quota ran out before a clean accuracy run with the LLM; the committed outputs are rule-based plus Gemini summaries.
 - After a quota error the LLM is switched off for 10 minutes (circuit breaker) and every step falls back to rules or extractive answers; the trace records why.
-- The free Gemini tier rate-limits (429) and returns 503 under load; calls retry with backoff and then fall back. `logs/bid_qa_log.md` was generated with Gemini; `outputs/Bid2.json` has a template summary because the quota ran out during that run.
+- The free Gemini tier rate-limits (429) and returns 503 under load; calls retry with backoff and then fall back. `logs/qa_log.md` and both bid summaries were generated with Gemini.
 - Rule-based extraction will miss values phrased in ways the rules do not cover on an unseen bid; those fields come back as "Not found in documents" rather than wrong values.
 - Bid1's RFP specifies several device tiers; Product Specification reports one tier.
 - Tables are read as text in layout order; there is no cell-level table extraction. No OCR (scanned pages are logged and skipped).
 - The 20 evaluation questions and their labels were written by the author.
 - The Docker image and CI workflow were not run locally.
-- `docs/addendum_prototype.md` documents the earlier Addendum-1-only prototype (the `ingest`, `ask`, `extract`, `eval` commands), which is still included.

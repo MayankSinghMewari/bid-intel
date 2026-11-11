@@ -1,155 +1,162 @@
-"""Ingestion: PDF or text -> pages -> numbered Q&A items -> retrieval chunks."""
+"""Generic bid-folder ingestion: HTML bid pages and PDFs (RFP, addendums, specs, affidavits).
+
+Every page becomes one or more chunks carrying metadata:
+bid_id, file_name, doc_type, addendum_number, page, chunk_id.
+Nothing here is specific to a particular bid, so a new folder works without code changes.
+"""
 from __future__ import annotations
 
+import hashlib
 import json
+import logging
 import re
 import shutil
 import subprocess
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
-HEADER_RES = [
-    re.compile(r"^\s*ADDENDUM No\. \d+\s*$"),
-    re.compile(r"^\s*RFP JA-\d+.*$"),
-    re.compile(r"^\s*Page \d+ \| \d+\s*$"),
-]
-STOP_RE = re.compile(r"^\s*(The information in this Addendum|END OF ADDENDUM)")
-QUESTION_RE = re.compile(r"^\s{0,8}(\d{1,2})\.\s+(\S.*)$")
-ANSWER_RE = re.compile(r"^\s*Answer:\s*(.*)$")
-WS_RE = re.compile(r"\s+")
+log = logging.getLogger("bid_intel.ingest")
+
+CHUNK_WORDS = 180   # roughly one clause or one short table; small enough for precise citations
+OVERLAP_WORDS = 40  # keeps sentences that straddle a boundary retrievable from both chunks
 
 
 @dataclass
-class QAItem:
-    qnum: int
-    page: int
-    question: str
-    answer: str
-
-    @property
-    def citation(self) -> str:
-        return f"Addendum No. 1, Q{self.qnum}, p. {self.page}"
-
-
-@dataclass
-class Chunk:
+class DocChunk:
     chunk_id: str
-    strategy: str
-    text: str
-    qnums: list[int]
+    bid_id: str
+    file_name: str
+    doc_type: str
     page: int
+    text: str
+    addendum_number: int | None = None
+    facts: dict = field(default_factory=dict)  # key/value pairs parsed from HTML bid tables
 
 
-def _clean(s: str) -> str:
-    return WS_RE.sub(" ", s).strip()
+def doc_type_of(name: str) -> tuple[str, int | None]:
+    n = name.lower()
+    m = re.search(r"addend(?:um|a)\s*(?:no\.?\s*)?(\d+)", n)
+    if m:
+        return "addendum", int(m.group(1))
+    if n.endswith((".html", ".htm")):
+        return "bid_page", None
+    if "affidavit" in n or "certif" in n or "form" in n:
+        return "affidavit", None
+    if "spec" in n:
+        return "specs", None
+    return "rfp", None
 
 
-def read_pages(path: Path) -> list[str]:
-    """Return the document as a list of page strings (pdftotext, pypdf fallback)."""
-    if path.suffix.lower() != ".pdf":
-        return path.read_text(encoding="utf-8").split("\f")
+def _clean(text: str) -> str:
+    text = text.replace("​", " ").replace("\xad", "")
+    text = re.sub(r"(\w)-\n(\w)", r"\1\2", text)          # re-join hyphenated line breaks
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"\n\s*\n+", "\n", text)
+    return text.strip()
+
+
+def _pdf_pages(path: Path) -> list[str]:
     if shutil.which("pdftotext"):
-        out = subprocess.run(
-            ["pdftotext", "-layout", str(path), "-"],
-            capture_output=True, text=True, check=True,
-        ).stdout
-    else:
-        from pypdf import PdfReader
-        out = "\f".join(p.extract_text(extraction_mode="layout") or "" for p in PdfReader(str(path)).pages)
-    return out.split("\f")
+        out = subprocess.run(["pdftotext", "-layout", str(path), "-"], capture_output=True)
+        if out.returncode == 0:
+            return out.stdout.decode("utf-8", errors="ignore").split("\f")
+    from pypdf import PdfReader
+    return [p.extract_text() or "" for p in PdfReader(str(path)).pages]
 
 
-def parse_qa(pages: list[str]) -> list[QAItem]:
-    """Parse numbered questions and 'Answer:' blocks. Question numbers must run 1, 2, 3 ...
-    which stops numbered lines inside answers from being mistaken for new questions."""
-    records: list[dict] = []
-    current: dict | None = None
-    expected = 1
-    state = None
-    done = False
-    for page_no, page in enumerate(pages, start=1):
-        for line in page.splitlines():
-            if not line.strip() or any(r.match(line) for r in HEADER_RES):
+def _strip_repeated_lines(pages: list[str]) -> list[str]:
+    """Drop header/footer lines that repeat on more than half of the pages."""
+    if len(pages) < 4:
+        return pages
+    counts: dict[str, int] = {}
+    for p in pages:
+        for line in {l.strip() for l in p.splitlines() if l.strip()}:
+            counts[line] = counts.get(line, 0) + 1
+    repeated = {l for l, c in counts.items() if c > len(pages) / 2 and len(l) < 120}
+    return ["\n".join(l for l in p.splitlines() if l.strip() not in repeated) for p in pages]
+
+
+def _html_page(path: Path) -> tuple[str, dict]:
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(path.read_text(encoding="utf-8", errors="ignore"), "html.parser")
+    for t in soup(["script", "style", "noscript", "nav", "header", "footer"]):
+        t.decompose()
+    lines = [re.sub(r"\s+", " ", s).strip() for s in soup.get_text("\n").splitlines()]
+    lines = [l for l in lines if l]
+    # Bid portals render "label \n value" pairs; keep the block between Basic Information and Disclaimer
+    start = next((i for i, l in enumerate(lines) if l.lower() == "basic information"), 0)
+    end = next((i for i, l in enumerate(lines) if l.lower().startswith("disclaimer")), len(lines))
+    body = lines[start:end]
+    labels = {"reference number", "issuing organization", "solicitation type", "solicitation number",
+              "title", "location", "purchase type", "piggyback contract", "publication", "closing date",
+              "prebid conference", "questions due by", "description", "attendance", "event date",
+              "event type", "source id"}
+    facts: dict[str, str] = {}
+    for i, l in enumerate(body[:-1]):
+        if l.lower() in labels and body[i + 1].lower() not in labels and l.lower() not in facts:
+            facts[l.lower()] = body[i + 1]
+    if "contact information" in [l.lower() for l in body]:
+        j = [l.lower() for l in body].index("contact information")
+        facts["contact information"] = "; ".join(body[j + 1:j + 4])
+    text = "\n".join(f"{l}" for l in body)
+    return text, facts
+
+
+def _windows(words: list[str]) -> list[str]:
+    if len(words) <= CHUNK_WORDS:
+        return [" ".join(words)] if words else []
+    step = CHUNK_WORDS - OVERLAP_WORDS
+    return [" ".join(words[i:i + CHUNK_WORDS]) for i in range(0, max(len(words) - OVERLAP_WORDS, 1), step)]
+
+
+def ingest_folder(folder: Path, bid_id: str | None = None) -> tuple[list[DocChunk], list[dict]]:
+    """Parse every supported file in a bid folder. Returns (chunks, ingestion log)."""
+    bid_id = bid_id or folder.name
+    chunks: list[DocChunk] = []
+    report: list[dict] = []
+    for path in sorted(folder.iterdir()):
+        if path.is_dir():
+            continue
+        doc_type, add_no = doc_type_of(path.name)
+        entry = {"file": path.name, "doc_type": doc_type, "addendum_number": add_no}
+        try:
+            if path.suffix.lower() in (".html", ".htm"):
+                text, facts = _html_page(path)
+                pages, page_facts = [text], facts
+            elif path.suffix.lower() == ".pdf":
+                pages, page_facts = _strip_repeated_lines(_pdf_pages(path)), {}
+            else:
+                entry["status"] = "skipped: unsupported type"
+                report.append(entry)
                 continue
-            if STOP_RE.match(line):
-                done = True
-                break
-            m = QUESTION_RE.match(line)
-            if m and int(m.group(1)) == expected:
-                if current:
-                    records.append(current)
-                current = {"qnum": expected, "page": page_no, "question": [m.group(2).strip()], "answer": []}
-                expected += 1
-                state = "q"
+        except Exception as exc:  # unreadable file: log it and keep going
+            entry["status"] = f"error: {type(exc).__name__}: {exc}"
+            log.warning("failed to parse %s: %s", path.name, exc)
+            report.append(entry)
+            continue
+        empty = 0
+        n_before = len(chunks)
+        for pno, raw in enumerate(pages, start=1):
+            text = _clean(raw)
+            if len(text.split()) < 5:
+                empty += 1
                 continue
-            a = ANSWER_RE.match(line)
-            if a and current is not None:
-                state = "a"
-                current["answer"].append(a.group(1).strip())
-                continue
-            if current is None:
-                continue
-            (current["question"] if state == "q" else current["answer"]).append(line.strip())
-        if done:
-            break
-    if current:
-        records.append(current)
-    return [
-        QAItem(
-            qnum=r["qnum"],
-            page=r["page"],
-            question=_clean(" ".join(r["question"])),
-            answer=_clean(" ".join(x for x in r["answer"] if x)),
-        )
-        for r in records
-    ]
+            for j, win in enumerate(_windows(text.split())):
+                cid = f"{bid_id}:{path.stem[:30]}-{hashlib.sha1(path.name.encode()).hexdigest()[:6]}:p{pno}:{j}"
+                chunks.append(DocChunk(cid, bid_id, path.name, doc_type,
+                                       pno, win, add_no, page_facts if j == 0 and pno == 1 else {}))
+        entry.update(pages=len(pages), empty_pages=empty, chunks=len(chunks) - n_before,
+                     status="ok" if len(chunks) > n_before else "warning: no text (scanned? OCR not enabled)")
+        report.append(entry)
+    return chunks, report
 
 
-def build_chunks(items: list[QAItem], chunking: str) -> list[Chunk]:
-    """chunking = 'qa' (one chunk per Q&A pair) or 'window:<size>:<stride>' (word windows)."""
-    if chunking == "qa":
-        return [
-            Chunk(f"qa-{it.qnum:02d}", "qa", f"{it.question} Answer: {it.answer}", [it.qnum], it.page)
-            for it in items
-        ]
-    kind, size_s, stride_s = chunking.split(":")
-    if kind != "window":
-        raise ValueError(f"unknown chunking: {chunking}")
-    size, stride = int(size_s), int(stride_s)
-    words: list[tuple[str, int, int]] = []
-    for it in items:
-        for w in f"{it.question} Answer: {it.answer}".split():
-            words.append((w, it.qnum, it.page))
-    chunks: list[Chunk] = []
-    start = 0
-    while start < len(words):
-        seg = words[start:start + size]
-        chunks.append(Chunk(
-            chunk_id=f"win{size}-{len(chunks):03d}",
-            strategy=chunking,
-            text=" ".join(w for w, _, _ in seg),
-            qnums=sorted({q for _, q, _ in seg}),
-            page=seg[0][2],
-        ))
-        if start + size >= len(words):
-            break
-        start += stride
-    return chunks
+def save_index(chunks: list[DocChunk], report: list[dict], out_dir: Path) -> None:
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "chunks.json").write_text(json.dumps([asdict(c) for c in chunks], indent=1, ensure_ascii=False),
+                                         encoding="utf-8")
+    (out_dir / "ingestion_log.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
 
-def ingest(source: Path, bid_id: str, bid_dir: Path) -> dict:
-    """Parse a bid document and store its Q&A items under the bid folder."""
-    pages = read_pages(source)
-    items = parse_qa(pages)
-    meta = {"bid_id": bid_id, "source": source.name, "pages": len(pages), "items": len(items)}
-    bid_dir.mkdir(parents=True, exist_ok=True)
-    (bid_dir / "items.json").write_text(
-        json.dumps({"meta": meta, "items": [asdict(i) for i in items]}, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
-    return meta
-
-
-def load_items(bid_dir: Path) -> tuple[dict, list[QAItem]]:
-    data = json.loads((bid_dir / "items.json").read_text(encoding="utf-8"))
-    return data["meta"], [QAItem(**i) for i in data["items"]]
+def load_index(out_dir: Path) -> list[DocChunk]:
+    return [DocChunk(**d) for d in json.loads((out_dir / "chunks.json").read_text(encoding="utf-8"))]

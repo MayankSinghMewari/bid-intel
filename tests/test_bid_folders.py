@@ -1,7 +1,7 @@
 """Tests for generic bid-folder ingestion, search filters and field rules (no network needed)."""
 from pathlib import Path
 
-from bid_intel.docs import DocChunk, doc_type_of, ingest_folder
+from bid_intel.ingest import DocChunk, doc_type_of, ingest_folder
 from bid_intel.fields import FIELDS
 from bid_intel.search import BidSearch, expand_query
 

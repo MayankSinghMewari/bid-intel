@@ -3,8 +3,8 @@ import re
 from pathlib import Path
 
 from bid_intel import llm
-from bid_intel.bid_agents import Orchestrator
-from bid_intel.docs import ingest_folder
+from bid_intel.agents import Orchestrator
+from bid_intel.ingest import ingest_folder
 from bid_intel.graph import mermaid
 from bid_intel.llm_extract import FieldValue, GroupExtraction
 from bid_intel.search import BidSearch

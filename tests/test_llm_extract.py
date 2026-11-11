@@ -1,7 +1,7 @@
 """LLM extraction: quote-grounded validation and the validator -> extractor feedback loop.
 The LLM is replaced by a scripted fake, so these tests are offline and deterministic."""
 from bid_intel import llm, llm_extract
-from bid_intel.docs import DocChunk
+from bid_intel.ingest import DocChunk
 from bid_intel.fields import FIELDS
 from bid_intel.llm_extract import FieldValue, GroupExtraction, validate
 from bid_intel.search import BidSearch, SearchHit

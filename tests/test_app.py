@@ -14,8 +14,8 @@ APP = str(Path(__file__).resolve().parent.parent / "app.py")
 @pytest.fixture(autouse=True)
 def keyword_only(monkeypatch):
     monkeypatch.setenv("BID_INTEL_DENSE", "off")
-    from bid_intel import bids
-    monkeypatch.setattr(bids, "_engine", None)
+    from bid_intel import service
+    monkeypatch.setattr(service, "_engine", None)
 
 
 def test_app_renders_all_tabs_and_the_extraction_record():
