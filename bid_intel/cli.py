@@ -67,6 +67,8 @@ def main(argv: list[str] | None = None) -> int:
     ee = sub.add_parser("eval-extraction", help="field accuracy vs eval/extraction_gold.json")
     ee.add_argument("--modes", nargs="+", default=["rules", "rules+llm"], choices=["rules", "rules+llm"])
 
+    sub.add_parser("tracing-check", help="check the Langfuse keys and connection")
+
     sub.add_parser("graph", help="write docs/agent_graph.md (Mermaid diagram generated from the LangGraph)")
 
     sub.add_parser("bid-qalog", help="write logs/bid_qa_log.md from the sample questions")
@@ -104,6 +106,8 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{k:38} {str(v['value'])[:70]:70} conf={v['confidence']:<5} {src}")
         print(json.dumps(result["validation"]))
         print(f"wrote {bids.OUT / (result['bid_id'] + '.json')} and {tpath}")
+        if bids.LAST_TRACE_URL:
+            print(f"Langfuse trace: {bids.LAST_TRACE_URL}")
     elif args.cmd == "search":
         from . import bids
         for h in bids.search(args.query, args.bid_id, args.k, args.doc_type, args.mode, args.rerank):
@@ -122,6 +126,9 @@ def main(argv: list[str] | None = None) -> int:
         folders = sorted(f for f in bids.FOLDERS.iterdir() if f.is_dir())
         print(json.dumps(extraction_eval.run(folders, service.ROOT / "eval" / "extraction_gold.json",
                                              service.ROOT / "eval", tuple(args.modes)), indent=2))
+    elif args.cmd == "tracing-check":
+        from . import observability
+        print(json.dumps(observability.check(), indent=2))
     elif args.cmd == "graph":
         from .graph import mermaid
         out = service.ROOT / "docs" / "agent_graph.md"

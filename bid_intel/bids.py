@@ -15,6 +15,7 @@ FOLDERS = ROOT / "data" / "bid_folders"
 OUT = ROOT / "outputs"
 
 _engine: BidSearch | None = None
+LAST_TRACE_URL: str | None = None  # Langfuse link of the last extraction run (not stored in outputs)
 
 
 def engine() -> BidSearch:
@@ -50,8 +51,10 @@ def search(q: str, bid_id: str | None = None, top_k: int = 5, doc_types: list[st
 
 def extract(folder: Path, bid_id: str | None = None) -> tuple[dict, list[dict]]:
     ensure_indexed()
+    global LAST_TRACE_URL
     orch = Orchestrator(folder, bid_id, engine=engine())
     result = orch.run()
+    LAST_TRACE_URL = orch.trace_url
     OUT.mkdir(exist_ok=True)
     (OUT / f"{orch.bid_id}.json").write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     return result, orch.trace()
@@ -86,11 +89,27 @@ def _bids_in(question: str) -> list[str] | None:
 
 
 def ask(question: str, bid_id: str | None = None, top_k: int = 5) -> dict:
+    from . import observability
     ensure_indexed()
+    with observability.trace("ask", input={"question": question, "bid_id": bid_id}) as root:
+        result = _ask(question, bid_id, top_k)
+        observability.set_output(root, {"answer": result["answer"], "method": result["method"],
+                                        "citations": [f"{c['bid_id']} / {c['file']} p.{c['page']}"
+                                                      for c in result["citations"]]})
+        result["trace_url"] = observability.trace_url(root)
+    observability.flush()
+    return result
+
+
+def _ask(question: str, bid_id: str | None, top_k: int) -> dict:
+    from . import observability
     bids = [bid_id] if bid_id else (_bids_in(question) or [None])
     hits = []
-    for b in bids:  # "compare both bids" style questions retrieve per bid so each is represented
-        hits += search(question, bid_id=b, top_k=top_k if len(bids) == 1 else 4)
+    with observability.span("retrieval", as_type="retriever", input={"question": question, "bids": bids}) as rs:
+        for b in bids:  # "compare both bids" style questions retrieve per bid so each is represented
+            hits += search(question, bid_id=b, top_k=top_k if len(bids) == 1 else 4)
+        observability.set_output(rs, [f"{h['bid_id']} / {h['file']} p.{h['page']} (score {h['score']})"
+                                      for h in hits])
     generated = llm.answer_from_citations(question, hits)
     record = _from_records(question, bids)
     llm_answered = generated and "answer" in generated

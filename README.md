@@ -112,6 +112,8 @@ The LLM layer is what generalises to unseen bids: the rules were written while r
 
 **Validation and confidence.** The validator rejects values without a citation, values not found verbatim in the cited evidence, and malformed dates. Rejected fields are retried with a wider search. Confidence: 0.9 for bid-page facts, 0.55 + 0.35/rank for rule matches, 0.93 for addendum overrides, multiplied by 0.6 if validation fails. These are heuristics, not calibrated probabilities.
 
+**Observability.** Every run writes a local JSON trace (`logs/<bid>_trace.json`: agent, action, input, output, latency per step, tokens for LLM calls). With Langfuse keys in `.env` (free cloud account; see `.env.example`), the same run is also sent to Langfuse (`bid_intel/observability.py`): one trace per extraction run and per question, a span per LangGraph node (LangChain callback handler), a generation per LLM call with model, prompt, output and token usage including thinking tokens, and every local trace step as an event (retries and validator rejections at WARNING level). `python -m bid_intel run` prints the trace link; `python -m bid_intel tracing-check` verifies the keys. Without keys tracing is a no-op, and tests always run with it off; tracing errors never stop a run.
+
 **Prompts.** The LLM prompts are in `bid_intel/llm.py`. They require answers only from the numbered passages, an explicit "Not found in documents", and a citation on every claim; answers that cite passages that were not provided are rejected.
 
 ## Retrieval evaluation

@@ -59,6 +59,22 @@ def provider() -> str | None:
 
 def _complete(system: str, user: str, max_tokens: int = 2048, schema: type | None = None,
               timeout_s: int = 30) -> dict:
+    """LLM call wrapped in a Langfuse generation (model, prompt, output, tokens); see _call()."""
+    from . import observability
+    model = GEMINI_MODEL if provider() == "gemini" else MODEL
+    name = f"llm.{schema.__name__}" if schema else "llm.generate"
+    with observability.generation(name, model, [{"role": "system", "content": system},
+                                                {"role": "user", "content": user}],
+                                  metadata={"max_tokens": max_tokens}) as gen:
+        out = _call(system, user, max_tokens, schema, timeout_s)
+        observability.record_generation(
+            gen, out["parsed"].model_dump() if out.get("parsed") is not None else out["text"],
+            out.get("input_tokens"), out.get("output_tokens"), out.get("thinking_tokens"))
+        return out
+
+
+def _call(system: str, user: str, max_tokens: int = 2048, schema: type | None = None,
+          timeout_s: int = 30) -> dict:
     """One completion from the configured provider:
     {"text", "model", "input_tokens", "output_tokens", "thinking_tokens", "parsed"}.
     With schema (a Pydantic model class) the reply is constrained to that JSON schema and returned

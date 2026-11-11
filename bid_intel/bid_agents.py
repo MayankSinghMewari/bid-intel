@@ -64,14 +64,24 @@ class BidState(BaseModel):
 
 
 class Tracer:
+    """Local structured trace (logs/<bid>_trace.json), mirrored to Langfuse when tracing is enabled."""
+
     def __init__(self, state: BidState):
         self.state, self.lock = state, threading.Lock()
+        self.ctx: dict | None = None  # Langfuse trace context of the current run (set by Orchestrator.run)
 
     def log(self, agent: str, action: str, inp: dict, out: dict, t0: float) -> None:
+        latency = round((time.perf_counter() - t0) * 1000, 1)
         with self.lock:
-            self.state.trace.append(TraceStep(step=len(self.state.trace) + 1, agent=agent, action=action,
-                                              input=inp, output=out,
-                                              latency_ms=round((time.perf_counter() - t0) * 1000, 1)))
+            step = len(self.state.trace) + 1
+            self.state.trace.append(TraceStep(step=step, agent=agent, action=action, input=inp, output=out,
+                                              latency_ms=latency))
+        if self.ctx is not None:
+            from . import observability
+            warn = "error" in action or action == "retry" or (isinstance(out, dict) and out.get("passed") is False)
+            observability.event(f"{agent}.{action}", input=inp, output=out, ctx=self.ctx,
+                                metadata={"step": step, "latency_ms": latency},
+                                level="WARNING" if warn else "DEFAULT")
 
 
 def _source(h: SearchHit, value: str | None = None, full: bool = False) -> Source:
@@ -258,6 +268,7 @@ class Orchestrator:
                  use_llm: bool | None = None):
         self.folder = folder
         self.use_llm = use_llm  # None: use the LLM when a key is configured
+        self.trace_url: str | None = None  # Langfuse link for the last run, when tracing is enabled
         self.bid_id = bid_id or folder.name
         self.state = BidState(bid_id=self.bid_id)
         self.tracer = Tracer(self.state)
@@ -356,12 +367,26 @@ class Orchestrator:
 
     def run(self) -> dict:
         """Run the LangGraph workflow (graph.py) and return the bid record."""
+        from . import observability
         from .graph import GraphState, build_graph
         t_start = time.perf_counter()
-        final: GraphState = build_graph(self).invoke(
-            {"bid_id": self.bid_id}, config={"max_concurrency": 4, "recursion_limit": 60})
-        self.state.plan = final.get("plan", [])
+        with observability.trace(f"extract {self.bid_id}", input={"folder": str(self.folder)},
+                                 metadata={"use_llm": self.llm_on()}) as root:
+            self.tracer.ctx = observability.trace_context()
+            final: GraphState = build_graph(self).invoke(
+                {"bid_id": self.bid_id},
+                config={"max_concurrency": 4, "recursion_limit": 60, "run_name": f"graph {self.bid_id}",
+                        "callbacks": observability.langgraph_callbacks()})
+            self.state.plan = final.get("plan", [])
+            result = self._result(t_start)
+            observability.set_output(root, {"validation": result["validation"],
+                                            "fields": {k: v["value"] for k, v in result["fields"].items()}})
+            self.trace_url = observability.trace_url(root)
+        self.tracer.ctx = None
+        observability.flush()
+        return result
 
+    def _result(self, t_start: float) -> dict:
         ordered = {s.name: self.state.fields[s.name] for s in FIELDS}
         passed = sum(1 for r in ordered.values() if r.value is not None and r.validated)
         failed = sum(1 for r in ordered.values() if r.value is not None and not r.validated)
