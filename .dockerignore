@@ -1,0 +1,15 @@
+# Never ship secrets, local environments or caches in the image
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+.venv
+venv
+.cache
+.git
+.github
+**/__pycache__
+**/*.pyc
+.pytest_cache
+tests
+*.log
