@@ -38,14 +38,19 @@ if DEMO:  # set before bid_intel is imported, so no LLM or tracing client is eve
     os.environ["BID_INTEL_LLM"] = "off"
     os.environ["BID_INTEL_TRACING"] = "off"
 
+# Render something immediately: importing the search stack (Chroma, ONNX, LangGraph) and building the index
+# take a while after a restart, and a blank page looks broken.
+st.set_page_config(page_title="RFP Intelligence", page_icon=":material/description:", layout="wide")
+_booting = st.empty()
+_booting.info("**Starting up...** loading the search engine. After a restart the first visit takes 1-3 minutes "
+              "while the embedding model loads and the bid documents are indexed.", icon=":material/hourglass_top:")
+
 from bid_intel import llm, observability, service  # noqa: E402
 
 REPO_URL = "https://github.com/MayankSinghMewari/bid-intel"
 
 ROOT = Path(__file__).resolve().parent
 DOC_TYPES = ["bid_page", "rfp", "addendum", "specs", "affidavit"]
-
-st.set_page_config(page_title="RFP Intelligence", page_icon=":material/description:", layout="wide")
 
 
 @st.cache_resource(show_spinner="Indexing bid folders (first run embeds every chunk; later runs reuse the index)...")
@@ -82,6 +87,8 @@ with st.sidebar:
         st.success("Tracing: Langfuse", icon=":material/monitoring:")
     else:
         st.caption("Tracing: local JSON only (no Langfuse keys)")
+
+_booting.empty()  # ready: remove the start-up notice
 
 if DEMO:
     st.info(f"**Public read-only demo.** LLM generation is off here, so answers are the validated extraction "
