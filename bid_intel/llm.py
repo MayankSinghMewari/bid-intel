@@ -62,7 +62,7 @@ def _complete(system: str, user: str, max_tokens: int = 2048, schema: type | Non
     """LLM call wrapped in a Langfuse generation (model, prompt, output, tokens); see _call()."""
     from . import observability
     model = GEMINI_MODEL if provider() == "gemini" else MODEL
-    name = f"llm.{schema.__name__}" if schema else "llm.generate"
+    name = "extract-fields" if schema else "generate-text"  # stable, verb-first; context comes from the parent
     with observability.generation(name, model, [{"role": "system", "content": system},
                                                 {"role": "user", "content": user}],
                                   metadata={"max_tokens": max_tokens}) as gen:

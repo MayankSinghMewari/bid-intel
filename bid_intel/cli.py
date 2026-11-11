@@ -17,6 +17,14 @@ from .ingest import ingest as ingest_doc
 
 
 def main(argv: list[str] | None = None) -> int:
+    from . import observability
+    try:
+        return _main(argv)
+    finally:
+        observability.shutdown()  # short-lived process: send queued traces before exit
+
+
+def _main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="bid_intel")
     sub = p.add_subparsers(dest="cmd", required=True)
 

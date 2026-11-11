@@ -19,6 +19,7 @@ from typing import TYPE_CHECKING, Annotated, Any, TypedDict
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Send
 
+from . import observability as obs
 from .fields import FIELDS
 
 if TYPE_CHECKING:
@@ -58,8 +59,11 @@ def build_graph(o: "Orchestrator"):
     extractor, validator = ExtractionAgent(o.tracer), ValidatorAgent(o.tracer)
 
     def ingest(state: GraphState) -> dict:
-        o.chunks = o._ingest()
-        o.facts = [(c, c.facts) for c in o.chunks if c.facts]
+        with obs.span("ingest-documents", "tool", input={"folder": str(o.folder)}) as sp:
+            o.chunks = o._ingest()
+            o.facts = [(c, c.facts) for c in o.chunks if c.facts]
+            obs.set_output(sp, {"chunks": len(o.chunks), "files": [
+                {k: f.get(k) for k in ("file", "doc_type", "pages", "chunks", "status")} for f in o.ingestion_report]})
         return {}
 
     def plan(state: GraphState) -> dict:
@@ -78,6 +82,13 @@ def build_graph(o: "Orchestrator"):
 
     def rule_extract(task: FieldTask) -> dict:
         """One extraction specialist (field group): retrieve, then apply the field rules."""
+        with obs.span(f"extract-{task['group']}-fields", "agent",
+                      input={"fields": task["fields"]}, metadata={"attempt": task["attempt"]}) as sp:
+            out = _rule_extract(task)
+            obs.set_output(sp, {n: r.value for n, r in out["drafts"].items()})
+        return out
+
+    def _rule_extract(task: FieldTask) -> dict:
         nonlocal retriever
         retriever = retriever or RetrievalAgent(o.engine, o.tracer)
         drafts = {}
@@ -93,6 +104,12 @@ def build_graph(o: "Orchestrator"):
 
     def validate(state: GraphState) -> dict:
         """Validate the drafts produced this round; rejected fields with attempts left are retried."""
+        with obs.span("validate-fields", "span") as sp:
+            out = _validate(state)
+            obs.set_output(sp, {"rejected_for_retry": out["retry"], "checked": list(out["checked"])})
+        return out
+
+    def _validate(state: GraphState) -> dict:
         retry, updates = [], {}
         checked = state.get("checked") or {}
         this_round = [n for n in state["drafts"] if n in SPECS and checked.get(n) != state["attempts"][n]]
@@ -128,6 +145,14 @@ def build_graph(o: "Orchestrator"):
 
     def llm_extract(task: FieldTask) -> dict:
         """One LLM specialist (field group): structured output over retrieved evidence, own feedback loop."""
+        with obs.span(f"llm-extract-{task['group']}-fields", "agent", input={"fields": task["fields"]}) as sp:
+            out = _llm_extract(task)
+            res = out["llm_results"][task["group"]]
+            obs.set_output(sp, {n: {"value": v[0].value if v[0] else None, "accepted": v[2], "reason": v[3]}
+                                for n, v in res.items()})
+        return out
+
+    def _llm_extract(task: FieldTask) -> dict:
         specs = [SPECS[n] for n in task["fields"]]
         seeds = [src.chunk_id for s in specs for src in o.state.fields[s.name].sources]
         try:
@@ -140,7 +165,9 @@ def build_graph(o: "Orchestrator"):
 
     def llm_merge(state: GraphState) -> dict:
         t0 = time.perf_counter()
-        o.merge_llm(state.get("llm_results") or {})
+        with obs.span("merge-llm-results", "span") as sp:
+            o.merge_llm(state.get("llm_results") or {})
+            obs.set_output(sp, {n: {"value": r.value, "notes": r.notes} for n, r in o.state.fields.items()})
         accepted = sum(1 for r in o.state.fields.values() if r.notes.startswith("LLM extraction"))
         o.tracer.log("orchestrator", "llm_merge", {"groups": list(state.get("llm_results") or {})},
                      {"llm_fields_accepted": accepted}, t0)
@@ -148,12 +175,19 @@ def build_graph(o: "Orchestrator"):
 
     def reconcile(state: GraphState) -> dict:
         o.state.fields = dict(state["drafts"])
-        ReconcileAgent(o.tracer).run(o.chunks, o.state)
+        with obs.span("reconcile-addenda", "chain", input={"due_date_before": o.state.fields.get("Due Date") and
+                                                           o.state.fields["Due Date"].value}) as sp:
+            ReconcileAgent(o.tracer).run(o.chunks, o.state)
+            obs.set_output(sp, {"addendum_changes": o.state.addendum_changes,
+                                "due_date_after": o.state.fields["Due Date"].value})
         return {"drafts": dict(o.state.fields)}
 
     def summarize(state: GraphState) -> dict:
         o.state.fields = dict(state["drafts"])
-        return {"drafts": {"Bid Summary": o._summary()}}
+        with obs.span("summarize-bid", "chain") as sp:
+            summary = o._summary()
+            obs.set_output(sp, {"summary": summary.value, "notes": summary.notes})
+        return {"drafts": {"Bid Summary": summary}}
 
     def finalize(state: GraphState) -> dict:
         o.state.fields = {s.name: state["drafts"][s.name] for s in FIELDS}

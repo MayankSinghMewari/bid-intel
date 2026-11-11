@@ -91,13 +91,13 @@ def _bids_in(question: str) -> list[str] | None:
 def ask(question: str, bid_id: str | None = None, top_k: int = 5) -> dict:
     from . import observability
     ensure_indexed()
-    with observability.trace("ask", input={"question": question, "bid_id": bid_id}) as root:
+    with observability.trace("answer-question", input={"question": question}, tags=["qa"],
+                             metadata={"bid_id": bid_id or "auto"}) as root:
         result = _ask(question, bid_id, top_k)
         observability.set_output(root, {"answer": result["answer"], "method": result["method"],
                                         "citations": [f"{c['bid_id']} / {c['file']} p.{c['page']}"
                                                       for c in result["citations"]]})
         result["trace_url"] = observability.trace_url(root)
-    observability.flush()
     return result
 
 
@@ -105,7 +105,7 @@ def _ask(question: str, bid_id: str | None, top_k: int) -> dict:
     from . import observability
     bids = [bid_id] if bid_id else (_bids_in(question) or [None])
     hits = []
-    with observability.span("retrieval", as_type="retriever", input={"question": question, "bids": bids}) as rs:
+    with observability.span("search-passages", "retriever", input={"question": question, "bids": bids}) as rs:
         for b in bids:  # "compare both bids" style questions retrieve per bid so each is represented
             hits += search(question, bid_id=b, top_k=top_k if len(bids) == 1 else 4)
         observability.set_output(rs, [f"{h['bid_id']} / {h['file']} p.{h['page']} (score {h['score']})"

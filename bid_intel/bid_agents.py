@@ -76,10 +76,11 @@ class Tracer:
             step = len(self.state.trace) + 1
             self.state.trace.append(TraceStep(step=step, agent=agent, action=action, input=inp, output=out,
                                               latency_ms=latency))
-        if self.ctx is not None:
+        # agent work is traced as typed observations; orchestrator decisions and errors become events
+        if self.ctx is not None and (agent == "orchestrator" or "error" in action):
             from . import observability
-            warn = "error" in action or action == "retry" or (isinstance(out, dict) and out.get("passed") is False)
-            observability.event(f"{agent}.{action}", input=inp, output=out, ctx=self.ctx,
+            warn = "error" in action or action == "retry"
+            observability.event(f"{agent}.{action}", input=inp, output=out,
                                 metadata={"step": step, "latency_ms": latency},
                                 level="WARNING" if warn else "DEFAULT")
 
@@ -99,11 +100,16 @@ class RetrievalAgent:
         self.engine, self.tracer = engine, tracer
 
     def run(self, bid_id: str, spec: FieldSpec, attempt: int) -> list[SearchHit]:
+        from . import observability
         t0 = time.perf_counter()
         # attempt 1 uses the field's preferred document types; retries widen the filter and the depth
         doc_types = spec.doc_types if (attempt == 1 or spec.keep_filter) else None
         k = 8 * attempt
-        hits = self.engine.search(spec.query, top_k=k, bid_id=bid_id, doc_types=doc_types)
+        with observability.span("search-evidence", "retriever",
+                                input={"query": spec.query, "bid_id": bid_id, "doc_types": doc_types, "top_k": k},
+                                metadata={"field": spec.name, "attempt": attempt}) as obs:
+            hits = self.engine.search(spec.query, top_k=k, bid_id=bid_id, doc_types=doc_types)
+            observability.set_output(obs, [f"{h.chunk.file_name} p.{h.chunk.page} (score {h.score})" for h in hits])
         self.tracer.log("retriever", "search", {"field": spec.name, "query": spec.query, "doc_types": doc_types,
                                                 "top_k": k, "attempt": attempt},
                         {"hits": [{"chunk_id": h.chunk.chunk_id, "file": h.chunk.file_name, "page": h.chunk.page,
@@ -116,6 +122,14 @@ class ExtractionAgent:
         self.tracer = tracer
 
     def run(self, spec: FieldSpec, hits: list[SearchHit], facts: list[tuple[DocChunk, dict]]) -> FieldResult:
+        from . import observability
+        with observability.span("apply-field-rules", "tool", input={"field": spec.name, "passages": len(hits)}) as obs:
+            result = self._run(spec, hits, facts)
+            observability.set_output(obs, {"value": result.value, "notes": result.notes,
+                                           "sources": [f"{s.file} p.{s.page}" for s in result.sources]})
+        return result
+
+    def _run(self, spec: FieldSpec, hits: list[SearchHit], facts: list[tuple[DocChunk, dict]]) -> FieldResult:
         t0 = time.perf_counter()
         result = None
         # 1) structured facts from the bid portal page are the most reliable source
@@ -233,8 +247,12 @@ class ValidatorAgent:
         return True, "ok"
 
     def run(self, spec: FieldSpec, r: FieldResult) -> FieldResult:
+        from . import observability
         t0 = time.perf_counter()
-        ok, reason = self.check(spec, r)
+        with observability.span("validate-field", "evaluator", input={"field": spec.name, "value": r.value,
+                                                                     "cited": [s.evidence[:200] for s in r.sources]}) as obs:
+            ok, reason = self.check(spec, r)
+            observability.set_output(obs, {"passed": ok, "reason": reason}, level=None if ok else "WARNING")
         r.validated = ok
         if not ok and r.value is not None:
             r.confidence = round(r.confidence * 0.6, 2)
@@ -370,20 +388,18 @@ class Orchestrator:
         from . import observability
         from .graph import GraphState, build_graph
         t_start = time.perf_counter()
-        with observability.trace(f"extract {self.bid_id}", input={"folder": str(self.folder)},
-                                 metadata={"use_llm": self.llm_on()}) as root:
+        with observability.trace("extract-bid", input={"bid_id": self.bid_id, "folder": str(self.folder)},
+                                 metadata={"bid_id": self.bid_id, "use_llm": self.llm_on()},
+                                 tags=["extraction"]) as root:
             self.tracer.ctx = observability.trace_context()
             final: GraphState = build_graph(self).invoke(
-                {"bid_id": self.bid_id},
-                config={"max_concurrency": 4, "recursion_limit": 60, "run_name": f"graph {self.bid_id}",
-                        "callbacks": observability.langgraph_callbacks()})
+                {"bid_id": self.bid_id}, config={"max_concurrency": 4, "recursion_limit": 60})
             self.state.plan = final.get("plan", [])
             result = self._result(t_start)
             observability.set_output(root, {"validation": result["validation"],
                                             "fields": {k: v["value"] for k, v in result["fields"].items()}})
             self.trace_url = observability.trace_url(root)
         self.tracer.ctx = None
-        observability.flush()
         return result
 
     def _result(self, t_start: float) -> dict:

@@ -172,8 +172,13 @@ def validate(fv: FieldValue, spec: FieldSpec, passages: list[SearchHit]) -> tupl
 def extract_group(engine: BidSearch, bid_id: str, group: str, specs: list[FieldSpec], log,
                   seed_chunk_ids: list[str] | None = None) -> dict:
     """Returns {field name: (FieldValue | None, passages, validated, reason, attempts)}; never raises."""
+    from . import observability
     t0 = time.perf_counter()
-    passages = gather_evidence(engine, bid_id, specs, seed_chunk_ids)
+    with observability.span("gather-evidence", "retriever",
+                            input={"fields": [s.name for s in specs], "seed_chunks": len(seed_chunk_ids or [])}) as sp:
+        passages = gather_evidence(engine, bid_id, specs, seed_chunk_ids)
+        observability.set_output(sp, [f"[{i}] {h.chunk.file_name} p.{h.chunk.page} ({h.chunk.doc_type})"
+                                      for i, h in enumerate(passages, 1)])
     log("retriever", "gather_evidence", {"group": group, "fields": [s.name for s in specs]},
         {"passages": [h.chunk.chunk_id for h in passages]}, t0)
     by_name = {s.name: s for s in specs}
@@ -192,10 +197,15 @@ def extract_group(engine: BidSearch, bid_id: str, group: str, specs: list[FieldS
         feedback = {}
         for spec in pending:
             fv = got.get(spec.name)
-            if fv is None:
-                ok, reason = False, "field missing from the LLM output"
-            else:
-                ok, reason = validate(fv, spec, passages)
+            with observability.span("check-quote", "evaluator",
+                                    input={"field": spec.name, "value": fv.value if fv else None,
+                                           "citations": fv.citations if fv else [],
+                                           "quote": fv.quote if fv else None}) as ev:
+                if fv is None:
+                    ok, reason = False, "field missing from the LLM output"
+                else:
+                    ok, reason = validate(fv, spec, passages)
+                observability.set_output(ev, {"passed": ok, "reason": reason}, level=None if ok else "WARNING")
             results[spec.name] = (fv, passages, ok, reason, attempt)
             if not ok:
                 feedback[spec.name] = reason
