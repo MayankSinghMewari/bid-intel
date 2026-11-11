@@ -61,26 +61,33 @@ def _reranker():
 
 
 class BidSearch:
-    """Index over the chunks of one or more bids. add() indexes a new bid without touching others."""
+    """Hybrid index over the chunks of one or more bids.
 
-    def __init__(self, chunks: list[DocChunk] | None = None, dense: bool | None = None):
+    Lexical side: in-memory BM25 (rebuilt on add, since BM25 statistics are corpus-wide; cheap).
+    Dense side: Chroma vector store with metadata (vectorstore.py); add() only embeds new or changed
+    chunks, so adding a bid folder does not re-index the others."""
+
+    def __init__(self, chunks: list[DocChunk] | None = None, dense: bool | None = None, store=None):
         self.chunks: list[DocChunk] = []
+        self._index: dict[str, int] = {}
         self.use_dense = embeddings.available() if dense is None else dense
         self._bm25 = None
-        self._dense = None
+        self.store = None
+        self.index_stats: list[dict] = []
+        if self.use_dense:
+            from .vectorstore import ChromaStore
+            self.store = store if store is not None else ChromaStore()
         if chunks:
             self.add(chunks)
 
-    def add(self, chunks: list[DocChunk]) -> None:
-        self.chunks += chunks
-        # BM25 statistics are global, so the (cheap, pure-Python) lexical index is rebuilt;
-        # the expensive dense index only embeds the new chunks
+    def add(self, chunks: list[DocChunk]) -> dict:
+        for c in chunks:
+            self._index[c.chunk_id] = len(self.chunks)
+            self.chunks.append(c)
         self._bm25 = BM25([tokenize(c.text) for c in self.chunks])
-        if self.use_dense:
-            if self._dense is None:
-                self._dense = embeddings.DenseIndex([c.text for c in chunks])
-            else:
-                self._dense.add([c.text for c in chunks])
+        stats = self.store.upsert(chunks) if self.store is not None else {"embedded": 0}
+        self.index_stats.append({"bids": sorted({c.bid_id for c in chunks}), **stats})
+        return stats
 
     def search(self, query: str, top_k: int = 5, bid_id: str | None = None, doc_types: list[str] | None = None,
                addendum_number: int | None = None, mode: str = "hybrid", expand: bool = True,
@@ -98,11 +105,15 @@ class BidSearch:
             order = sorted((i for i in allowed if bm[i] > 0), key=lambda i: -bm[i])
             for r, i in enumerate(order, 1):
                 fused[i] += 1.0 / (RRF_K + r) if mode == "hybrid" else bm[i]
-        if mode in ("dense", "hybrid") and self._dense is not None:
-            ds = self._dense.scores(query)  # dense uses the raw query; expansion helps lexical search most
-            order = sorted(allowed, key=lambda i: -ds[i])
-            for r, i in enumerate(order, 1):
-                fused[i] += 1.0 / (RRF_K + r) if mode == "hybrid" else max(ds[i], 0.0)
+        if mode in ("dense", "hybrid") and self.store is not None:
+            # metadata filter runs inside the vector store; dense uses the raw query (expansion helps BM25)
+            from .vectorstore import where_filter
+            allowed_set = set(allowed)
+            res = self.store.query(query, n=len(allowed), where=where_filter(bid_id, doc_types, addendum_number))
+            ranked_dense = [(self._index[cid], sim) for cid, sim in res
+                            if cid in self._index and self._index[cid] in allowed_set]
+            for r, (i, sim) in enumerate(ranked_dense, 1):
+                fused[i] += 1.0 / (RRF_K + r) if mode == "hybrid" else max(sim, 0.0)
         ranked = [i for i in sorted(fused, key=lambda i: -fused[i]) if fused[i] > 0]
         pool = ranked[: max(top_k * 4, 20)] if rerank else ranked[:top_k]
         if rerank and pool:

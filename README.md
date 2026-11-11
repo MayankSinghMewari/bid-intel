@@ -14,7 +14,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-The first run downloads the embedding model (`BAAI/bge-small-en-v1.5`, about 70 MB). Embeddings are cached in `.cache/`, so later runs only embed new chunks.
+The first run downloads the embedding model (`BAAI/bge-small-en-v1.5`, about 70 MB) and embeds every chunk into a persistent Chroma vector store at `.cache/chroma` (about a minute for Bid1's 63-page RFP on a 4-core CPU). Later runs only embed new or changed chunks.
 
 LLM (the generation step of RAG): copy `.env.example` to `.env` and set `GEMINI_API_KEY` (free key from https://aistudio.google.com/apikey; model `GEMINI_MODEL`, default `gemini-3.5-flash`) or `ANTHROPIC_API_KEY`. `.env` is git-ignored. With a key, Q&A answers and the Bid Summary field are written by the LLM from retrieved passages / validated fields only, and every answer must cite passages as [n] or it is rejected. Without a key, or when the LLM call fails (timeout, 503, quota), the system falls back to the validated extraction record and cited sentences, and the trace records the reason. Tests run with the LLM disabled.
 
@@ -64,8 +64,8 @@ Bid folder (HTML + PDF)
 [IngestionAgent] docs.py: detect doc type, parse HTML (BeautifulSoup) / PDF (pdftotext), strip repeated
    |              headers/footers, fix hyphenation, attach metadata, log unreadable/empty files
    v
-[Chunking: 180-word windows, 40-word overlap, per page] -> [BM25 index] + [dense index: bge-small]
-   ^                                                             (incremental: new bids are appended)
+[Chunking: 180-word windows, 40-word overlap, per page] -> [BM25, in memory] + [Chroma vector store: bge-small
+   ^                                                         embeddings + metadata, persistent, incremental]
    | search tool: hybrid RRF, metadata filters, query expansion, optional cross-encoder rerank
    |
 [Orchestrator] plans field groups -> runs them in parallel (thread pool)
@@ -87,6 +87,8 @@ Shared state is a Pydantic `BidState` (plan, evidence, draft fields, validation,
 **Chunking.** 180-word windows with 40-word overlap, never crossing a page boundary. RFPs mix short form fields, clauses and spec lists; 180 words holds one clause or a short table while keeping citations to a single page. The overlap keeps sentences that straddle a boundary retrievable.
 
 **Embedding model.** `BAAI/bge-small-en-v1.5` through fastembed (ONNX, CPU, no API key). Small enough to run on a laptop, and strong on retrieval benchmarks for its size.
+
+**Vector store.** Chroma (`bid_intel/vectorstore.py`), persistent on disk, cosine HNSW index. Each vector is stored with its chunk's metadata (bid_id, file_name, doc_type, page, addendum_number), so metadata filters such as "only Bid2 specs" run inside the vector search. Indexing is incremental: before embedding, the store compares chunk ids and a hash of each chunk's text with what it already holds, embeds only new or changed chunks, and deletes chunks of a re-indexed bid that no longer exist. Re-running a bid embeds nothing (about 5 s, all of it PDF parsing). Embeddings are computed by our own model and passed to Chroma explicitly, so the embedding model is a single, configurable choice (`BID_INTEL_EMBED_MODEL`). BM25 stays in memory because its statistics are corpus-wide and rebuilding it is cheap. Migrating from the earlier in-memory NumPy index left every retrieval metric unchanged, which confirms the store returns the same rankings.
 
 **Retrieval.** BM25 (pure Python, keeps negations and numbers such as model and part numbers) plus dense cosine search, merged with reciprocal rank fusion (k=60). Metadata filters restrict by bid, document type and addendum number. Query expansion adds RFP synonyms ("deadline" -> due date, closing date, submission). A cross-encoder re-ranker (`ms-marco-MiniLM-L-6-v2`) is available but off by default, because on this evaluation it lowered MRR and cost about 5 s per query.
 

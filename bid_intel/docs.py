@@ -6,6 +6,7 @@ Nothing here is specific to a particular bid, so a new folder works without code
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import re
@@ -141,7 +142,8 @@ def ingest_folder(folder: Path, bid_id: str | None = None) -> tuple[list[DocChun
                 empty += 1
                 continue
             for j, win in enumerate(_windows(text.split())):
-                chunks.append(DocChunk(f"{bid_id}:{path.stem[:40]}:p{pno}:{j}", bid_id, path.name, doc_type,
+                cid = f"{bid_id}:{path.stem[:30]}-{hashlib.sha1(path.name.encode()).hexdigest()[:6]}:p{pno}:{j}"
+                chunks.append(DocChunk(cid, bid_id, path.name, doc_type,
                                        pno, win, add_no, page_facts if j == 0 and pno == 1 else {}))
         entry.update(pages=len(pages), empty_pages=empty, chunks=len(chunks) - n_before,
                      status="ok" if len(chunks) > n_before else "warning: no text (scanned? OCR not enabled)")

@@ -56,7 +56,7 @@
       ],
       "chunks": 29
     },
-    "latency_ms": 161.3
+    "latency_ms": 181.6
   },
   {
     "step": 2,
@@ -108,15 +108,15 @@
         }
       ]
     },
-    "latency_ms": 161.3
+    "latency_ms": 181.7
   },
   {
     "step": 3,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "company_name",
-      "query": "issuing organization agency district office",
+      "field": "Bid Number",
+      "query": "solicitation number RFP number bid number",
       "doc_types": null,
       "top_k": 8,
       "attempt": 1
@@ -124,80 +124,80 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0325
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0315
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
-          "score": 0.0307
+          "score": 0.0328
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0297
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0296
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
-          "score": 0.0286
+          "score": 0.032
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0313
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0313
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 4,
-          "score": 0.0277
+          "score": 0.029
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0271
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0284
         }
       ]
     },
-    "latency_ms": 1062.2
+    "latency_ms": 539.6
   },
   {
     "step": 4,
     "agent": "extractor:identity",
     "action": "extract",
     "input": {
-      "field": "company_name",
+      "field": "Bid Number",
       "evidence": 8
     },
     "output": {
-      "value": "State of Maryland Treasurer's Office",
+      "value": "BPM044557",
       "sources": [
-        "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0"
+        "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0"
       ]
     },
-    "latency_ms": 0.1
+    "latency_ms": 0.0
   },
   {
     "step": 5,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "company_name",
-      "value": "State of Maryland Treasurer's Office"
+      "field": "Bid Number",
+      "value": "BPM044557"
     },
     "output": {
       "passed": true,
@@ -210,101 +210,6 @@
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Due Date",
-      "query": "proposal due date and time closing date submission deadline",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0328
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0304
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 3,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0302
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0298
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0294
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0288
-        }
-      ]
-    },
-    "latency_ms": 79.2
-  },
-  {
-    "step": 7,
-    "agent": "extractor:dates",
-    "action": "extract",
-    "input": {
-      "field": "Due Date",
-      "evidence": 8
-    },
-    "output": {
-      "value": "06/10/2024 02:00 PM EDT",
-      "sources": [
-        "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0"
-      ]
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 8,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Due Date",
-      "value": "06/10/2024 02:00 PM EDT"
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.3
-  },
-  {
-    "step": 9,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
       "field": "Title",
       "query": "title of the request for proposal",
       "doc_types": null,
@@ -314,59 +219,59 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.032
         },
         {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "score": 0.0313
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0313
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
           "file": "Contract_Affidavit.pdf",
           "page": 1,
           "score": 0.0308
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 4,
           "score": 0.03
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0299
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0291
         },
         {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
           "file": "Mercury_Affidavit.pdf",
           "page": 1,
           "score": 0.0289
         }
       ]
     },
-    "latency_ms": 1144.6
+    "latency_ms": 552.2
   },
   {
-    "step": 10,
+    "step": 7,
     "agent": "extractor:identity",
     "action": "extract",
     "input": {
@@ -376,13 +281,13 @@
     "output": {
       "value": "Dell Laptops w/Extended Warranty",
       "sources": [
-        "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0"
+        "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0"
       ]
     },
     "latency_ms": 0.2
   },
   {
-    "step": 11,
+    "step": 8,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -396,7 +301,387 @@
     "latency_ms": 0.0
   },
   {
+    "step": 9,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "contact_info",
+      "query": "procurement officer point of contact email phone",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0323
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0315
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0308
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0306
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0306
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0299
+        }
+      ]
+    },
+    "latency_ms": 566.3
+  },
+  {
+    "step": 10,
+    "agent": "extractor:identity",
+    "action": "extract",
+    "input": {
+      "field": "contact_info",
+      "evidence": 8
+    },
+    "output": {
+      "value": "Tamaira Hawkins; 410-260-7533; Thawkins@treasurer.state.md.us",
+      "sources": [
+        "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0"
+      ]
+    },
+    "latency_ms": 0.1
+  },
+  {
+    "step": 11,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "contact_info",
+      "value": "Tamaira Hawkins; 410-260-7533; Thawkins@treasurer.state.md.us"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.0
+  },
+  {
     "step": 12,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "company_name",
+      "query": "issuing organization agency district office",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0325
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0315
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0307
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0297
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0296
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0286
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0277
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0271
+        }
+      ]
+    },
+    "latency_ms": 580.6
+  },
+  {
+    "step": 13,
+    "agent": "extractor:identity",
+    "action": "extract",
+    "input": {
+      "field": "company_name",
+      "evidence": 8
+    },
+    "output": {
+      "value": "State of Maryland Treasurer's Office",
+      "sources": [
+        "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0"
+      ]
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 14,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "company_name",
+      "value": "State of Maryland Treasurer's Office"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 15,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Due Date",
+      "query": "proposal due date and time closing date submission deadline",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0328
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0304
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 3,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0302
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0298
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0294
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0288
+        }
+      ]
+    },
+    "latency_ms": 62.6
+  },
+  {
+    "step": 16,
+    "agent": "extractor:dates",
+    "action": "extract",
+    "input": {
+      "field": "Due Date",
+      "evidence": 8
+    },
+    "output": {
+      "value": "06/10/2024 02:00 PM EDT",
+      "sources": [
+        "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0"
+      ]
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 17,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Due Date",
+      "value": "06/10/2024 02:00 PM EDT"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.2
+  },
+  {
+    "step": 18,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Bid Submission Type",
+      "query": "how proposals are submitted electronically sealed portal email",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0328
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0318
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0317
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0294
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0291
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0161
+        }
+      ]
+    },
+    "latency_ms": 64.0
+  },
+  {
+    "step": 19,
+    "agent": "extractor:dates",
+    "action": "extract",
+    "input": {
+      "field": "Bid Submission Type",
+      "evidence": 8
+    },
+    "output": {
+      "value": "BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the State's eMaryland Marketplace Advantage (eMMA) e-Procurement system.",
+      "sources": [
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1"
+      ]
+    },
+    "latency_ms": 1.6
+  },
+  {
+    "step": 20,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Submission Type",
+      "value": "BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the State's eMaryland Marketplace Advantage (eMMA) e-Procurement system."
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.1
+  },
+  {
+    "step": 21,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -409,59 +694,59 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0318
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:2",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:2",
           "file": "Contract_Affidavit.pdf",
           "page": 3,
           "score": 0.031
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 4,
           "score": 0.0308
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0301
         },
         {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
           "file": "Mercury_Affidavit.pdf",
           "page": 1,
           "score": 0.03
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0292
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.0285
         }
       ]
     },
-    "latency_ms": 64.7
+    "latency_ms": 66.3
   },
   {
-    "step": 13,
+    "step": 22,
     "agent": "extractor:dates",
     "action": "extract",
     "input": {
@@ -472,10 +757,10 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 1.1
+    "latency_ms": 1.5
   },
   {
-    "step": 14,
+    "step": 23,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -489,7 +774,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 15,
+    "step": 24,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
@@ -502,379 +787,138 @@
     "latency_ms": 0.0
   },
   {
-    "step": 16,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Bid Submission Type",
-      "query": "how proposals are submitted electronically sealed portal email",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0328
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0317
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0294
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0291
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0161
-        }
-      ]
-    },
-    "latency_ms": 68.4
-  },
-  {
-    "step": 17,
-    "agent": "extractor:dates",
-    "action": "extract",
-    "input": {
-      "field": "Bid Submission Type",
-      "evidence": 8
-    },
-    "output": {
-      "value": "BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the State's eMaryland Marketplace Advantage (eMMA) e-Procurement system.",
-      "sources": [
-        "Bid2:PORFP_-_Dell_Laptop_Final:p1:1"
-      ]
-    },
-    "latency_ms": 0.7
-  },
-  {
-    "step": 18,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Bid Submission Type",
-      "value": "BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the State's eMaryland Marketplace Advantage (eMMA) e-Procurement system."
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 19,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Bid Number",
-      "query": "solicitation number RFP number bid number",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0328
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0313
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0313
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.029
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0284
-        }
-      ]
-    },
-    "latency_ms": 1214.2
-  },
-  {
-    "step": 20,
-    "agent": "extractor:identity",
-    "action": "extract",
-    "input": {
-      "field": "Bid Number",
-      "evidence": 8
-    },
-    "output": {
-      "value": "BPM044557",
-      "sources": [
-        "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0"
-      ]
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 21,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Bid Number",
-      "value": "BPM044557"
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 22,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Delivery Date",
-      "query": "delivery within days of award shipping lead time",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0328
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0308
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0299
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0296
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0295
-        }
-      ]
-    },
-    "latency_ms": 56.1
-  },
-  {
-    "step": 23,
-    "agent": "extractor:dates",
-    "action": "extract",
-    "input": {
-      "field": "Delivery Date",
-      "evidence": 8
-    },
-    "output": {
-      "value": "Delivery within 45 days of Award",
-      "sources": [
-        "Bid2:PORFP_-_Dell_Laptop_Final:p2:1"
-      ]
-    },
-    "latency_ms": 0.6
-  },
-  {
-    "step": 24,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Delivery Date",
-      "value": "Delivery within 45 days of Award"
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.0
-  },
-  {
     "step": 25,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Term of Bid",
-      "query": "initial term of contract renewal options years",
-      "doc_types": [
-        "rfp",
-        "addendum",
-        "bid_page"
-      ],
-      "top_k": 8,
-      "attempt": 1
+      "field": "Pre Bid Meeting",
+      "query": "pre-bid pre-proposal meeting conference date mandatory",
+      "doc_types": null,
+      "top_k": 16,
+      "attempt": 2
     },
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0318
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:2",
+          "file": "Contract_Affidavit.pdf",
           "page": 3,
-          "score": 0.032
+          "score": 0.031
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.032
+          "page": 4,
+          "score": 0.0308
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
+          "page": 2,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0164
+          "page": 1,
+          "score": 0.0301
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0154
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.03
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.0152
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0292
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
-          "score": 0.0147
+          "score": 0.0285
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0285
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0284
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0279
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0276
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 3,
+          "score": 0.027
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0269
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0267
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0159
         }
       ]
     },
-    "latency_ms": 56.6
+    "latency_ms": 3.2
   },
   {
     "step": 26,
-    "agent": "extractor:commercial",
+    "agent": "extractor:dates",
     "action": "extract",
     "input": {
-      "field": "Term of Bid",
-      "evidence": 8
+      "field": "Pre Bid Meeting",
+      "evidence": 16
     },
     "output": {
       "value": null,
       "sources": []
     },
-    "latency_ms": 4.0
+    "latency_ms": 2.1
   },
   {
     "step": 27,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Term of Bid",
+      "field": "Pre Bid Meeting",
       "value": null
     },
     "output": {
@@ -888,8 +932,8 @@
     "agent": "orchestrator",
     "action": "retry",
     "input": {
-      "field": "Term of Bid",
-      "attempt": 1
+      "field": "Pre Bid Meeting",
+      "attempt": 2
     },
     "output": {
       "reason": "Not found in documents"
@@ -904,110 +948,158 @@
       "field": "Pre Bid Meeting",
       "query": "pre-bid pre-proposal meeting conference date mandatory",
       "doc_types": null,
-      "top_k": 16,
-      "attempt": 2
+      "top_k": 24,
+      "attempt": 3
     },
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0318
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:2",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:2",
           "file": "Contract_Affidavit.pdf",
           "page": 3,
           "score": 0.031
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 4,
           "score": 0.0308
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0301
         },
         {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
           "file": "Mercury_Affidavit.pdf",
           "page": 1,
           "score": 0.03
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0292
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.0285
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
           "file": "Contract_Affidavit.pdf",
           "page": 2,
           "score": 0.0285
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0284
         },
         {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
           "file": "Mercury_Affidavit.pdf",
           "page": 1,
           "score": 0.0279
         },
         {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "score": 0.0276
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:1",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:1",
           "file": "Contract_Affidavit.pdf",
           "page": 3,
           "score": 0.027
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0269
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.0267
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
           "file": "Contract_Affidavit.pdf",
           "page": 1,
           "score": 0.0159
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0149
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0147
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0141
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0125
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 3,
+          "score": 0.0123
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0122
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:5",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.012
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:2",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0119
         }
       ]
     },
-    "latency_ms": 65.0
+    "latency_ms": 3.2
   },
   {
     "step": 30,
@@ -1015,13 +1107,13 @@
     "action": "extract",
     "input": {
       "field": "Pre Bid Meeting",
-      "evidence": 16
+      "evidence": 24
     },
     "output": {
       "value": null,
       "sources": []
     },
-    "latency_ms": 2.0
+    "latency_ms": 5.5
   },
   {
     "step": 31,
@@ -1043,7 +1135,7 @@
     "action": "retry",
     "input": {
       "field": "Pre Bid Meeting",
-      "attempt": 2
+      "attempt": 3
     },
     "output": {
       "reason": "Not found in documents"
@@ -1055,210 +1147,8 @@
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Pre Bid Meeting",
-      "query": "pre-bid pre-proposal meeting conference date mandatory",
-      "doc_types": null,
-      "top_k": 24,
-      "attempt": 3
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 3,
-          "score": 0.031
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.0308
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.03
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0292
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0285
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0285
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0284
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0279
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0276
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 3,
-          "score": 0.027
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0269
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0267
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0159
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0149
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0147
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0141
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0125
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 3,
-          "score": 0.0123
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0122
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:5",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.012
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:2",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0119
-        }
-      ]
-    },
-    "latency_ms": 24.7
-  },
-  {
-    "step": 34,
-    "agent": "extractor:dates",
-    "action": "extract",
-    "input": {
-      "field": "Pre Bid Meeting",
-      "evidence": 24
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 4.6
-  },
-  {
-    "step": 35,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Pre Bid Meeting",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 36,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Pre Bid Meeting",
-      "attempt": 3
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 37,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "query": "bid bond bid security guarantee amount percent required",
+      "field": "Delivery Date",
+      "query": "delivery within days of award shipping lead time",
       "doc_types": null,
       "top_k": 8,
       "attempt": 1
@@ -1266,77 +1156,176 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
-          "score": 0.032
+          "score": 0.0328
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
-          "score": 0.0318
+          "score": 0.0323
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0311
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
           "score": 0.0308
         },
         {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0298
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0299
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
           "score": 0.0296
         },
         {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0288
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
-          "score": 0.0286
+          "score": 0.0295
         }
       ]
     },
-    "latency_ms": 43.2
+    "latency_ms": 71.0
   },
   {
-    "step": 38,
+    "step": 34,
+    "agent": "extractor:dates",
+    "action": "extract",
+    "input": {
+      "field": "Delivery Date",
+      "evidence": 8
+    },
+    "output": {
+      "value": "Delivery within 45 days of Award",
+      "sources": [
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1"
+      ]
+    },
+    "latency_ms": 0.8
+  },
+  {
+    "step": 35,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Delivery Date",
+      "value": "Delivery within 45 days of Award"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.1
+  },
+  {
+    "step": 36,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Term of Bid",
+      "query": "initial term of contract renewal options years",
+      "doc_types": [
+        "rfp",
+        "addendum",
+        "bid_page"
+      ],
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0306
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0164
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0154
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0152
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0147
+        }
+      ]
+    },
+    "latency_ms": 69.5
+  },
+  {
+    "step": 37,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
-      "field": "Bid Bond Requirement",
+      "field": "Term of Bid",
       "evidence": 8
     },
     "output": {
       "value": null,
       "sources": []
     },
-    "latency_ms": 1.4
+    "latency_ms": 3.3
   },
   {
-    "step": 39,
+    "step": 38,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Bid Bond Requirement",
+      "field": "Term of Bid",
       "value": null
     },
     "output": {
@@ -1346,11 +1335,11 @@
     "latency_ms": 0.0
   },
   {
-    "step": 40,
+    "step": 39,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
-      "field": "Bid Bond Requirement",
+      "field": "Term of Bid",
       "attempt": 1
     },
     "output": {
@@ -1359,7 +1348,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 41,
+    "step": 40,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -1376,59 +1365,59 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.032
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.032
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.032
         },
         {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0164
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0154
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 4,
           "score": 0.0152
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.0147
         }
       ]
     },
-    "latency_ms": 61.5
+    "latency_ms": 3.9
   },
   {
-    "step": 42,
+    "step": 41,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
@@ -1439,10 +1428,10 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 4.4
+    "latency_ms": 5.4
   },
   {
-    "step": 43,
+    "step": 42,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -1456,7 +1445,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 44,
+    "step": 43,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
@@ -1469,7 +1458,579 @@
     "latency_ms": 0.0
   },
   {
+    "step": 44,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Term of Bid",
+      "query": "initial term of contract renewal options years",
+      "doc_types": [
+        "rfp",
+        "addendum",
+        "bid_page"
+      ],
+      "top_k": 24,
+      "attempt": 3
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0306
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0164
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0154
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0152
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0147
+        }
+      ]
+    },
+    "latency_ms": 3.5
+  },
+  {
     "step": 45,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Term of Bid",
+      "evidence": 8
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 2.8
+  },
+  {
+    "step": 46,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Term of Bid",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 47,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Term of Bid",
+      "attempt": 3
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 48,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "query": "bid bond bid security guarantee amount percent required",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0318
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0311
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0308
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0298
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0296
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0288
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0286
+        }
+      ]
+    },
+    "latency_ms": 76.6
+  },
+  {
+    "step": 49,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "evidence": 8
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 3.6
+  },
+  {
+    "step": 50,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 51,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "attempt": 1
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 52,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "query": "bid bond bid security guarantee amount percent required",
+      "doc_types": null,
+      "top_k": 16,
+      "attempt": 2
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0318
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0311
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0308
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0298
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0296
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0288
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0286
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0279
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0274
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 1,
+          "score": 0.0274
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 1,
+          "score": 0.0265
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:3",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0258
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0256
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0159
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0149
+        }
+      ]
+    },
+    "latency_ms": 2.2
+  },
+  {
+    "step": 53,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "evidence": 16
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 2.6
+  },
+  {
+    "step": 54,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 55,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "attempt": 2
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 56,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "query": "bid bond bid security guarantee amount percent required",
+      "doc_types": null,
+      "top_k": 24,
+      "attempt": 3
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0318
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0311
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0308
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0298
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0296
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0288
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0286
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0279
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0274
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 1,
+          "score": 0.0274
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 1,
+          "score": 0.0265
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:3",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0258
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0256
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0159
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0149
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0143
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0141
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 3,
+          "score": 0.0135
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0133
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0132
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 3,
+          "score": 0.0128
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:2",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0127
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:5",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0125
+        }
+      ]
+    },
+    "latency_ms": 3.3
+  },
+  {
+    "step": 57,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "evidence": 24
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 4.0
+  },
+  {
+    "step": 58,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 59,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "attempt": 3
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 60,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -1482,59 +2043,59 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0328
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0311
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:5",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:5",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.031
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:0",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:0",
           "file": "Contract_Affidavit.pdf",
           "page": 2,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0304
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0299
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
           "file": "Contract_Affidavit.pdf",
           "page": 1,
           "score": 0.0299
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
           "file": "Contract_Affidavit.pdf",
           "page": 2,
           "score": 0.0298
         }
       ]
     },
-    "latency_ms": 33.6
+    "latency_ms": 70.5
   },
   {
-    "step": 46,
+    "step": 61,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
@@ -1544,13 +2105,13 @@
     "output": {
       "value": "Invoice(s) shall be submitted within 10 days of delivering the equipment and shall include at a minimum the following: Contractor name, mailing address, social security number or Federal Tax ID number, and phone number.",
       "sources": [
-        "Bid2:PORFP_-_Dell_Laptop_Final:p2:1"
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1"
       ]
     },
-    "latency_ms": 2.8
+    "latency_ms": 2.2
   },
   {
-    "step": 47,
+    "step": 62,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -1564,458 +2125,7 @@
     "latency_ms": 0.1
   },
   {
-    "step": 48,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "contact_info",
-      "query": "procurement officer point of contact email phone",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0315
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0308
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0299
-        }
-      ]
-    },
-    "latency_ms": 1362.5
-  },
-  {
-    "step": 49,
-    "agent": "extractor:identity",
-    "action": "extract",
-    "input": {
-      "field": "contact_info",
-      "evidence": 8
-    },
-    "output": {
-      "value": "Tamaira Hawkins; 410-260-7533; Thawkins@treasurer.state.md.us",
-      "sources": [
-        "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0"
-      ]
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 50,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "contact_info",
-      "value": "Tamaira Hawkins; 410-260-7533; Thawkins@treasurer.state.md.us"
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 51,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "query": "bid bond bid security guarantee amount percent required",
-      "doc_types": null,
-      "top_k": 16,
-      "attempt": 2
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0311
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0308
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0298
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.0296
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0288
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0286
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0279
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0274
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 1,
-          "score": 0.0274
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 1,
-          "score": 0.0265
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:3",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0258
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0256
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0159
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0149
-        }
-      ]
-    },
-    "latency_ms": 50.3
-  },
-  {
-    "step": 52,
-    "agent": "extractor:commercial",
-    "action": "extract",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "evidence": 16
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 2.1
-  },
-  {
-    "step": 53,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 54,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "attempt": 2
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 55,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "query": "bid bond bid security guarantee amount percent required",
-      "doc_types": null,
-      "top_k": 24,
-      "attempt": 3
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0311
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0308
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0298
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.0296
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0288
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0286
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0279
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0274
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 1,
-          "score": 0.0274
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 1,
-          "score": 0.0265
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:3",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0258
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0256
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0159
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0149
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0143
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0141
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 3,
-          "score": 0.0135
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0133
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0132
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 3,
-          "score": 0.0128
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:2",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0127
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:5",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0125
-        }
-      ]
-    },
-    "latency_ms": 36.3
-  },
-  {
-    "step": 56,
-    "agent": "extractor:commercial",
-    "action": "extract",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "evidence": 24
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 4.6
-  },
-  {
-    "step": 57,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 58,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "attempt": 3
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 59,
+    "step": 63,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -2028,59 +2138,59 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
           "file": "Mercury_Affidavit.pdf",
           "page": 1,
           "score": 0.032
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
           "file": "Contract_Affidavit.pdf",
           "page": 1,
           "score": 0.0315
         },
         {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
           "file": "Mercury_Affidavit.pdf",
           "page": 1,
           "score": 0.0315
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.031
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0308
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:2",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:2",
           "file": "Contract_Affidavit.pdf",
           "page": 3,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:1",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:1",
           "file": "Contract_Affidavit.pdf",
           "page": 1,
           "score": 0.0293
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
           "file": "Contract_Affidavit.pdf",
           "page": 2,
           "score": 0.0288
         }
       ]
     },
-    "latency_ms": 64.7
+    "latency_ms": 85.9
   },
   {
-    "step": 60,
+    "step": 64,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
@@ -2090,15 +2200,15 @@
     "output": {
       "value": "MERCURY AFFIDAVIT; Mercury Affidavit; Contract Affidavit",
       "sources": [
-        "Bid2:Mercury_Affidavit:p1:0",
-        "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-        "Bid2:Contract_Affidavit:p3:2"
+        "Bid2:Mercury_Affidavit-c38472:p1:0",
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+        "Bid2:Contract_Affidavit-718a7f:p3:2"
       ]
     },
-    "latency_ms": 6.8
+    "latency_ms": 9.2
   },
   {
-    "step": 61,
+    "step": 65,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -2109,117 +2219,7 @@
       "passed": true,
       "reason": "ok"
     },
-    "latency_ms": 0.1
-  },
-  {
-    "step": 62,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Term of Bid",
-      "query": "initial term of contract renewal options years",
-      "doc_types": [
-        "rfp",
-        "addendum",
-        "bid_page"
-      ],
-      "top_k": 24,
-      "attempt": 3
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0164
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0154
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.0152
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0147
-        }
-      ]
-    },
-    "latency_ms": 76.7
-  },
-  {
-    "step": 63,
-    "agent": "extractor:commercial",
-    "action": "extract",
-    "input": {
-      "field": "Term of Bid",
-      "evidence": 8
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 2.8
-  },
-  {
-    "step": 64,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Term of Bid",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 65,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Term of Bid",
-      "attempt": 3
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
+    "latency_ms": 0.2
   },
   {
     "step": 66,
@@ -2235,56 +2235,56 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0307
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0303
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0299
         },
         {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "score": 0.0296
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0283
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
           "file": "Contract_Affidavit.pdf",
           "page": 1,
           "score": 0.0282
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
           "file": "Contract_Affidavit.pdf",
           "page": 2,
           "score": 0.0282
         }
       ]
     },
-    "latency_ms": 57.1
+    "latency_ms": 67.7
   },
   {
     "step": 67,
@@ -2297,10 +2297,10 @@
     "output": {
       "value": "Desktop, Laptop and Tablet 2015 Master Contract, 060B5400007",
       "sources": [
-        "Bid2:PORFP_-_Dell_Laptop_Final:p1:0"
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0"
       ]
     },
-    "latency_ms": 2.0
+    "latency_ms": 0.9
   },
   {
     "step": 68,
@@ -2330,56 +2330,56 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:2",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:2",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0323
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:1",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:1",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.031
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0301
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p2:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p2:0",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 2,
           "score": 0.0299
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
           "file": "Contract_Affidavit.pdf",
           "page": 1,
           "score": 0.0277
         },
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:3",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:3",
           "file": "Contract_Affidavit.pdf",
           "page": 2,
           "score": 0.0272
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.0271
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0164
         }
       ]
     },
-    "latency_ms": 29.7
+    "latency_ms": 63.4
   },
   {
     "step": 70,
@@ -2393,7 +2393,7 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 4.3
+    "latency_ms": 1.9
   },
   {
     "step": 71,
@@ -2427,6 +2427,457 @@
     "agent": "retriever",
     "action": "search",
     "input": {
+      "field": "Installation",
+      "query": "installation imaging deployment setup services required",
+      "doc_types": null,
+      "top_k": 16,
+      "attempt": 2
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:2",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0323
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.031
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p2:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 2,
+          "score": 0.0299
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0277
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:3",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0272
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0271
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0164
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0159
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0156
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0152
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0147
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0145
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0143
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0141
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 1,
+          "score": 0.0139
+        }
+      ]
+    },
+    "latency_ms": 4.4
+  },
+  {
+    "step": 74,
+    "agent": "extractor:product",
+    "action": "extract",
+    "input": {
+      "field": "Installation",
+      "evidence": 16
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 3.5
+  },
+  {
+    "step": 75,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Installation",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 76,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Installation",
+      "attempt": 2
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 77,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Installation",
+      "query": "installation imaging deployment setup services required",
+      "doc_types": null,
+      "top_k": 24,
+      "attempt": 3
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:2",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0323
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.031
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:3",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p2:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 2,
+          "score": 0.0299
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0277
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:3",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0272
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0271
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0164
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0159
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0156
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0152
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0147
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p4:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 4,
+          "score": 0.0145
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0143
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0141
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 1,
+          "score": 0.0139
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 1,
+          "score": 0.0137
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0133
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0132
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.013
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:1",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0127
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0125
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:1",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0123
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p2:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 2,
+          "score": 0.0122
+        }
+      ]
+    },
+    "latency_ms": 3.3
+  },
+  {
+    "step": 78,
+    "agent": "extractor:product",
+    "action": "extract",
+    "input": {
+      "field": "Installation",
+      "evidence": 24
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 4.1
+  },
+  {
+    "step": 79,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Installation",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 80,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Installation",
+      "attempt": 3
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 81,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "MFG for Registration",
+      "query": "authorized reseller manufacturer authorization registered OEM",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p1:0",
+          "file": "Contract_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0323
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0315
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0309
+        },
+        {
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
+          "file": "Mercury_Affidavit.pdf",
+          "page": 1,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 1,
+          "score": 0.0301
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.0292
+        },
+        {
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:2",
+          "file": "Contract_Affidavit.pdf",
+          "page": 3,
+          "score": 0.0285
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:1",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 1,
+          "score": 0.028
+        }
+      ]
+    },
+    "latency_ms": 73.1
+  },
+  {
+    "step": 82,
+    "agent": "extractor:product",
+    "action": "extract",
+    "input": {
+      "field": "MFG for Registration",
+      "evidence": 8
+    },
+    "output": {
+      "value": "Dell",
+      "sources": [
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0"
+      ]
+    },
+    "latency_ms": 4.8
+  },
+  {
+    "step": 83,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "MFG for Registration",
+      "value": "Dell"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.1
+  },
+  {
+    "step": 84,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
       "field": "Model_no",
       "query": "model number product model",
       "doc_types": [
@@ -2440,59 +2891,59 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.032
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.032
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0311
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.031
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0309
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "score": 0.0301
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:1",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:1",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
           "score": 0.0292
         }
       ]
     },
-    "latency_ms": 41.7
+    "latency_ms": 61.7
   },
   {
-    "step": 74,
+    "step": 85,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
@@ -2502,16 +2953,16 @@
     "output": {
       "value": "Latitude 5550; WD22TB4",
       "sources": [
-        "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-        "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
-        "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-        "Bid2:Dell_Laptop_Specs:p1:1"
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
+        "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+        "Bid2:Dell_Laptop_Specs-884636:p1:1"
       ]
     },
-    "latency_ms": 4.6
+    "latency_ms": 6.2
   },
   {
-    "step": 75,
+    "step": 86,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -2525,7 +2976,7 @@
     "latency_ms": 0.2
   },
   {
-    "step": 76,
+    "step": 87,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -2542,59 +2993,59 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0328
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p2:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p2:0",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 2,
           "score": 0.0323
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0315
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.0305
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:0",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
           "score": 0.0303
         },
         {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "score": 0.0299
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:2",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:2",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0286
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.0284
         }
       ]
     },
-    "latency_ms": 44.8
+    "latency_ms": 72.2
   },
   {
-    "step": 77,
+    "step": 88,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
@@ -2604,16 +3055,16 @@
     "output": {
       "value": "365-0257; CC7802; 210-BLYZ",
       "sources": [
-        "Bid2:Dell_Laptop_Specs:p2:0",
-        "Bid2:Dell_Laptop_Specs:p1:0",
-        "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-        "Bid2:PORFP_-_Dell_Laptop_Final:p3:0"
+        "Bid2:Dell_Laptop_Specs-884636:p2:0",
+        "Bid2:Dell_Laptop_Specs-884636:p1:0",
+        "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+        "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0"
       ]
     },
-    "latency_ms": 2.4
+    "latency_ms": 2.6
   },
   {
-    "step": 78,
+    "step": 89,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -2624,169 +3075,15 @@
       "passed": true,
       "reason": "ok"
     },
-    "latency_ms": 0.1
+    "latency_ms": 0.2
   },
   {
-    "step": 79,
+    "step": 90,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Installation",
-      "query": "installation imaging deployment setup services required",
-      "doc_types": null,
-      "top_k": 16,
-      "attempt": 2
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:2",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.031
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p2:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 2,
-          "score": 0.0299
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0277
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:3",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0272
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0271
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0164
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0159
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0156
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0152
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0147
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.0145
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0143
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0141
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 1,
-          "score": 0.0139
-        }
-      ]
-    },
-    "latency_ms": 31.3
-  },
-  {
-    "step": 80,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "Installation",
-      "evidence": 16
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 3.5
-  },
-  {
-    "step": 81,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Installation",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 82,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Installation",
-      "attempt": 2
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 83,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "MFG for Registration",
-      "query": "authorized reseller manufacturer authorization registered OEM",
+      "field": "Product",
+      "query": "product description quantity laptops desktops devices",
       "doc_types": null,
       "top_k": 8,
       "attempt": 1
@@ -2794,80 +3091,80 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0315
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0309
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0292
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p3:2",
-          "file": "Contract_Affidavit.pdf",
           "page": 3,
-          "score": 0.0285
+          "score": 0.0325
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 2,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0312
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:0",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
-          "score": 0.028
+          "score": 0.0302
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:2",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0299
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:0",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.0299
+        },
+        {
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
+          "file": "PORFP_-_Dell_Laptop_Final.pdf",
+          "page": 3,
+          "score": 0.0291
+        },
+        {
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
+          "file": "Dell_Laptop_Specs.pdf",
+          "page": 3,
+          "score": 0.029
         }
       ]
     },
-    "latency_ms": 70.2
+    "latency_ms": 51.7
   },
   {
-    "step": 84,
+    "step": 91,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
-      "field": "MFG for Registration",
+      "field": "Product",
       "evidence": 8
     },
     "output": {
-      "value": "Dell",
+      "value": "1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024",
       "sources": [
-        "Bid2:PORFP_-_Dell_Laptop_Final:p2:0"
+        "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0"
       ]
     },
-    "latency_ms": 7.3
+    "latency_ms": 0.0
   },
   {
-    "step": 85,
+    "step": 92,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "MFG for Registration",
-      "value": "Dell"
+      "field": "Product",
+      "value": "1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024"
     },
     "output": {
       "passed": true,
@@ -2876,7 +3173,7 @@
     "latency_ms": 0.1
   },
   {
-    "step": 86,
+    "step": 93,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -2892,59 +3189,59 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "score": 0.0328
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "score": 0.032
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0315
         },
         {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "score": 0.0312
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:0",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
           "score": 0.031
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:2",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:2",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0294
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:5",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:5",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.0292
         },
         {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p3:4",
           "file": "Dell_Laptop_Specs.pdf",
           "page": 3,
           "score": 0.029
         }
       ]
     },
-    "latency_ms": 31.6
+    "latency_ms": 58.6
   },
   {
-    "step": 87,
+    "step": 94,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
@@ -2954,13 +3251,13 @@
     "output": {
       "value": "CPU: Intel Core Ultra 5 125U processor (12 MB cache, 12 co; RAM: 16 GB: 2 x 8 GB, DDR5; Storage: 256 GB, M.2 2230, TLC, Gen 4 PCIe NVMe; Display: 15.6\", FHD 1920x1080, 60Hz, IPS, Non-Touch, A; Battery: 3-cell, 54 Wh; Wireless: Wi-Fi 6E (6 where 6E unavailable); OS: Windows 11 Pro",
       "sources": [
-        "Bid2:Dell_Laptop_Specs:p1:0"
+        "Bid2:Dell_Laptop_Specs-884636:p1:0"
       ]
     },
-    "latency_ms": 4.9
+    "latency_ms": 2.2
   },
   {
-    "step": 88,
+    "step": 95,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -2974,303 +3271,6 @@
     "latency_ms": 0.1
   },
   {
-    "step": 89,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Product",
-      "query": "product description quantity laptops desktops devices",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0325
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0312
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 1,
-          "score": 0.0302
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:2",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0299
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0299
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0291
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.029
-        }
-      ]
-    },
-    "latency_ms": 41.2
-  },
-  {
-    "step": 90,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "Product",
-      "evidence": 8
-    },
-    "output": {
-      "value": "1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024",
-      "sources": [
-        "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0"
-      ]
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 91,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Product",
-      "value": "1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024"
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.1
-  },
-  {
-    "step": 92,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Installation",
-      "query": "installation imaging deployment setup services required",
-      "doc_types": null,
-      "top_k": 24,
-      "attempt": 3
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:2",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.031
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:3",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0301
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p2:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 2,
-          "score": 0.0299
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0277
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:3",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0272
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0271
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0164
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 2,
-          "score": 0.0159
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0156
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 1,
-          "score": 0.0152
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 3,
-          "score": 0.0147
-        },
-        {
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p4:0",
-          "file": "PORFP_-_Dell_Laptop_Final.pdf",
-          "page": 4,
-          "score": 0.0145
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0143
-        },
-        {
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0141
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:1",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 1,
-          "score": 0.0139
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 1,
-          "score": 0.0137
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:0",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.0133
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0132
-        },
-        {
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p3:4",
-          "file": "Dell_Laptop_Specs.pdf",
-          "page": 3,
-          "score": 0.013
-        },
-        {
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:1",
-          "file": "Mercury_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0127
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p1:2",
-          "file": "Contract_Affidavit.pdf",
-          "page": 1,
-          "score": 0.0125
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:1",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0123
-        },
-        {
-          "chunk_id": "Bid2:Contract_Affidavit:p2:0",
-          "file": "Contract_Affidavit.pdf",
-          "page": 2,
-          "score": 0.0122
-        }
-      ]
-    },
-    "latency_ms": 31.5
-  },
-  {
-    "step": 93,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "Installation",
-      "evidence": 24
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 4.6
-  },
-  {
-    "step": 94,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Installation",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 95,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Installation",
-      "attempt": 3
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
     "step": 96,
     "agent": "reconciler",
     "action": "reconcile",
@@ -3281,17 +3281,21 @@
       "changes": 0,
       "due_date": "06/10/2024 02:00 PM EDT"
     },
-    "latency_ms": 0.0
+    "latency_ms": 0.1
   },
   {
     "step": 97,
     "agent": "qa_report",
-    "action": "summary_error",
-    "input": {},
-    "output": {
-      "error": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.g"
+    "action": "summary",
+    "input": {
+      "facts": 1532
     },
-    "latency_ms": 1888.0
+    "output": {
+      "model": "gemini-3.5-flash",
+      "input_tokens": 582,
+      "output_tokens": 185
+    },
+    "latency_ms": 11414.7
   },
   {
     "step": 98,
@@ -3303,6 +3307,6 @@
       "failed": 0,
       "not_found": 4
     },
-    "latency_ms": 3563.6
+    "latency_ms": 12459.3
   }
 ]

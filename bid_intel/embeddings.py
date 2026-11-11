@@ -1,20 +1,23 @@
-"""Dense retrieval: local sentence embeddings with fastembed (ONNX, no GPU, no API key).
+"""Sentence embeddings with fastembed (ONNX, CPU, no API key).
 
 Model: BAAI/bge-small-en-v1.5 (384 dimensions, about 70 MB, downloaded once on first use).
-Vectors are L2-normalised, so cosine similarity is a dot product.
+Vectors are L2-normalised, so cosine similarity is a dot product. Vectors for the bid folders are
+stored in the Chroma vector store (vectorstore.py); DenseIndex is the small in-memory index used by
+the earlier single-addendum prototype (retrieval.py).
 """
 from __future__ import annotations
 
-import hashlib
 import os
+import threading
 from functools import lru_cache
-from pathlib import Path
 
 import numpy as np
 
 MODEL_NAME = os.environ.get("BID_INTEL_EMBED_MODEL", "BAAI/bge-small-en-v1.5")
+DIM = 384
 # bge models are trained with this instruction prefix on the query side only
 QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
+_lock = threading.Lock()  # agents search from several threads; one ONNX session at a time
 
 
 def available() -> bool:
@@ -36,46 +39,34 @@ def _normalise(m: np.ndarray) -> np.ndarray:
     return m / np.where(norms == 0, 1, norms)
 
 
-CACHE_DIR = Path(os.environ.get("BID_INTEL_CACHE", Path(__file__).resolve().parent.parent / ".cache"))
+def embed_passages(texts: list[str]) -> np.ndarray:
+    if not texts:
+        return np.zeros((0, DIM), dtype=np.float32)
+    with _lock:
+        # small batches: one 256-text batch pads every text to the longest and is slow and memory-hungry
+        return _normalise(np.array(list(_model().embed(list(texts), batch_size=16)), dtype=np.float32))
 
 
-def _cache_path() -> Path:
-    return CACHE_DIR / f"emb_{hashlib.sha1(MODEL_NAME.encode()).hexdigest()[:8]}.npz"
+@lru_cache(maxsize=512)
+def _embed_query_cached(query: str) -> tuple[float, ...]:
+    with _lock:
+        v = _normalise(np.array(list(_model().embed([QUERY_PREFIX + query])), dtype=np.float32))[0]
+    return tuple(v.tolist())
 
 
-@lru_cache(maxsize=1)
-def _disk_cache() -> dict[str, np.ndarray]:
-    p = _cache_path()
-    if p.exists():
-        with np.load(p) as z:
-            return {k: z[k] for k in z.files}
-    return {}
-
-
-def _embed_passages(texts: tuple[str, ...]) -> np.ndarray:
-    """Embed passages, reusing vectors cached on disk (keyed by a hash of the text), so a chunk is
-    embedded once across runs and adding a bid only embeds that bid's chunks."""
-    cache = _disk_cache()
-    keys = [hashlib.sha1(t.encode("utf-8")).hexdigest() for t in texts]
-    missing = [(k, t) for k, t in zip(keys, texts) if k not in cache]
-    if missing:
-        vecs = _normalise(np.array(list(_model().embed([t for _, t in missing])), dtype=np.float32))
-        for (k, _), v in zip(missing, vecs):
-            cache[k] = v
-        CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        np.savez(_cache_path(), **cache)
-    return np.stack([cache[k] for k in keys]) if keys else np.zeros((0, 384), dtype=np.float32)
+def embed_query(query: str) -> np.ndarray:
+    return np.array(_embed_query_cached(query), dtype=np.float32)
 
 
 class DenseIndex:
+    """In-memory index for the prototype's 39-chunk addendum; the bid folders use Chroma."""
+
     def __init__(self, texts: list[str]):
-        self.matrix = _embed_passages(tuple(texts)) if texts else np.zeros((0, 384), dtype=np.float32)
+        self.matrix = embed_passages(texts)
 
     def add(self, texts: list[str]) -> None:
-        """Incremental indexing: embed only the new passages and append them."""
         if texts:
-            self.matrix = np.vstack([self.matrix, _embed_passages(tuple(texts))])
+            self.matrix = np.vstack([self.matrix, embed_passages(texts)])
 
     def scores(self, query: str) -> list[float]:
-        q = _normalise(np.array(list(_model().embed([QUERY_PREFIX + query])), dtype=np.float32))[0]
-        return (self.matrix @ q).tolist()
+        return (self.matrix @ embed_query(query)).tolist()

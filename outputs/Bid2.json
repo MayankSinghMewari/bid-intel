@@ -1,6 +1,6 @@
 {
   "bid_id": "Bid2",
-  "generated_at": "2026-11-11T07:48:01+00:00",
+  "generated_at": "2026-11-11T08:08:41+00:00",
   "fields": {
     "Bid Number": {
       "value": "BPM044557",
@@ -9,7 +9,7 @@
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": "solicitation number: BPM044557"
         }
       ],
@@ -24,7 +24,7 @@
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": "title: Dell Laptops w/Extended Warranty"
         }
       ],
@@ -39,7 +39,7 @@
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": "closing date: 06/10/2024 02:00 PM EDT"
         }
       ],
@@ -54,7 +54,7 @@
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:1",
           "evidence": "cle, 14-501--14-505, Annotated Code of Maryland, and that are certified by GOSBA Small Business Reserve Program are eligible for award of a contract. BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the State's eMaryland Marketplace Advantage (eMMA) e-Procurement system. Bids will not be accepted by email, fax, U.S. Mail, or hand delivery. You must be registered and Logged in to submi"
         }
       ],
@@ -97,7 +97,7 @@
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "evidence": "must provide a Mercury Affidavit: https://doit.maryland.gov/contracts/Documents/hardware_co ntract/hwmercury_affidavit.pdf Invoicing Instructions: 9. Delivery within 45 days of Award. 1. Email invoices to: STOaccountspayable@treasurer.state.md.us 2. Invoice(s) shall be submitted within 10 days of delivering the equipment and shall include at a minimum the following: Contractor name, mailing address, social security number or Federal Tax ID number"
         }
       ],
@@ -112,7 +112,7 @@
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "evidence": "wmercury_affidavit.pdf Invoicing Instructions: 9. Delivery within 45 days of Award. 1. Email invoices to: STOaccountspayable@treasurer.state.md.us 2. Invoice(s) shall be submitted within 10 days of delivering the equipment and shall include at a minimum the following: Contractor name, mailing address, social security number or Federal Tax ID number, and phone number. Reference the States assigned PORFP number. Date, invoice number and amount due."
         }
       ],
@@ -127,21 +127,21 @@
           "file": "Mercury_Affidavit.pdf",
           "page": 1,
           "doc_type": "affidavit",
-          "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
+          "chunk_id": "Bid2:Mercury_Affidavit-c38472:p1:0",
           "evidence": "MERCURY AFFIDAVIT AUTHORIZED REPRESENTATIVE THEREBY AFFIRM THAT: I am the _________________ (Title) and the duly authorized representative of _______________________ (Business). I possess the legal authority to make this affidavit on behalf of myself and the business for which I am acting. MERCURY CONTENT INFORMATION: [ ] The product(s) offered do not contain mercury. OR [ ] The product(s) offered do contain mercury. (1) Describe the product or p"
         },
         {
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:1",
           "evidence": "cking fee if an item is returned due to damage or incorrect product shipped. 7. ENERGY STAR certified product 8. The Master Contractor must provide a Mercury Affidavit: https://doit.maryland.gov/contracts/Documents/hardware_co ntract/hwmercury_affidavit.pdf Invoicing Instructions: 9. Delivery within 45 days of Award. 1. Email invoices to: STOaccountspayable@treasurer.state.md.us 2. Invoice(s) shall be submitted within 10 days of delivering the eq"
         },
         {
           "file": "Contract_Affidavit.pdf",
           "page": 3,
           "doc_type": "affidavit",
-          "chunk_id": "Bid2:Contract_Affidavit:p3:2",
+          "chunk_id": "Bid2:Contract_Affidavit-718a7f:p3:2",
           "evidence": "or the purpose of obtaining the contract to which this Exhibit is attached remains true and correct in all respects as if made as of the date of this Contract Affidavit and as if fully set forth herein. I DO SOLEMNLY DECLARE AND AFFIRM UNDER THE PENALTIES OF PERJURY THAT THE CONTENTS OF THIS AFFIDAVIT ARE TRUE AND CORRECT TO THE BEST OF MY KNOWLEDGE, INFORMATION, AND BELIEF. Date: By: (print name of Authorized Representative and Affiant) (signatu"
         }
       ],
@@ -156,7 +156,7 @@
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p2:0",
           "evidence": "ate and Time: 06/01/2024 at 2:00 PM EDT Questions must be submitted in writing to thawkins@treasurer.state.md.us with the subject line, \"QUESTION for Dell Laptop #E20P4600040\", and be submitted in writing via e-mail to the Procurement Officer no later than the date and time specified. Security Requirements (if 1. The Department reserves the right to purchase more or less applicable): than the specified quantity to the extent limited by funding. 2"
         }
       ],
@@ -171,7 +171,7 @@
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 1,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p1:0",
           "evidence": "0 Clavert Street Annapolis MD 21401 Special Instructions: LIMITED TO MASTER CONTRACTORS Only Master Contractors that are awarded a contract under the Desktop, Laptop and Tablet 2015 Master Contract, 060B5400007, are eligible to submit a bid in response to this secondary competition Purchase Order Request for Proposal (PORFP). SMALL BUSINESS RESERVE (SBR) PROCUREMENT This is a Small Business Reserve Procurement for which award will be limited to c"
         }
       ],
@@ -186,28 +186,28 @@
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
           "evidence": "f June 1, 2023. Product Name Product Description Model # Qty Due Date mm/dd/yyyy 1. SI# CC7802 Dell SI# CC7802 Dell Latitude SI# CC7802 30 06/10/2024 Latitude 5550"
         },
         {
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:1",
           "evidence": "f June 1, 2023. Product Name Product Description Model # Qty Due Date mm/dd/yyyy 1. SI# CC7802 Dell SI# CC7802 Dell Latitude SI# CC7802 30 06/10/2024 Latitude 5550 5550 *Laptops must be Microsoft Copilot ready* 2. Dell Thunderbolt 4 Dell Thunderbolt 4 Dock WD22TB4 30 06/10/2024 Dock WD22TB4 WD22TB4 FA V - Manufacturer's Extended Warranty (Provide a detailed description of warranty requirements and deliverables) Warranty Requirements Deliverables "
         },
         {
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": "T Closing Date 06/10/2024 02:00 PM EDT Contact Information Tamaira Hawkins 410-260-7533 Thawkins@treasurer.state.md.us Description 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024 See more For more information on this solicitation, please click on the following link: https://"
         },
         {
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
           "doc_type": "specs",
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:1",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:1",
           "evidence": "pressCharge Capable, ExpressCharge Boost Capable 451-BDGX 65W AC adapter, USB Type-C, EcoDesign No Security 492-BDMN E4 Power Cord 1M for US 346-BKLV Latitude 5550 Quick Start Guide 537-BBDO SERI Guide (ENG/FR/Multi) 340-DMNY ENERGY STAR Qualified 340-AGIK Custom Configuration 387-BBPC Dell Additional Software 817-BBBB Mix Model MTL 65WADPT 658-BFQB Intel Core Ultra 5 Non-vPro Label 340-DMMK FHD HDR RGB Camera, TNR, Camera Shutter, Microphone 389"
         }
       ],
@@ -222,28 +222,28 @@
           "file": "Dell_Laptop_Specs.pdf",
           "page": 2,
           "doc_type": "specs",
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p2:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p2:0",
           "evidence": "tory Install 362-7806 CFI Titan Code for CFI FIDA or Bypass SI 364-1846 CFI,Information, Validation,Se lect Any Microsoft OS 364-4107 CFI Routing SKU 365-0257 Custom Asset Report 366-0135 Consigned Asset Tag 366-0141 CFI,Information Client,Only 371-0941 CFI,Information,CSRouting,Elig ible,Factory Install 375-3088 CFI,LBL,POLY,SML,CC7801,FACTOR Y INSTALL 383-0464 Page 4 Dell Marketing LP. U.S. only. Dell Marketing LP. is located at One Dell Way, M"
         },
         {
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
           "doc_type": "specs",
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:0",
           "evidence": "SI# CC7802 Dell Latitude 5550 SKU 210-BLYZ Description Dell Latitude 5550 XCTO Base 379-BFNZ Intel Core Ultra 5 125U processor (12 MB cache, 12 cores, 14 threads, up to 4.3 GHz Turbo) 619-ARSB Windows 11 Pro, English, Brazilian Portuguese PT-BR, French, Spanish 658-BCSB No Microsoft Office License Included - 30 day Trial Offer Only 338-CNRG Assembly Base MTL 5550 338-CNRK Integrated Intel graphics for Intel Core Ultra 5 125U processor 321-BKTQ La"
         },
         {
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": " 11:47 AM EDT Closing Date 06/10/2024 02:00 PM EDT Contact Information Tamaira Hawkins 410-260-7533 Thawkins@treasurer.state.md.us Description 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024 See more For more information on this solicitation, please click on the following li"
         },
         {
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "doc_type": "rfp",
-          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
+          "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final-d8c47c:p3:0",
           "evidence": "odate MD529 employees who have been included in our staff as of June 1, 2023. Product Name Product Description Model # Qty Due Date mm/dd/yyyy 1. SI# CC7802 Dell SI# CC7802 Dell Latitude SI# CC7802 30 06/10/2024 Latitude 5550"
         }
       ],
@@ -258,7 +258,7 @@
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": "description: 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024"
         }
       ],
@@ -273,7 +273,7 @@
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": "contact information: Tamaira Hawkins; 410-260-7533; Thawkins@treasurer.state.md.us"
         }
       ],
@@ -288,7 +288,7 @@
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": "issuing organization: State of Maryland Treasurer's Office"
         }
       ],
@@ -297,32 +297,32 @@
       "validated": true
     },
     "Bid Summary": {
-      "value": "State of Maryland Treasurer's Office has issued bid BPM044557 for Dell Laptops w/Extended Warranty. Scope: 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024. Responses are due 06/10/2024 02:00 PM EDT via BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the Stat. Required documents include MERCURY AFFIDAVIT; Mercury Affidavit; Contract Affidavit.",
+      "value": "The State of Maryland Treasurer's Office is soliciting responses for bid number BPM044557, titled Dell Laptops w/Extended Warranty, utilizing the Desktop, Laptop and Tablet 2015 Master Contract. The procurement includes 30 Microsoft Copilot-ready Dell Latitude 5550 laptops featuring Intel Core Ultra 5 125U processors, 16 GB RAM, and Windows 11 Pro, as well as 30 Dell Thunderbolt 4 Docks. Proposals must be submitted via the eMaryland Marketplace Advantage system by June 10, 2024, at 2:00 PM EDT. Delivery is required within 45 days of award, and required documentation includes a Mercury Affidavit and a Contract Affidavit. Invoices must be submitted within 10 days of equipment delivery, and the primary contact for this solicitation is Tamaira Hawkins.",
       "sources": [
         {
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
           "evidence": "title: Dell Laptops w/Extended Warranty"
         },
         {
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "evidence": "description: 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024"
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "evidence": "closing date: 06/10/2024 02:00 PM EDT"
         },
         {
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
-          "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "evidence": "closing date: 06/10/2024 02:00 PM EDT"
+          "chunk_id": "Bid2:Dell Laptops w_Extended Warran-f6cd23:p1:0",
+          "evidence": "description: 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024"
         }
       ],
-      "confidence": 0.7,
-      "notes": "template summary from the extracted fields (LLM call failed, see trace)",
+      "confidence": 0.75,
+      "notes": "generated by gemini-3.5-flash from the validated extracted fields",
       "validated": true
     },
     "Product Specification": {
@@ -332,7 +332,7 @@
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
           "doc_type": "specs",
-          "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
+          "chunk_id": "Bid2:Dell_Laptop_Specs-884636:p1:0",
           "evidence": "SI# CC7802 Dell Latitude 5550 SKU 210-BLYZ Description Dell Latitude 5550 XCTO Base 379-BFNZ Intel Core Ultra 5 125U processor (12 MB cache, 12 cores, 14 threads, up to 4.3 GHz Turbo) 619-ARSB Windows 11 Pro, English, Brazilian Portuguese PT-BR, French, Spanish 658-BCSB No Microsoft Office License Included - 30 day Trial Offer Only 338-CNRG Assembly Base MTL 5550 338-CNRK Integrated Intel graphics for Intel Core Ultra 5 125U processor 321-BKTQ Latitude 5550 Bottom Door, MTL U15 409-BCXY Intel Rapid Storage Technology Driver 631-BBSQ Intel vPro Management Disabled 16 GB: 2 x 8 GB, DDR5, 5600 MT/s (5200 MT/s with 13th Gen Intel 370-BBTL Core processors) 256 GB, M.2 2230, TLC, Gen 4 PCIe NVMe, SSD 400-BRFT 15.6\", FHD 1920x1080, 60Hz, IPS, Non-Touch, AG, 250 nit, 45% NTSC, FHD Cam 391-BJHB English US backlit AI hotkey keyboard with numeric keypad, 99-key Intel AX211 WLAN Driver 583-BLNH Intel Wi-Fi 6E (6 where 6E unavailable) AX211, 2x2, 802.11ax, 555-BKQC Bluetooth 5.3 wireless card 555-BKLQ 3-cell, 54 Wh, ExpressCharge Capable, ExpressCharge Boost Capable 451-BDGX 65W AC adapter, USB Type-C, EcoDesign No Security 492-BDMN"
         }
       ],

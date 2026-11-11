@@ -16,7 +16,7 @@
       "Recall@5": 0.95,
       "MRR": 0.777,
       "questions": 20,
-      "ms_per_query": 0.9
+      "ms_per_query": 1.5
     },
     {
       "config": "dense (bge-small)",
@@ -25,7 +25,7 @@
       "Recall@5": 0.95,
       "MRR": 0.835,
       "questions": 20,
-      "ms_per_query": 59.1
+      "ms_per_query": 51.7
     },
     {
       "config": "hybrid RRF",
@@ -34,7 +34,7 @@
       "Recall@5": 0.95,
       "MRR": 0.879,
       "questions": 20,
-      "ms_per_query": 24.7
+      "ms_per_query": 3.8
     },
     {
       "config": "hybrid RRF + cross-encoder rerank",
@@ -43,7 +43,7 @@
       "Recall@5": 1.0,
       "MRR": 0.804,
       "questions": 20,
-      "ms_per_query": 5235.7
+      "ms_per_query": 4073.6
     }
   ],
   "unlabeled": []
