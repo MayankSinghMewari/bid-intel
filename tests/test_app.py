@@ -58,4 +58,4 @@ def test_public_demo_mode_is_read_only_and_never_uses_the_llm(monkeypatch):
     assert not any(b.label == "Run extraction" for b in at.button)
     assert any("Public read-only demo" in i.value for i in at.info)
     assert os.environ["BID_INTEL_LLM"] == "off"
-    assert any("No LLM key" in i.value for i in at.sidebar.info)
+    assert any("switched off on purpose" in i.value for i in at.sidebar.info)

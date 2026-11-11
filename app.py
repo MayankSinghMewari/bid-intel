@@ -75,7 +75,10 @@ with st.sidebar:
     chunks = warm_index()
     st.metric("Indexed chunks", chunks, help="BM25 in memory + Chroma vector store (bge-small)")
     provider = llm.provider()
-    if provider and not llm.breaker_reason():
+    if DEMO:
+        st.info("Public demo: LLM generation is switched off on purpose. Answers use the validated extraction "
+                "record and cited passages.", icon=":material/info:")
+    elif provider and not llm.breaker_reason():
         model = llm.GEMINI_MODEL if provider == "gemini" else llm.MODEL
         st.success(f"LLM: {model}", icon=":material/smart_toy:")
     elif llm.breaker_reason():
@@ -83,7 +86,9 @@ with st.sidebar:
                    icon=":material/hourglass:")
     else:
         st.info("No LLM key: rule-based extraction and extractive answers.", icon=":material/info:")
-    if observability.enabled():
+    if DEMO:
+        st.caption("Tracing: off in the public demo (Langfuse is used in the full version)")
+    elif observability.enabled():
         st.success("Tracing: Langfuse", icon=":material/monitoring:")
     else:
         st.caption("Tracing: local JSON only (no Langfuse keys)")
