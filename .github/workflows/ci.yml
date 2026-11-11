@@ -78,11 +78,13 @@ jobs:
           build-args: GIT_SHA=${{ github.sha }}
           cache-from: type=gha
 
-  # Continuous deployment of the read-only public demo to a Hugging Face Space (Docker SDK).
-  # Needs repository secret HF_TOKEN (write) and variable HF_SPACE ("<hf-user>/bid-intel"); skipped otherwise.
+  # Optional: deploy the read-only demo to a Hugging Face Docker Space. Docker Spaces need a Hugging Face PRO
+  # plan (free accounts get 402 Payment Required), so this job is opt-in: set repository variable
+  # HF_DEPLOY=true plus HF_SPACE ("<hf-user>/bid-intel") and secret HF_TOKEN (write). The public demo
+  # otherwise runs on Streamlit Community Cloud, which redeploys from the repository on every push.
   deploy-demo:
     needs: docker
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.HF_SPACE != ''
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.HF_DEPLOY == 'true' && vars.HF_SPACE != ''
     runs-on: ubuntu-latest
     permissions:
       contents: read

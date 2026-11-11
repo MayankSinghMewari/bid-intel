@@ -13,13 +13,30 @@ import os
 import re
 from pathlib import Path
 
-DEMO = os.environ.get("BID_INTEL_DEMO", "").lower() in ("1", "true", "yes", "on")
+import pandas as pd
+import streamlit as st
+
+
+def _demo_mode() -> bool:
+    """Read-only public demo: BID_INTEL_DEMO in the environment or in Streamlit secrets (Community Cloud),
+    and always when running on Streamlit Community Cloud (apps live under /mount/src), so a public
+    deployment is safe even if the setting is forgotten."""
+    def truthy(v) -> bool:
+        return str(v).strip().lower() in ("1", "true", "yes", "on")
+    if truthy(os.environ.get("BID_INTEL_DEMO", "")):
+        return True
+    try:
+        if truthy(st.secrets.get("BID_INTEL_DEMO", "")):
+            return True
+    except Exception:  # no secrets file configured
+        pass
+    return Path(__file__).resolve().as_posix().startswith("/mount/src/")
+
+
+DEMO = _demo_mode()
 if DEMO:  # set before bid_intel is imported, so no LLM or tracing client is ever created
     os.environ["BID_INTEL_LLM"] = "off"
     os.environ["BID_INTEL_TRACING"] = "off"
-
-import pandas as pd  # noqa: E402
-import streamlit as st  # noqa: E402
 
 from bid_intel import llm, observability, service  # noqa: E402
 
