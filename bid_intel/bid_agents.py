@@ -14,7 +14,6 @@ from __future__ import annotations
 import re
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -24,7 +23,7 @@ from .docs import DocChunk, ingest_folder
 from .fields import DATE, DATETIME, FIELDS, FieldSpec, _sentences
 from .search import BidSearch, SearchHit
 
-MAX_RETRIES = 2
+MAX_RETRIES = 2  # validator -> extractor feedback rounds per field (used by graph.py)
 NOT_FOUND = "Not found in documents"
 
 
@@ -276,24 +275,6 @@ class Orchestrator:
         self.ingestion_report = report
         return chunks
 
-    def _run_field(self, spec: FieldSpec, facts) -> FieldResult:
-        retriever, extractor, validator = (RetrievalAgent(self.engine, self.tracer),
-                                           ExtractionAgent(self.tracer), ValidatorAgent(self.tracer))
-        result = None
-        for attempt in range(1, MAX_RETRIES + 2):
-            hits = retriever.run(self.bid_id, spec, attempt)
-            result = validator.run(spec, extractor.run(spec, hits, facts))
-            result.attempts = attempt
-            if result.validated:
-                break
-            # feedback loop: rejected or missing field goes back for wider retrieval
-            self.tracer.log("orchestrator", "retry", {"field": spec.name, "attempt": attempt},
-                            {"reason": result.notes}, time.perf_counter())
-        if not result.validated and result.value is None:
-            result.confidence = 0.8 if result.attempts > MAX_RETRIES else 0.5  # confidence it is truly absent
-            result.notes = NOT_FOUND
-        return result
-
     def _summary(self) -> FieldResult:
         f = {k: v.value for k, v in self.state.fields.items()}
         from . import llm
@@ -338,23 +319,16 @@ class Orchestrator:
                                  ("call failed, see trace)" if llm_on else "not configured)"),
                            validated=bool(parts))
 
-    def _llm_extract(self, groups: dict[str, list[FieldSpec]]) -> None:
-        """LLM specialists (one structured-output call per group, in parallel) refine the rule results."""
-        from . import llm, llm_extract
-        if not (llm.enabled() if self.use_llm is None else self.use_llm and llm.enabled()):
-            return
-        with ThreadPoolExecutor(max_workers=len(groups)) as pool:
-            futs = {g: pool.submit(llm_extract.extract_group, self.engine, self.bid_id, g, specs, self.tracer.log,
-                                   [src.chunk_id for sp in specs for src in self.state.fields[sp.name].sources])
-                    for g, specs in groups.items()}
+    def llm_on(self) -> bool:
+        from . import llm
+        return llm.enabled() if self.use_llm is None else bool(self.use_llm and llm.enabled())
+
+    def merge_llm(self, results_by_group: dict[str, dict]) -> None:
+        """Merge LLM specialist results into self.state.fields: a validated LLM value replaces the rule
+        value (higher confidence when both agree); otherwise the rule value stays."""
+        from . import llm
         model = llm.GEMINI_MODEL if llm.provider() == "gemini" else llm.MODEL
-        for g, fut in futs.items():
-            try:
-                results = fut.result()
-            except Exception as exc:  # a failed group keeps its rule-based values
-                self.tracer.log("orchestrator", "llm_group_error", {"group": g}, {"error": str(exc)[:200]},
-                                time.perf_counter())
-                continue
+        for g, results in results_by_group.items():
             for name, (fv, passages, ok, reason, attempts) in results.items():
                 rule = self.state.fields.get(name)
                 rule_val = rule.value if rule is not None and rule.validated else None
@@ -381,28 +355,12 @@ class Orchestrator:
                                                           notes=NOT_FOUND + " (rules and LLM agree)")
 
     def run(self) -> dict:
+        """Run the LangGraph workflow (graph.py) and return the bid record."""
+        from .graph import GraphState, build_graph
         t_start = time.perf_counter()
-        chunks = self._ingest()
-        facts = [(c, c.facts) for c in chunks if c.facts]
-        groups: dict[str, list[FieldSpec]] = {}
-        for spec in FIELDS:
-            if spec.group != "summary":
-                groups.setdefault(spec.group, []).append(spec)
-        self.state.plan = [{"group": g, "fields": [s.name for s in specs]} for g, specs in groups.items()]
-        self.tracer.log("orchestrator", "plan", {"goal": "extract bid"}, {"plan": self.state.plan}, t_start)
-
-        # field groups run concurrently (one extraction specialist per group)
-        with ThreadPoolExecutor(max_workers=len(groups)) as pool:
-            futures = {s.name: pool.submit(self._run_field, s, facts) for specs in groups.values() for s in specs}
-        for name, fut in futures.items():
-            try:
-                self.state.fields[name] = fut.result()
-            except Exception as exc:  # one failing field must not crash the pipeline
-                self.state.fields[name] = FieldResult(value=None, notes=f"error: {type(exc).__name__}: {exc}")
-
-        self._llm_extract(groups)
-        ReconcileAgent(self.tracer).run(chunks, self.state)
-        self.state.fields["Bid Summary"] = self._summary()
+        final: GraphState = build_graph(self).invoke(
+            {"bid_id": self.bid_id}, config={"max_concurrency": 4, "recursion_limit": 60})
+        self.state.plan = final.get("plan", [])
 
         ordered = {s.name: self.state.fields[s.name] for s in FIELDS}
         passed = sum(1 for r in ordered.values() if r.value is not None and r.validated)

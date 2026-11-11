@@ -61,27 +61,31 @@ pytest -q
 
 ## Architecture
 
+Search engine and agents (the agent part is a LangGraph state graph; diagram generated from the code in [`docs/agent_graph.md`](docs/agent_graph.md) with `python -m bid_intel graph`):
+
 ```
 Bid folder (HTML + PDF)
    |
-[IngestionAgent] docs.py: detect doc type, parse HTML (BeautifulSoup) / PDF (pdftotext), strip repeated
-   |              headers/footers, fix hyphenation, attach metadata, log unreadable/empty files
-   v
-[Chunking: 180-word windows, 40-word overlap, per page] -> [BM25, in memory] + [Chroma vector store: bge-small
-   ^                                                         embeddings + metadata, persistent, incremental]
-   | search tool: hybrid RRF, metadata filters, query expansion, optional cross-encoder rerank
+ ingest      docs.py: detect doc type, parse HTML (BeautifulSoup) / PDF (pdftotext), strip repeated headers,
+   |         fix hyphenation, attach metadata, log unreadable/empty files; index into
+   |         BM25 (in memory) + Chroma (bge-small embeddings + metadata, persistent, incremental)
+ plan        orchestrator splits the 19 extracted fields into 4 groups: identity, dates, commercial, product
    |
-[Orchestrator] plans field groups -> runs them in parallel (thread pool)
-   |-> RetrievalAgent    query expansion + filters (bid, doc type), widens on retry
-   |-> ExtractionAgent   one specialist per group: identity, dates, commercial, product
-   |-> ValidatorAgent    citation present, value found verbatim in cited evidence, date format
-   |      rejected -> back to RetrievalAgent (max 2 retries)
-   |-> ReconcileAgent    lists addendum changes, applies the latest change (e.g. extended due date)
+   |  Send x4 (parallel)
+ rule_extract   one specialist per group: RetrievalAgent (hybrid search, metadata filters) + field rules
+   |
+ validate    ValidatorAgent: citation present, value in cited evidence, date format
+   |--- rejected fields, attempts left -> Send back to rule_extract with wider retrieval   (feedback loop)
+   |--- LLM available -> Send x4 (parallel) llm_extract: structured output over retrieved evidence,
+   |                     quote must be verbatim in a cited passage, rejected fields re-asked once
+   |                     -> llm_merge (validated LLM value replaces the rule value)
    v
-outputs/<bid>.json (fields + sources + confidence + addendum_changes + validation) and trace
+ reconcile   ReconcileAgent: addendum change log; latest addendum overrides (e.g. extended due date)
+ summarize   Bid Summary (LLM from validated fields, template fallback)
+ finalize    -> outputs/<bid>.json + logs/<bid>_trace.json
 ```
 
-Shared state is a Pydantic `BidState` (plan, evidence, draft fields, validation, trace). Agent messages are Pydantic models (`FieldResult`, `Source`, `TraceStep`). Every step logs agent, action, input, output and latency.
+Graph state (`bid_intel/graph.py`, `GraphState`) is the run's working memory: plan, draft fields, attempt counts, validated rounds, retry list and LLM results; parallel branches return partial updates that reducers merge. The final record is the Pydantic `BidState`; agent messages are Pydantic models (`FieldResult`, `Source`, `TraceStep`, `FieldValue`). Every agent step is logged with input, output and latency (and tokens for LLM calls).
 
 ## Design decisions
 
@@ -95,7 +99,7 @@ Shared state is a Pydantic `BidState` (plan, evidence, draft fields, validation,
 
 **Retrieval.** BM25 (pure Python, keeps negations and numbers such as model and part numbers) plus dense cosine search, merged with reciprocal rank fusion (k=60). Metadata filters restrict by bid, document type and addendum number. Query expansion adds RFP synonyms ("deadline" -> due date, closing date, submission). A cross-encoder re-ranker (`ms-marco-MiniLM-L-6-v2`) is available but off by default, because on this evaluation it lowered MRR and cost about 5 s per query.
 
-**Agent framework.** Own orchestration in `bid_intel/bid_agents.py` rather than LangGraph or CrewAI: the flow is a fixed plan with a bounded retry loop, which is short to write and easy to trace and test, and it adds no dependencies.
+**Agent framework.** LangGraph (`bid_intel/graph.py`). The workflow is a state graph: field groups fan out in parallel with `Send`, the validator's verdict is a conditional edge that loops rejected fields back to extraction (bounded by `MAX_RETRIES`), and the LLM stage is a conditional branch that is skipped when no LLM is available. The agents are plain Python classes the nodes call, so they are unit-tested without the graph, and the graph is tested end to end offline (rules path, and LLM path with a scripted fake LLM). The earlier hand-written orchestrator produced identical field values on both bids, which was checked when switching. LangGraph was chosen over CrewAI/AutoGen because this workflow is a fixed plan with explicit routing, not open-ended agent conversation; a graph makes the routing and the feedback loop visible and testable.
 
 **Extraction.** Two layers of specialists per field group (identity, dates, commercial, product):
 
