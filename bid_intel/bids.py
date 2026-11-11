@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from pathlib import Path
 
@@ -22,7 +23,8 @@ def engine() -> BidSearch:
     """One shared index; each bid folder is added once (incremental indexing)."""
     global _engine
     if _engine is None:
-        _engine = BidSearch()
+        # BID_INTEL_DENSE=off: keyword-only index (tests/CI without the embedding model)
+        _engine = BidSearch(dense=False if os.environ.get("BID_INTEL_DENSE", "").lower() == "off" else None)
     return _engine
 
 

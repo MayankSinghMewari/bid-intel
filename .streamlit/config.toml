@@ -1,0 +1,8 @@
+[server]
+# localhost only: the app has no login and its chat spends your LLM quota
+address = "localhost"
+port = 8501
+headless = true
+
+[browser]
+gatherUsageStats = false

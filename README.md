@@ -21,6 +21,12 @@ LLM (the generation step of RAG): copy `.env.example` to `.env` and set `GEMINI_
 ## How to run
 
 ```bash
+# Web UI on http://localhost:8501 : Extraction (20 fields + evidence), Search, Ask (cited chat),
+# Add bid (upload a new folder -> index + extract), Evaluation
+streamlit run app.py
+```
+
+```bash
 # Extraction mode: ONE COMMAND per bid folder -> outputs/<bid>.json and logs/<bid>_trace.json
 python -m bid_intel run --bid data/bid_folders/Bid1
 python -m bid_intel run --bid data/bid_folders/Bid2
@@ -57,6 +63,7 @@ pytest -q
 | Retrieval evaluation report | `eval/bid_report.md` (questions: `eval/bid_questions.json`) |
 | Sample Q&A log (12 questions) | `logs/bid_qa_log.md` |
 | Agent trace of a full extraction run | `logs/Bid1_trace.json` (also `logs/Bid2_trace.json`) |
+| Web UI (bonus) | `app.py` (`streamlit run app.py`) |
 | Architecture diagram | "Architecture" section below (the earlier prototype diagram is in `docs/architecture.svg`) |
 
 ## Architecture
@@ -121,6 +128,8 @@ The LLM layer is what generalises to unseen bids: the rules were written while r
 - The LangChain callback handler was tried first and replaced: it typed every node as a generic chain, added routing internals as spans, and could not nest the agents' work under the nodes.
 
 `python -m bid_intel run` prints the trace link; `python -m bid_intel tracing-check` verifies keys, environment and release. The CLI calls `shutdown()` at exit; nothing flushes per request. Without keys tracing is a no-op, tests always run with it off, and tracing errors never stop a run. Bid documents are public procurement records, so no masking is applied; API keys are never part of traced inputs.
+
+**Web UI.** `app.py` (Streamlit) calls the same service layer as the CLI and the REST API. The Extraction tab shows the 20 fields with confidence, validation status, method (rules, LLM, addendum) and the cited evidence per field; Search exposes hybrid search with bid and document-type filters, mode and re-ranking; Ask is a chat whose answers cite passages and link the Langfuse trace; Add bid uploads a new folder (file names reduced to their basename), indexes it incrementally and runs the agents; Evaluation shows the retrieval and extraction results. `.streamlit/config.toml` binds the server to localhost because the app has no login and its chat spends the LLM quota. A headless test (`tests/test_app.py`, Streamlit AppTest) renders every tab and checks search and chat results offline.
 
 **Prompts.** The LLM prompts are in `bid_intel/llm.py`. They require answers only from the numbered passages, an explicit "Not found in documents", and a citation on every claim; answers that cite passages that were not provided are rejected.
 

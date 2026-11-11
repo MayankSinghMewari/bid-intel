@@ -12,3 +12,4 @@ google-genai>=1.0
 chromadb>=1.0
 langgraph>=1.0
 langfuse>=3.0
+streamlit>=1.40
