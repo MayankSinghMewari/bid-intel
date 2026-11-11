@@ -64,6 +64,8 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("eval-bids", help="retrieval evaluation over the bid folders (Recall@k, MRR)")
 
+    sub.add_parser("bid-qalog", help="write logs/bid_qa_log.md from the sample questions")
+
     sv = sub.add_parser("serve", help="start the HTTP API")
     sv.add_argument("--port", type=int, default=8000)
     sv.add_argument("--host", default="127.0.0.1", help="use 0.0.0.0 inside Docker")
@@ -110,6 +112,10 @@ def main(argv: list[str] | None = None) -> int:
         folders = sorted(f for f in bids.FOLDERS.iterdir() if f.is_dir())
         print(json.dumps(bid_eval.run(folders, service.ROOT / "eval" / "bid_questions.json",
                                       service.ROOT / "eval"), indent=2))
+    elif args.cmd == "bid-qalog":
+        from . import bids
+        for i, r in enumerate(bids.write_qa_log(service.ROOT / "logs" / "bid_qa_log.md"), 1):
+            print(f"Q{i} [{r['method'][:55]}] {' '.join(r['answer'].split())[:140]}")
     elif args.cmd == "qalog":
         from .evaluation import write_qa_log
         qs = json.loads((service.ROOT / "eval" / "questions.json").read_text(encoding="utf-8"))

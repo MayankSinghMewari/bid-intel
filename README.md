@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 The first run downloads the embedding model (`BAAI/bge-small-en-v1.5`, about 70 MB). Embeddings are cached in `.cache/`, so later runs only embed new chunks.
 
-Optional LLM: set `ANTHROPIC_API_KEY` (model from `BID_INTEL_LLM_MODEL`, default `claude-opus-5-5`). With a key, Q&A answers are written by Claude from the retrieved passages only and must cite them; without a key the system returns the best-matching cited sentences. No secrets are stored in code.
+LLM (the generation step of RAG): copy `.env.example` to `.env` and set `GEMINI_API_KEY` (free key from https://aistudio.google.com/apikey; model `GEMINI_MODEL`, default `gemini-3.5-flash`) or `ANTHROPIC_API_KEY`. `.env` is git-ignored. With a key, Q&A answers and the Bid Summary field are written by the LLM from retrieved passages / validated fields only, and every answer must cite passages as [n] or it is rejected. Without a key, or when the LLM call fails (timeout, 503, quota), the system falls back to the validated extraction record and cited sentences, and the trace records the reason. Tests run with the LLM disabled.
 
 ## How to run
 
@@ -131,7 +131,8 @@ Validation of normalised fields (Term of Bid, Product Specification) checks each
 
 ## Known limitations
 
-- No LLM key was available while building, so field extraction is rule-based and open-ended Q&A answers are extracted sentences. The summary field is generated from a template over the extracted fields. With `ANTHROPIC_API_KEY` set, Q&A uses Claude; LLM-based field extraction is the natural next step and plugs into `ExtractionAgent` behind the same validator.
+- Field extraction is rule-based; the LLM writes Q&A answers and the Bid Summary. LLM-based field extraction (Pydantic structured output behind the same validator) is the next step.
+- The free Gemini tier rate-limits (429) and returns 503 under load; calls retry with backoff and then fall back. `logs/bid_qa_log.md` was generated with Gemini; `outputs/Bid2.json` has a template summary because the quota ran out during that run.
 - Rule-based extraction will miss values phrased in ways the rules do not cover on an unseen bid; those fields come back as "Not found in documents" rather than wrong values.
 - Bid1's RFP specifies several device tiers; Product Specification reports one tier.
 - Tables are read as text in layout order; there is no cell-level table extraction. No OCR (scanned pages are logged and skipped).

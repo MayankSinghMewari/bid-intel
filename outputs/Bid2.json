@@ -1,6 +1,6 @@
 {
   "bid_id": "Bid2",
-  "generated_at": "2026-11-11T07:10:35+00:00",
+  "generated_at": "2026-11-11T07:48:01+00:00",
   "fields": {
     "Bid Number": {
       "value": "BPM044557",
@@ -322,7 +322,7 @@
         }
       ],
       "confidence": 0.7,
-      "notes": "generated from the extracted fields (template summary; no LLM key configured)",
+      "notes": "template summary from the extracted fields (LLM call failed, see trace)",
       "validated": true
     },
     "Product Specification": {

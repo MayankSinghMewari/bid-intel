@@ -27,7 +27,7 @@ def _load_dotenv() -> None:
 
 _load_dotenv()
 MODEL = os.environ.get("BID_INTEL_LLM_MODEL", "claude-opus-5-5")
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash")
 
 
 def provider() -> str | None:
@@ -51,14 +51,27 @@ def _complete(system: str, user: str, max_tokens: int = 2048) -> dict:
         from google.genai import types
         client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"),
                               http_options=types.HttpOptions(timeout=30_000))  # ms; slow calls fall back
-        r = client.models.generate_content(
-            model=GEMINI_MODEL, contents=user,
-            config=types.GenerateContentConfig(system_instruction=system, max_output_tokens=max_tokens,
-                                               temperature=0))
+        # Gemini 3.x models think before answering and thinking tokens count against
+        # max_output_tokens, so leave generous headroom over the visible answer length
+        from google.genai import errors
+        config = types.GenerateContentConfig(system_instruction=system, max_output_tokens=max(max_tokens, 8192),
+                                             temperature=0)
+        for attempt in range(3):  # free tier returns 503/504 under load; back off and retry
+            try:
+                r = client.models.generate_content(model=GEMINI_MODEL, contents=user, config=config)
+                break
+            except errors.ServerError:
+                if attempt == 2:
+                    raise
+                time.sleep(2 * 3 ** attempt)  # 2 s, then 6 s
+        finish = r.candidates[0].finish_reason if r.candidates else None
+        if finish is not None and getattr(finish, "name", str(finish)) == "MAX_TOKENS":
+            raise RuntimeError("Gemini response truncated at max_output_tokens")
         u = r.usage_metadata
         return {"text": (r.text or "").strip(), "model": GEMINI_MODEL,
                 "input_tokens": getattr(u, "prompt_token_count", None),
-                "output_tokens": getattr(u, "candidates_token_count", None)}
+                "output_tokens": getattr(u, "candidates_token_count", None),
+                "thinking_tokens": getattr(u, "thoughts_token_count", None)}
     import anthropic
     r = anthropic.Anthropic().beta.messages.create(
         model=MODEL, max_tokens=max_tokens, system=system, output_config={"effort": "low"},
@@ -163,7 +176,8 @@ def answer_from_citations(question: str, hits: list[dict]) -> dict | None:
     except Exception as exc:  # timeout, auth, quota, bad response: fall back without crashing
         return {"error": f"{type(exc).__name__}: {str(exc)[:200]}"}
     text = out["text"]
-    cited = {int(n) for n in re.findall(r"\[(\d+)\]", text)}
+    # accepts [1], [1, 4] and [1][2]
+    cited = {int(n) for grp in re.findall(r"\[(\d+(?:\s*,\s*\d+)*)\]", text) for n in re.findall(r"\d+", grp)}
     if not text.startswith("Not found") and (not cited or max(cited) > len(hits)):
         return {"error": "ungrounded answer rejected (no valid [n] citations)"}
     return {"answer": text, "model": out["model"], "latency_s": round(time.perf_counter() - start, 2),

@@ -268,7 +268,8 @@ class Orchestrator:
     def _summary(self) -> FieldResult:
         f = {k: v.value for k, v in self.state.fields.items()}
         from . import llm
-        if llm.enabled():
+        llm_on = llm.enabled()
+        if llm_on:
             t0 = time.perf_counter()
             facts = "\n".join(f"{k}: {v}" for k, v in f.items() if v)
             try:
@@ -304,7 +305,8 @@ class Orchestrator:
         srcs = [s for k in ("Title", "Product", "Due Date") for s in (self.state.fields.get(k).sources
                                                                       if self.state.fields.get(k) else [])][:3]
         return FieldResult(value=" ".join(parts[:6]) or None, sources=srcs, confidence=0.7 if parts else 0.0,
-                           notes="generated from the extracted fields (template summary; no LLM key configured)",
+                           notes="template summary from the extracted fields (LLM " +
+                                 ("call failed, see trace)" if llm_on else "not configured)"),
                            validated=bool(parts))
 
     def run(self) -> dict:

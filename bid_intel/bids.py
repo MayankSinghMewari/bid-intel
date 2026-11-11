@@ -57,10 +57,32 @@ def extract(folder: Path, bid_id: str | None = None) -> tuple[dict, list[dict]]:
     return result, orch.trace()
 
 
+GENERIC_WORDS = {"student", "staff", "computing", "devices", "device", "laptops", "laptop", "warranty",
+                  "extended", "and", "the", "for", "with", "sourcing", "rfp", "bid", "state", "office",
+                  "district", "school", "independent", "county", "city"}
+
+
 def _bids_in(question: str) -> list[str] | None:
-    known = [f.name for f in FOLDERS.iterdir() if f.is_dir()]
+    """Which bids a question is about: explicit folder names first, then distinctive words from each
+    bid's extracted title / issuer (e.g. "Dell", "Dallas", "Maryland"); "both"/"compare" means all bids."""
+    known = [f.name for f in sorted(FOLDERS.iterdir()) if f.is_dir()]
     named = [b for b in known if re.search(rf"\b{re.escape(b)}\b", question, re.I)]
-    return named or None
+    if named:
+        return named
+    if re.search(r"\b(both|compare|each bid|all bids|across bids)\b", question, re.I):
+        return known
+    q_words = set(re.findall(r"[a-z]{3,}", question.lower()))
+    matched = []
+    for b in known:
+        path = OUT / f"{b}.json"
+        if not path.exists():
+            continue
+        f = json.loads(path.read_text(encoding="utf-8"))["fields"]
+        words = set(re.findall(r"[a-z]{3,}", " ".join(str(f.get(k, {}).get("value") or "")
+                                                       for k in ("Title", "company_name", "Bid Number")).lower()))
+        if (words - GENERIC_WORDS) & q_words:
+            matched.append(b)
+    return matched or None
 
 
 def ask(question: str, bid_id: str | None = None, top_k: int = 5) -> dict:
@@ -68,17 +90,20 @@ def ask(question: str, bid_id: str | None = None, top_k: int = 5) -> dict:
     bids = [bid_id] if bid_id else (_bids_in(question) or [None])
     hits = []
     for b in bids:  # "compare both bids" style questions retrieve per bid so each is represented
-        hits += search(question, bid_id=b, top_k=top_k if len(bids) == 1 else 3)
+        hits += search(question, bid_id=b, top_k=top_k if len(bids) == 1 else 4)
     generated = llm.answer_from_citations(question, hits)
     record = _from_records(question, bids)
-    if generated and "answer" in generated:
+    llm_answered = generated and "answer" in generated
+    if llm_answered and not (generated["answer"].startswith("Not found") and record):
         answer, method = generated["answer"], f"hybrid search + LLM ({generated['model']})"
     elif record:
         answer = record + " Supporting passages: " + (_best_sentences(question, hits) if hits else "none")
-        method = "extracted bid record (validated fields) + hybrid search passages (no LLM key configured)"
+        method = "extracted bid record (validated fields) + hybrid search passages"
+        if llm_answered:
+            method += " (LLM found no answer in the retrieved passages)"
     else:
         answer = _best_sentences(question, hits) if hits else "Not found in documents"
-        method = "hybrid search + extractive answer (no LLM key configured)"
+        method = "hybrid search + extractive answer" + ("" if llm.enabled() else " (no LLM key configured)")
     return {"question": question, "answer": answer, "method": method,
             **({"llm_fallback_reason": generated["error"]} if generated and "error" in generated else {}),
             "citations": [{"n": i + 1, "bid_id": h["bid_id"], "file": h["file"], "page": h["page"],
@@ -143,3 +168,40 @@ def _best_sentences(question: str, hits: list[dict], n: int = 2) -> str:
                 scored.append((overlap - 0.5 * i, f"{s[:300]} [{i + 1}]"))
     scored.sort(key=lambda t: -t[0])
     return " ".join(s for _, s in scored[:n]) or hits[0]["text"][:300] + " [1]"
+
+
+SAMPLE_QUESTIONS = [
+    "What is the submission deadline for Bid1 after all addendums?",
+    "Which affidavits are required for the Dell laptop bid?",
+    "Compare the warranty requirements of both bids.",
+    "Is a bid bond required for Bid1 or Bid2, and if so, how much?",
+    "What changed in Addendum 2 compared to the original RFP?",
+    "When is the pre-proposal meeting for Bid1?",
+    "How must proposals be submitted for Bid2?",
+    "What is the delivery requirement for Bid2?",
+    "Which manufacturer must Bid2 bidders be authorized resellers for?",
+    "What are the minimum specifications for staff laptops in Bid1?",
+    "Who is the procurement contact for Bid1?",
+    "What cooperative purchasing program does Bid1 reference?",
+]
+
+
+def write_qa_log(path: Path, questions: list[str] = SAMPLE_QUESTIONS) -> list[dict]:
+    model = llm.GEMINI_MODEL if llm.provider() == "gemini" else (llm.MODEL if llm.enabled() else "none")
+    lines = ["# Sample Q&A Log: Bid1 + Bid2", "",
+             "Generated with `python -m bid_intel bid-qalog` (each entry equals `python -m bid_intel ask-bids \"...\"`).",
+             "", f"Retrieval: hybrid BM25 + dense (RRF), filtered to the bid(s) the question is about. Generation: "
+             f"LLM `{model}` answers only from the numbered passages and must cite them as [n]; answers without "
+             "valid citations are rejected. If the LLM finds no answer but the validated extraction record has one, "
+             "the record is returned with its source.", ""]
+    results = []
+    for i, q in enumerate(questions, 1):
+        r = ask(q)
+        results.append(r)
+        lines += [f"## Q{i}. {q}", "", f"**Answer:** {r['answer']}", "", "**Citations:**"]
+        lines += [f"- [{c['n']}] {c['bid_id']} / {c['file']}, p. {c['page']}" for c in r["citations"]]
+        reason = f" (LLM fallback reason: {r['llm_fallback_reason']})" if r.get("llm_fallback_reason") else ""
+        lines += ["", f"_Method: {r['method']}{reason}_", ""]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines), encoding="utf-8")
+    return results
