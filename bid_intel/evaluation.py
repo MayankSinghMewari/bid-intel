@@ -117,5 +117,4 @@ def write_qa_log(bid_id: str, questions: list[dict], path: Path, n: int = 12) ->
             "",
         ]
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("
-".join(lines), encoding="utf-8")
+    path.write_text("\n".join(lines), encoding="utf-8")

@@ -12,8 +12,12 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pytest -q
       - name: Retrieval evaluation
-        run: python -m bid_intel eval --bid JA-207652
+        run: |
+          python -m bid_intel eval --bid JA-207652
+          python -m bid_intel eval-bids
       - uses: actions/upload-artifact@v4
         with:
           name: eval-report
-          path: eval/report.md
+          path: |
+            eval/report.md
+            eval/bid_report.md
