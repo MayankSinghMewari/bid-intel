@@ -114,18 +114,22 @@ def _ask(question: str, bid_id: str | None, top_k: int) -> dict:
                                       for h in hits])
     generated = llm.answer_from_citations(question, hits)
     record = _from_records(question, bids)
+    facts = _record_facts(question, bids) if record else []
+    supporting = _best_sentences(question, hits) if hits else ""
     llm_answered = generated and "answer" in generated
     if llm_answered and not (generated["answer"].startswith("Not found") and record):
-        answer, method = generated["answer"], f"hybrid search + LLM ({generated['model']})"
+        answer, method, kind = generated["answer"], f"hybrid search + LLM ({generated['model']})", "llm"
     elif record:
-        answer = record + " Supporting passages: " + (_best_sentences(question, hits) if hits else "none")
-        method = "extracted bid record (validated fields) + hybrid search passages"
+        answer = record + " Supporting passages: " + (supporting or "none")
+        method, kind = "extracted bid record (validated fields) + hybrid search passages", "record"
         if llm_answered:
             method += " (LLM found no answer in the retrieved passages)"
     else:
-        answer = _best_sentences(question, hits) if hits else "Not found in documents"
+        answer = supporting or "Not found in documents"
         method = "hybrid search + extractive answer" + ("" if llm.enabled() else " (no LLM key configured)")
-    return {"question": question, "answer": answer, "method": method,
+        kind = "extractive" if supporting else "not_found"
+    return {"question": question, "answer": answer, "method": method, "answer_type": kind,
+            "facts": facts, "supporting": supporting,
             **({"llm_fallback_reason": generated["error"]} if generated and "error" in generated else {}),
             "citations": [{"n": i + 1, "bid_id": h["bid_id"], "file": h["file"], "page": h["page"],
                            "passage": h["text"][:500]} for i, h in enumerate(hits)]}
@@ -150,9 +154,10 @@ FIELD_HINTS = {
 }
 
 
-def _from_records(question: str, bids: list[str | None]) -> str | None:
+def _record_facts(question: str, bids: list[str | None]) -> list[dict]:
+    """Validated record fields the question asks about (first matching field), one entry per bid."""
     names = [b for b in bids if b] or [f.stem for f in sorted(OUT.glob("*.json"))]
-    parts = []
+    facts: list[dict] = []
     for field, pat in FIELD_HINTS.items():
         if not re.search(pat, question, re.I):
             continue
@@ -165,12 +170,23 @@ def _from_records(question: str, bids: list[str | None]) -> str | None:
                 continue
             if f["value"] and f.get("validated"):
                 src = f["sources"][0]
-                note = f" ({f['notes']})" if f["notes"].startswith("Updated") else ""
-                parts.append(f"{b} {field}: {f['value']}{note} [source: {src['file']}, p. {src['page']}].")
+                facts.append({"bid_id": b, "field": field, "value": f["value"], "file": src["file"],
+                              "page": src["page"], "note": f["notes"] if f["notes"].startswith("Updated") else ""})
             elif f["value"] is None:
-                parts.append(f"{b} {field}: Not found in documents.")
-        if parts:
+                facts.append({"bid_id": b, "field": field, "value": None, "file": None, "page": None, "note": ""})
+        if facts:
             break  # answer with the first (most specific) matching field
+    return facts
+
+
+def _from_records(question: str, bids: list[str | None]) -> str | None:
+    parts = []
+    for f in _record_facts(question, bids):
+        if f["value"] is None:
+            parts.append(f"{f['bid_id']} {f['field']}: Not found in documents.")
+        else:
+            note = f" ({f['note']})" if f["note"] else ""
+            parts.append(f"{f['bid_id']} {f['field']}: {f['value']}{note} [source: {f['file']}, p. {f['page']}].")
     return " ".join(parts) or None
 
 

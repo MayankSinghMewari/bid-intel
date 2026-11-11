@@ -155,8 +155,8 @@ class ExtractionAgent:
                     if not spec.multi:
                         break
             if values:
-                merged = values[0] if not spec.multi else "; ".join(dict.fromkeys(
-                    p.strip() for v in values for p in v.split(";") if p.strip()))
+                merged = values[0] if not spec.multi else "; ".join(
+                    dedupe_parts(p for v in values for p in v.split(";")))
                 rank = next(h.rank for h in hits if h.chunk.chunk_id == sources[0].chunk_id)
                 result = FieldResult(value=merged, sources=sources[:5],
                                      confidence=round(0.55 + 0.35 / rank, 2),
@@ -260,6 +260,19 @@ class ValidatorAgent:
         self.tracer.log("validator", "validate", {"field": spec.name, "value": r.value},
                         {"passed": ok, "reason": reason}, t0)
         return r
+
+
+def dedupe_parts(parts) -> list[str]:
+    """Merge list items case-insensitively ("MERCURY AFFIDAVIT" == "Mercury Affidavit"), keeping the first
+    position and preferring a spelling that is not all capitals."""
+    out: dict[str, str] = {}
+    for part in (p.strip() for p in parts):
+        if not part:
+            continue
+        key = re.sub(r"\s+", " ", part).lower()
+        if key not in out or (out[key].isupper() and not part.isupper()):
+            out[key] = part
+    return list(out.values())
 
 
 def _tokens(s: str) -> set[str]:

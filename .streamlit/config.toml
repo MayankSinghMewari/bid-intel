@@ -6,3 +6,27 @@ headless = true
 
 [browser]
 gatherUsageStats = false
+
+# Light and dark themes. Visitors switch with the theme toggle in the sidebar (or the app menu).
+# Colours follow a validated palette: blue accent, warm-neutral surfaces, hairline borders.
+[theme]
+baseRadius = "medium"
+font = "sans-serif"
+
+[theme.light]
+primaryColor = "#2a78d6"
+backgroundColor = "#fcfcfb"
+secondaryBackgroundColor = "#f3f3f0"
+textColor = "#0b0b0b"
+borderColor = "#e1e0d9"
+linkColor = "#256abf"
+dataframeHeaderBackgroundColor = "#f3f3f0"
+
+[theme.dark]
+primaryColor = "#3987e5"
+backgroundColor = "#1a1a19"
+secondaryBackgroundColor = "#242422"
+textColor = "#f0efec"
+borderColor = "#383835"
+linkColor = "#6da7ec"
+dataframeHeaderBackgroundColor = "#242422"
