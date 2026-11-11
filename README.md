@@ -116,17 +116,23 @@ Hybrid search gives the best top-1 accuracy. The re-ranker finds every gold pass
 
 ## Extraction results
 
-| | Passed validation | Failed validation | Not found |
+| | Passed validation | Failed validation | Not found in documents |
 |---|---|---|---|
-| Bid1 | 14 | 2 | 4 |
-| Bid2 | 12 | 4 | 4 |
+| Bid1 | 14 | 0 | 6 |
+| Bid2 | 16 | 0 | 4 |
 
-Correct examples: Bid1 due date "July 9, 2024 at 2:00 PM CST", taken from Addendum 2 with the original bid-page date in the note; Bid2 delivery "Delivery within 45 days of Award", MFG "Dell", cooperative "Desktop, Laptop and Tablet 2015 Master Contract, 060B5400007", models "Latitude 5550; WD22TB4".
+"Not found" is reported instead of guessing. For Bid1, Delivery Date, Payment Terms, Bid Bond, MFG, Model_no and Part_no are genuinely absent: the RFP asks vendors to propose their own make and model ("Proposed Device Make and Model") and gives no delivery or payment terms. Rules include exclusion patterns so that look-alike clauses (for example, prime-vendor payment to subcontractors) are not reported as payment terms.
+
+Examples: Bid1 due date "July 9, 2024 at 2:00 PM CST", taken from Addendum 2 with the original bid-page date in the note; Bid2 delivery "Delivery within 45 days of Award", MFG "Dell", cooperative "Desktop, Laptop and Tablet 2015 Master Contract, 060B5400007", models "Latitude 5550; WD22TB4", specs "CPU: Intel Core Ultra 5 125U; RAM: 16 GB DDR5; Storage: 256 GB NVMe SSD; Display: 15.6\" FHD ...".
+
+Validation of normalised fields (Term of Bid, Product Specification) checks each component value against the cited passage, since the combined string does not appear verbatim.
+
+**Q&A answers.** The Q&A agent first answers from the validated extraction record when the question maps to a field (deadline, bond, affidavits, delivery, contact ...), citing the field's source, then adds the best-matching retrieved sentences. Open questions ("compare the warranty requirements") are answered from retrieved sentences only; with `ANTHROPIC_API_KEY` set, Claude writes the answer from the same passages.
 
 ## Known limitations
 
-- No LLM key was available while building, so extraction is rule-based and Q&A answers are extracted sentences. The summary field is generated from a template over the extracted fields. With `ANTHROPIC_API_KEY` set, Q&A uses Claude; LLM-based field extraction is the natural next step and plugs into `ExtractionAgent`.
-- Some fields are wrong or weak on Bid1: "Delivery Date" picks an unrelated sentence, "Payment Terms" picks a subcontractor-payment clause, Model_no and Part_no are not found (the RFP lists device tiers, not models).
+- No LLM key was available while building, so field extraction is rule-based and open-ended Q&A answers are extracted sentences. The summary field is generated from a template over the extracted fields. With `ANTHROPIC_API_KEY` set, Q&A uses Claude; LLM-based field extraction is the natural next step and plugs into `ExtractionAgent` behind the same validator.
+- Rule-based extraction will miss values phrased in ways the rules do not cover on an unseen bid; those fields come back as "Not found in documents" rather than wrong values.
 - Bid1's RFP specifies several device tiers; Product Specification reports one tier.
 - Tables are read as text in layout order; there is no cell-level table extraction. No OCR (scanned pages are logged and skipped).
 - The 20 evaluation questions and their labels were written by the author.

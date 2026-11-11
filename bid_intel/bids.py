@@ -70,10 +70,13 @@ def ask(question: str, bid_id: str | None = None, top_k: int = 5) -> dict:
     for b in bids:  # "compare both bids" style questions retrieve per bid so each is represented
         hits += search(question, bid_id=b, top_k=top_k if len(bids) == 1 else 3)
     generated = llm.answer_from_citations(question, hits)
+    record = _from_records(question, bids)
     if generated and "answer" in generated:
         answer, method = generated["answer"], f"hybrid search + LLM ({generated['model']})"
+    elif record:
+        answer = record + " Supporting passages: " + (_best_sentences(question, hits) if hits else "none")
+        method = "extracted bid record (validated fields) + hybrid search passages (no LLM key configured)"
     else:
-        best = hits[0]["text"] if hits else None
         answer = _best_sentences(question, hits) if hits else "Not found in documents"
         method = "hybrid search + extractive answer (no LLM key configured)"
     return {"question": question, "answer": answer, "method": method,
@@ -82,15 +85,61 @@ def ask(question: str, bid_id: str | None = None, top_k: int = 5) -> dict:
                            "passage": h["text"][:500]} for i, h in enumerate(hits)]}
 
 
+# question keywords -> fields of the extracted JSON record (the Q&A agent reuses validated extraction)
+FIELD_HINTS = {
+    "Due Date": r"deadline|due date|due|closing|submission date",
+    "Bid Bond Requirement": r"bond|bid security",
+    "Any Additional Documentation Required": r"affidavit|forms?|documents? (are )?required|certificat",
+    "Delivery Date": r"deliver",
+    "Payment Terms": r"payment|invoice",
+    "Pre Bid Meeting": r"pre-?(bid|proposal)|meeting|conference",
+    "Bid Submission Type": r"how (must|should|do|are) .*submit|submission method|submitted",
+    "Term of Bid": r"term|renewal|duration|how long",
+    "MFG for Registration": r"manufacturer|reseller|oem",
+    "Contract or Cooperative to use": r"cooperative|master contract|interlocal|piggyback",
+    "contact_info": r"contact|procurement officer|email|phone",
+    "Product Specification": r"spec|processor|memory|ram|storage",
+    "Model_no": r"model",
+    "Installation": r"install|imaging|deploy",
+}
+
+
+def _from_records(question: str, bids: list[str | None]) -> str | None:
+    names = [b for b in bids if b] or [f.stem for f in sorted(OUT.glob("*.json"))]
+    parts = []
+    for field, pat in FIELD_HINTS.items():
+        if not re.search(pat, question, re.I):
+            continue
+        for b in names:
+            path = OUT / f"{b}.json"
+            if not path.exists():
+                continue
+            f = json.loads(path.read_text(encoding="utf-8"))["fields"].get(field)
+            if not f:
+                continue
+            if f["value"] and f.get("validated"):
+                src = f["sources"][0]
+                note = f" ({f['notes']})" if f["notes"].startswith("Updated") else ""
+                parts.append(f"{b} {field}: {f['value']}{note} [source: {src['file']}, p. {src['page']}].")
+            elif f["value"] is None:
+                parts.append(f"{b} {field}: Not found in documents.")
+        if parts:
+            break  # answer with the first (most specific) matching field
+    return " ".join(parts) or None
+
+
 def _best_sentences(question: str, hits: list[dict], n: int = 2) -> str:
     from .bm25 import tokenize
     from .fields import _sentences
-    q = set(tokenize(question))
+    from .search import expand_query
+    q = set(tokenize(expand_query(question)))
     scored = []
     for i, h in enumerate(hits[:3]):
         for s in _sentences(h["text"]):
+            if len(s.split()) < 6:
+                continue
             overlap = len(q & set(tokenize(s)))
             if overlap:
-                scored.append((overlap - 0.1 * i, f"{s[:300]} [{i + 1}]"))
+                scored.append((overlap - 0.5 * i, f"{s[:300]} [{i + 1}]"))
     scored.sort(key=lambda t: -t[0])
     return " ".join(s for _, s in scored[:n]) or hits[0]["text"][:300] + " [1]"

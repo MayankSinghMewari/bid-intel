@@ -75,9 +75,14 @@ class Tracer:
                                               latency_ms=round((time.perf_counter() - t0) * 1000, 1)))
 
 
-def _source(h: SearchHit) -> Source:
+def _source(h: SearchHit, value: str | None = None, full: bool = False) -> Source:
+    """Citation with the evidence window centred on the extracted value, so the cited text shows it."""
     c = h.chunk
-    return Source(file=c.file_name, page=c.page, doc_type=c.doc_type, chunk_id=c.chunk_id, evidence=c.text[:400])
+    flat = re.sub(r"\s+", " ", c.text)
+    pos = flat.lower().find(re.sub(r"\s+", " ", value.split(";")[0]).lower()[:40]) if value else -1
+    start = max(0, pos - 150) if pos >= 0 else 0
+    return Source(file=c.file_name, page=c.page, doc_type=c.doc_type, chunk_id=c.chunk_id,
+                  evidence=flat[:1500] if full else flat[start:start + 450])
 
 
 class RetrievalAgent:
@@ -123,7 +128,7 @@ class ExtractionAgent:
                 v = spec.rule(h.chunk.text)
                 if v:
                     values.append(v)
-                    sources.append(_source(h))
+                    sources.append(_source(h, v, full=spec.derived))
                     if not spec.multi:
                         break
             if values:
@@ -197,8 +202,15 @@ class ValidatorAgent:
         if spec.kind == "date" and not re.search(r"\d{4}|\d{1,2}/\d{1,2}/\d{2}", r.value):
             return False, f"not a date: {r.value!r}"
         # evidence support: the value (or its first token group) must appear in a cited passage
-        probe = re.sub(r"\s+", " ", r.value.split(";")[0]).lower()[:40]
         joined = " ".join(re.sub(r"\s+", " ", s.evidence).lower() for s in r.sources)
+        if spec.derived:
+            # every number and component value must be present in the cited evidence
+            parts = [p.split(":", 1)[-1].strip().lower()[:25] for p in r.value.split(";")]
+            nums = re.findall(r"\d+", r.value) if spec.name == "Term of Bid" else []
+            missing = [p for p in parts + nums if p and p not in joined
+                       and not (spec.name == "Term of Bid" and not p.isdigit())]
+            return (False, f"components not in evidence: {missing[:3]}") if missing else (True, "ok")
+        probe = re.sub(r"\s+", " ", r.value.split(";")[0]).lower()[:40]
         if spec.group != "summary" and probe and probe not in joined and not r.notes.startswith("Updated"):
             return False, "value not found verbatim in cited evidence"
         return True, "ok"

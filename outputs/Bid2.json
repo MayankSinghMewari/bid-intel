@@ -1,6 +1,6 @@
 {
   "bid_id": "Bid2",
-  "generated_at": "2026-11-11T06:48:41+00:00",
+  "generated_at": "2026-11-11T06:56:26+00:00",
   "fields": {
     "Bid Number": {
       "value": "BPM044557",
@@ -55,7 +55,7 @@
           "page": 1,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:1",
-          "evidence": "limited to certified small business vendors. Only businesses that meet the statutory requirements set forth in State Finance and Procurement Article, 14-501--14-505, Annotated Code of Maryland, and that are certified by GOSBA Small Business Reserve Program are eligible for award of a contract. BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted t"
+          "evidence": "cle, 14-501--14-505, Annotated Code of Maryland, and that are certified by GOSBA Small Business Reserve Program are eligible for award of a contract. BID SUBMISSION INSTRUCTIONS Purchase Order Request for Proposal (PORFP) responses will only be accepted through the State's eMaryland Marketplace Advantage (eMMA) e-Procurement system. Bids will not be accepted by email, fax, U.S. Mail, or hand delivery. You must be registered and Logged in to submi"
         }
       ],
       "confidence": 0.9,
@@ -98,12 +98,12 @@
           "page": 2,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "evidence": "the Manufacturer or Distributor. 5. Purchase new and unused equipment. 6. The Master Contractor shall not impose a restocking fee if an item is returned due to damage or incorrect product shipped. 7. ENERGY STAR certified product 8. The Master Contractor must provide a Mercury Affidavit: https://doit.maryland.gov/contracts/Documents/hardware_co ntract/hwmercury_affidavit.pdf Invoicing Instructions"
+          "evidence": "must provide a Mercury Affidavit: https://doit.maryland.gov/contracts/Documents/hardware_co ntract/hwmercury_affidavit.pdf Invoicing Instructions: 9. Delivery within 45 days of Award. 1. Email invoices to: STOaccountspayable@treasurer.state.md.us 2. Invoice(s) shall be submitted within 10 days of delivering the equipment and shall include at a minimum the following: Contractor name, mailing address, social security number or Federal Tax ID number"
         }
       ],
-      "confidence": 0.54,
-      "notes": "rule match in retrieved passage (rank 1); validator: value not found verbatim in cited evidence",
-      "validated": false
+      "confidence": 0.9,
+      "notes": "rule match in retrieved passage (rank 1)",
+      "validated": true
     },
     "Payment Terms": {
       "value": "Invoice(s) shall be submitted within 10 days of delivering the equipment and shall include at a minimum the following: Contractor name, mailing address, social security number or Federal Tax ID number, and phone number.",
@@ -113,12 +113,12 @@
           "page": 2,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "evidence": "the Manufacturer or Distributor. 5. Purchase new and unused equipment. 6. The Master Contractor shall not impose a restocking fee if an item is returned due to damage or incorrect product shipped. 7. ENERGY STAR certified product 8. The Master Contractor must provide a Mercury Affidavit: https://doit.maryland.gov/contracts/Documents/hardware_co ntract/hwmercury_affidavit.pdf Invoicing Instructions"
+          "evidence": "wmercury_affidavit.pdf Invoicing Instructions: 9. Delivery within 45 days of Award. 1. Email invoices to: STOaccountspayable@treasurer.state.md.us 2. Invoice(s) shall be submitted within 10 days of delivering the equipment and shall include at a minimum the following: Contractor name, mailing address, social security number or Federal Tax ID number, and phone number. Reference the States assigned PORFP number. Date, invoice number and amount due."
         }
       ],
-      "confidence": 0.37,
-      "notes": "rule match in retrieved passage (rank 5); validator: value not found verbatim in cited evidence",
-      "validated": false
+      "confidence": 0.62,
+      "notes": "rule match in retrieved passage (rank 5)",
+      "validated": true
     },
     "Any Additional Documentation Required": {
       "value": "MERCURY AFFIDAVIT; Mercury Affidavit; Contract Affidavit",
@@ -128,21 +128,21 @@
           "page": 1,
           "doc_type": "affidavit",
           "chunk_id": "Bid2:Mercury_Affidavit:p1:0",
-          "evidence": "MERCURY AFFIDAVIT AUTHORIZED REPRESENTATIVE THEREBY AFFIRM THAT: I am the _________________ (Title) and the duly authorized representative of _______________________ (Business). I possess the legal authority to make this affidavit on behalf of myself and the business for which I am acting. MERCURY CONTENT INFORMATION: [ ] The product(s) offered do not contain mercury. OR [ ] The product(s) offered"
+          "evidence": "MERCURY AFFIDAVIT AUTHORIZED REPRESENTATIVE THEREBY AFFIRM THAT: I am the _________________ (Title) and the duly authorized representative of _______________________ (Business). I possess the legal authority to make this affidavit on behalf of myself and the business for which I am acting. MERCURY CONTENT INFORMATION: [ ] The product(s) offered do not contain mercury. OR [ ] The product(s) offered do contain mercury. (1) Describe the product or p"
         },
         {
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 2,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:1",
-          "evidence": "the Manufacturer or Distributor. 5. Purchase new and unused equipment. 6. The Master Contractor shall not impose a restocking fee if an item is returned due to damage or incorrect product shipped. 7. ENERGY STAR certified product 8. The Master Contractor must provide a Mercury Affidavit: https://doit.maryland.gov/contracts/Documents/hardware_co ntract/hwmercury_affidavit.pdf Invoicing Instructions"
+          "evidence": "cking fee if an item is returned due to damage or incorrect product shipped. 7. ENERGY STAR certified product 8. The Master Contractor must provide a Mercury Affidavit: https://doit.maryland.gov/contracts/Documents/hardware_co ntract/hwmercury_affidavit.pdf Invoicing Instructions: 9. Delivery within 45 days of Award. 1. Email invoices to: STOaccountspayable@treasurer.state.md.us 2. Invoice(s) shall be submitted within 10 days of delivering the eq"
         },
         {
           "file": "Contract_Affidavit.pdf",
           "page": 3,
           "doc_type": "affidavit",
           "chunk_id": "Bid2:Contract_Affidavit:p3:2",
-          "evidence": "result in suspension and debarment of the business under COMAR 21.08.03. F. CERTAIN AFFIRMATIONS VALID I FURTHER AFFIRM THAT: To the best of my knowledge, information, and belief, each of the affirmations, certifications, or acknowledgements contained in that certain Proposal Affidavit dated , 20 , and executed by ________________ for the purpose of obtaining the contract to which this Exhibit is "
+          "evidence": "or the purpose of obtaining the contract to which this Exhibit is attached remains true and correct in all respects as if made as of the date of this Contract Affidavit and as if fully set forth herein. I DO SOLEMNLY DECLARE AND AFFIRM UNDER THE PENALTIES OF PERJURY THAT THE CONTENTS OF THIS AFFIDAVIT ARE TRUE AND CORRECT TO THE BEST OF MY KNOWLEDGE, INFORMATION, AND BELIEF. Date: By: (print name of Authorized Representative and Affiant) (signatu"
         }
       ],
       "confidence": 0.67,
@@ -157,7 +157,7 @@
           "page": 2,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p2:0",
-          "evidence": "Questions Due (Closing) Date and Time: 06/01/2024 at 2:00 PM EDT Questions must be submitted in writing to thawkins@treasurer.state.md.us with the subject line, \"QUESTION for Dell Laptop #E20P4600040\", and be submitted in writing via e-mail to the Procurement Officer no later than the date and time specified. Security Requirements (if 1. The Department reserves the right to purchase more or less a"
+          "evidence": "ate and Time: 06/01/2024 at 2:00 PM EDT Questions must be submitted in writing to thawkins@treasurer.state.md.us with the subject line, \"QUESTION for Dell Laptop #E20P4600040\", and be submitted in writing via e-mail to the Procurement Officer no later than the date and time specified. Security Requirements (if 1. The Department reserves the right to purchase more or less applicable): than the specified quantity to the extent limited by funding. 2"
         }
       ],
       "confidence": 0.67,
@@ -172,12 +172,12 @@
           "page": 1,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p1:0",
-          "evidence": "PORFP Number: Section 1 General Information PORFP Type: #E20P4600040 eMMA Project Number: BPM044557 Functional Area/s (FA) Fixed Price for this PORFP: FA I (Printers and Associated Peripherals) FA V (Manufacturer's Extended Warranty) Manufacturer Name Dell Designated Small Yes Business Reserve?(SBR): Minority Business Enterprise (MBE) Goal for FA IV Below 0% (See \"Hardware Master Contract MBE Part"
+          "evidence": "0 Clavert Street Annapolis MD 21401 Special Instructions: LIMITED TO MASTER CONTRACTORS Only Master Contractors that are awarded a contract under the Desktop, Laptop and Tablet 2015 Master Contract, 060B5400007, are eligible to submit a bid in response to this secondary competition Purchase Order Request for Proposal (PORFP). SMALL BUSINESS RESERVE (SBR) PROCUREMENT This is a Small Business Reserve Procurement for which award will be limited to c"
         }
       ],
-      "confidence": 0.54,
-      "notes": "rule match in retrieved passage (rank 1); validator: value not found verbatim in cited evidence",
-      "validated": false
+      "confidence": 0.9,
+      "notes": "rule match in retrieved passage (rank 1)",
+      "validated": true
     },
     "Model_no": {
       "value": "Latitude 5550; WD22TB4",
@@ -187,28 +187,28 @@
           "page": 3,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "evidence": "Agency POC Name: Tamaira Hawkins Agency POC 410-260-7533 N/A Agency POC Email Phone Number: Address: Agency POC Mailing thawkins@treasurer.state.md Agency POC Address: .us Fax: MD State Treasurer's Office 80 Calvert Street, Room 109 Annapolis, MD 21401 Section 3 Delivery Address / Work Site POC Information (if different from above) Agency On-site Contact James Simpson Agency On-site 410-260-6063 N"
+          "evidence": "f June 1, 2023. Product Name Product Description Model # Qty Due Date mm/dd/yyyy 1. SI# CC7802 Dell SI# CC7802 Dell Latitude SI# CC7802 30 06/10/2024 Latitude 5550"
         },
         {
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:1",
-          "evidence": "to accommodate MD529 employees who have been included in our staff as of June 1, 2023. Product Name Product Description Model # Qty Due Date mm/dd/yyyy 1. SI# CC7802 Dell SI# CC7802 Dell Latitude SI# CC7802 30 06/10/2024 Latitude 5550 5550 *Laptops must be Microsoft Copilot ready* 2. Dell Thunderbolt 4 Dell Thunderbolt 4 Dock WD22TB4 30 06/10/2024 Dock WD22TB4 WD22TB4 FA V - Manufacturer's Extende"
+          "evidence": "f June 1, 2023. Product Name Product Description Model # Qty Due Date mm/dd/yyyy 1. SI# CC7802 Dell SI# CC7802 Dell Latitude SI# CC7802 30 06/10/2024 Latitude 5550 5550 *Laptops must be Microsoft Copilot ready* 2. Dell Thunderbolt 4 Dell Thunderbolt 4 Dock WD22TB4 30 06/10/2024 Dock WD22TB4 WD22TB4 FA V - Manufacturer's Extended Warranty (Provide a detailed description of warranty requirements and deliverables) Warranty Requirements Deliverables "
         },
         {
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
           "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "evidence": "Basic Information Reference Number 00004079359 Issuing Organization State of Maryland Treasurer's Office Solicitation Type RFP - Request for Proposal (Informal) Solicitation Number BPM044557 Title Dell Laptops w/Extended Warranty Source ID SCRIBE Details Location Anne Arundel County Purchase Type Not Stated Piggyback Contract No Dates Publication 05/28/2024 11:47 AM EDT Closing Date 06/10/2024 02:"
+          "evidence": "T Closing Date 06/10/2024 02:00 PM EDT Contact Information Tamaira Hawkins 410-260-7533 Thawkins@treasurer.state.md.us Description 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024 See more For more information on this solicitation, please click on the following link: https://"
         },
         {
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
           "doc_type": "specs",
           "chunk_id": "Bid2:Dell_Laptop_Specs:p1:1",
-          "evidence": "99-key Intel AX211 WLAN Driver 583-BLNH Intel Wi-Fi 6E (6 where 6E unavailable) AX211, 2x2, 802.11ax, 555-BKQC Bluetooth 5.3 wireless card 555-BKLQ 3-cell, 54 Wh, ExpressCharge Capable, ExpressCharge Boost Capable 451-BDGX 65W AC adapter, USB Type-C, EcoDesign No Security 492-BDMN E4 Power Cord 1M for US 346-BKLV Latitude 5550 Quick Start Guide 537-BBDO SERI Guide (ENG/FR/Multi) 340-DMNY ENERGY ST"
+          "evidence": "pressCharge Capable, ExpressCharge Boost Capable 451-BDGX 65W AC adapter, USB Type-C, EcoDesign No Security 492-BDMN E4 Power Cord 1M for US 346-BKLV Latitude 5550 Quick Start Guide 537-BBDO SERI Guide (ENG/FR/Multi) 340-DMNY ENERGY STAR Qualified 340-AGIK Custom Configuration 387-BBPC Dell Additional Software 817-BBBB Mix Model MTL 65WADPT 658-BFQB Intel Core Ultra 5 Non-vPro Label 340-DMMK FHD HDR RGB Camera, TNR, Camera Shutter, Microphone 389"
         }
       ],
       "confidence": 0.9,
@@ -223,28 +223,28 @@
           "page": 2,
           "doc_type": "specs",
           "chunk_id": "Bid2:Dell_Laptop_Specs:p2:0",
-          "evidence": "CFI,Information,MIAS, Post Bur n,Factory Install 362-7806 CFI Titan Code for CFI FIDA or Bypass SI 364-1846 CFI,Information, Validation,Se lect Any Microsoft OS 364-4107 CFI Routing SKU 365-0257 Custom Asset Report 366-0135 Consigned Asset Tag 366-0141 CFI,Information Client,Only 371-0941 CFI,Information,CSRouting,Elig ible,Factory Install 375-3088 CFI,LBL,POLY,SML,CC7801,FACTOR Y INSTALL 383-0464"
+          "evidence": "tory Install 362-7806 CFI Titan Code for CFI FIDA or Bypass SI 364-1846 CFI,Information, Validation,Se lect Any Microsoft OS 364-4107 CFI Routing SKU 365-0257 Custom Asset Report 366-0135 Consigned Asset Tag 366-0141 CFI,Information Client,Only 371-0941 CFI,Information,CSRouting,Elig ible,Factory Install 375-3088 CFI,LBL,POLY,SML,CC7801,FACTOR Y INSTALL 383-0464 Page 4 Dell Marketing LP. U.S. only. Dell Marketing LP. is located at One Dell Way, M"
         },
         {
           "file": "Dell_Laptop_Specs.pdf",
           "page": 1,
           "doc_type": "specs",
           "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
-          "evidence": "SI# CC7802 Dell Latitude 5550 SKU 210-BLYZ Description Dell Latitude 5550 XCTO Base 379-BFNZ Intel Core Ultra 5 125U processor (12 MB cache, 12 cores, 14 threads, up to 4.3 GHz Turbo) 619-ARSB Windows 11 Pro, English, Brazilian Portuguese PT-BR, French, Spanish 658-BCSB No Microsoft Office License Included - 30 day Trial Offer Only 338-CNRG Assembly Base MTL 5550 338-CNRK Integrated Intel graphics"
+          "evidence": "SI# CC7802 Dell Latitude 5550 SKU 210-BLYZ Description Dell Latitude 5550 XCTO Base 379-BFNZ Intel Core Ultra 5 125U processor (12 MB cache, 12 cores, 14 threads, up to 4.3 GHz Turbo) 619-ARSB Windows 11 Pro, English, Brazilian Portuguese PT-BR, French, Spanish 658-BCSB No Microsoft Office License Included - 30 day Trial Offer Only 338-CNRG Assembly Base MTL 5550 338-CNRK Integrated Intel graphics for Intel Core Ultra 5 125U processor 321-BKTQ La"
         },
         {
           "file": "Dell Laptops w_Extended Warranty - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
           "doc_type": "bid_page",
           "chunk_id": "Bid2:Dell Laptops w_Extended Warranty - Bid I:p1:0",
-          "evidence": "Basic Information Reference Number 00004079359 Issuing Organization State of Maryland Treasurer's Office Solicitation Type RFP - Request for Proposal (Informal) Solicitation Number BPM044557 Title Dell Laptops w/Extended Warranty Source ID SCRIBE Details Location Anne Arundel County Purchase Type Not Stated Piggyback Contract No Dates Publication 05/28/2024 11:47 AM EDT Closing Date 06/10/2024 02:"
+          "evidence": " 11:47 AM EDT Closing Date 06/10/2024 02:00 PM EDT Contact Information Tamaira Hawkins 410-260-7533 Thawkins@treasurer.state.md.us Description 1. SI# CC7802 Dell Latitude 5550 SI# CC7802 Dell Latitude 5550 *Laptops must be Microsoft Copilot ready* SI# CC7802 30 06/10/2024 2. Dell Thunderbolt 4 Dock – WD22TB4 Dell Thunderbolt 4 Dock – WD22TB4 WD22TB4 30 06/10/2024 See more For more information on this solicitation, please click on the following li"
         },
         {
           "file": "PORFP_-_Dell_Laptop_Final.pdf",
           "page": 3,
           "doc_type": "rfp",
           "chunk_id": "Bid2:PORFP_-_Dell_Laptop_Final:p3:0",
-          "evidence": "Agency POC Name: Tamaira Hawkins Agency POC 410-260-7533 N/A Agency POC Email Phone Number: Address: Agency POC Mailing thawkins@treasurer.state.md Agency POC Address: .us Fax: MD State Treasurer's Office 80 Calvert Street, Room 109 Annapolis, MD 21401 Section 3 Delivery Address / Work Site POC Information (if different from above) Agency On-site Contact James Simpson Agency On-site 410-260-6063 N"
+          "evidence": "odate MD529 employees who have been included in our staff as of June 1, 2023. Product Name Product Description Model # Qty Due Date mm/dd/yyyy 1. SI# CC7802 Dell SI# CC7802 Dell Latitude SI# CC7802 30 06/10/2024 Latitude 5550"
         }
       ],
       "confidence": 0.73,
@@ -333,18 +333,18 @@
           "page": 1,
           "doc_type": "specs",
           "chunk_id": "Bid2:Dell_Laptop_Specs:p1:0",
-          "evidence": "SI# CC7802 Dell Latitude 5550 SKU 210-BLYZ Description Dell Latitude 5550 XCTO Base 379-BFNZ Intel Core Ultra 5 125U processor (12 MB cache, 12 cores, 14 threads, up to 4.3 GHz Turbo) 619-ARSB Windows 11 Pro, English, Brazilian Portuguese PT-BR, French, Spanish 658-BCSB No Microsoft Office License Included - 30 day Trial Offer Only 338-CNRG Assembly Base MTL 5550 338-CNRK Integrated Intel graphics"
+          "evidence": "SI# CC7802 Dell Latitude 5550 SKU 210-BLYZ Description Dell Latitude 5550 XCTO Base 379-BFNZ Intel Core Ultra 5 125U processor (12 MB cache, 12 cores, 14 threads, up to 4.3 GHz Turbo) 619-ARSB Windows 11 Pro, English, Brazilian Portuguese PT-BR, French, Spanish 658-BCSB No Microsoft Office License Included - 30 day Trial Offer Only 338-CNRG Assembly Base MTL 5550 338-CNRK Integrated Intel graphics for Intel Core Ultra 5 125U processor 321-BKTQ Latitude 5550 Bottom Door, MTL U15 409-BCXY Intel Rapid Storage Technology Driver 631-BBSQ Intel vPro Management Disabled 16 GB: 2 x 8 GB, DDR5, 5600 MT/s (5200 MT/s with 13th Gen Intel 370-BBTL Core processors) 256 GB, M.2 2230, TLC, Gen 4 PCIe NVMe, SSD 400-BRFT 15.6\", FHD 1920x1080, 60Hz, IPS, Non-Touch, AG, 250 nit, 45% NTSC, FHD Cam 391-BJHB English US backlit AI hotkey keyboard with numeric keypad, 99-key Intel AX211 WLAN Driver 583-BLNH Intel Wi-Fi 6E (6 where 6E unavailable) AX211, 2x2, 802.11ax, 555-BKQC Bluetooth 5.3 wireless card 555-BKLQ 3-cell, 54 Wh, ExpressCharge Capable, ExpressCharge Boost Capable 451-BDGX 65W AC adapter, USB Type-C, EcoDesign No Security 492-BDMN"
         }
       ],
-      "confidence": 0.38,
-      "notes": "rule match in retrieved passage (rank 4); validator: value not found verbatim in cited evidence",
-      "validated": false
+      "confidence": 0.62,
+      "notes": "rule match in retrieved passage (rank 5)",
+      "validated": true
     }
   },
   "addendum_changes": [],
   "validation": {
-    "passed": 12,
-    "failed": 4,
+    "passed": 16,
+    "failed": 0,
     "not_found": 4
   },
   "ingestion": [

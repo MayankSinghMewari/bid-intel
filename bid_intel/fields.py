@@ -18,10 +18,11 @@ def _sentences(text: str) -> list[str]:
     return [s.strip() for s in re.split(r"(?<=[.;!?])\s+(?=[A-Z0-9])", re.sub(r"\s+", " ", text)) if s.strip()]
 
 
-def _first_sentence(pattern: str, flags=re.I, max_len=320):
+def _first_sentence(pattern: str, flags=re.I, max_len=320, exclude: str | None = None):
+    """First sentence matching pattern; sentences matching exclude are skipped (guards false positives)."""
     def rule(text: str) -> str | None:
         for s in _sentences(text):
-            if re.search(pattern, s, flags):
+            if re.search(pattern, s, flags) and not (exclude and re.search(exclude, s, re.I)):
                 return s[:max_len]
         return None
     return rule
@@ -123,6 +124,7 @@ class FieldSpec:
     fact_keys: list[str] = field(default_factory=list)   # HTML bid-page facts to use first
     multi: bool = False             # gather values from several passages (lists of documents)
     kind: str = "text"              # "date" fields get a format check from the validator
+    derived: bool = False           # value is normalised from several facts; validate each component
     keep_filter: bool = False       # keep the doc-type filter on retries (e.g. contract term is never in an affidavit)
 
 
@@ -141,7 +143,7 @@ FIELDS: list[FieldSpec] = [
               _first_sentence(r"(accepted|submitted|submit|submission)[^.]{0,120}(electronic|e-?procurement|portal|"
                               r"sealed|online|eMMA|email|iSupplier|hand deliver)")),
     FieldSpec("Term of Bid", "commercial", "initial term of contract renewal options years",
-              _term, doc_types=["rfp", "addendum", "bid_page"], keep_filter=True),
+              _term, doc_types=["rfp", "addendum", "bid_page"], keep_filter=True, derived=True),
     FieldSpec("Pre Bid Meeting", "dates", "pre-bid pre-proposal meeting conference date mandatory",
               _first_sentence(r"pre-?\s?(bid|proposal)\s+(meeting|conference)[^.]{0,200}"),
               fact_keys=["prebid conference"]),
@@ -151,11 +153,13 @@ FIELDS: list[FieldSpec] = [
               _bond),
     FieldSpec("Delivery Date", "dates", "delivery within days of award shipping lead time",
               _any(_regex(r"(deliver(?:y|ed)?\s+within\s+[\w\s()]{1,25}?days?\s+(?:of|after|from)\s+(?:award|receipt[\w\s]{0,20}|order))"),
-                   _first_sentence(r"deliver(y|ed)?\b[^.]{0,40}\bwithin\b[^.]{0,30}\b(days|weeks)\b"))),
+                   _first_sentence(r"deliver(y|ed)?\b[^.]{0,40}\bwithin\b[^.]{0,30}\b(days|weeks)\b",
+                                   exclude=r"notify|certified mail|default|terminat|penalt|liquidated|subcontract"))),
     FieldSpec("Payment Terms", "commercial", "payment terms net 30 invoice invoicing",
               _any(_regex(r"\b(net\s*\d{2})\b"),
                    _first_sentence(r"(payment|paid)[^.]{0,80}within[^.]{0,30}days|invoices?\b[^.]{0,80}"
-                                   r"(submitted|emailed|sent|within)"))),
+                                   r"(submitted|emailed|sent|within)",
+                                   exclude=r"subcontract|retainage|M/WBE|supplier"))),
     FieldSpec("Any Additional Documentation Required", "commercial",
               "required forms affidavit certificate insurance W-9 Form 1295 submit with proposal",
               _all_matches(DOC_PATTERNS), multi=True),
@@ -188,5 +192,5 @@ FIELDS: list[FieldSpec] = [
               fact_keys=["issuing organization"]),
     FieldSpec("Bid Summary", "summary", "scope of work purpose of this solicitation", lambda t: None),
     FieldSpec("Product Specification", "product", "minimum specifications processor memory storage display warranty",
-              _specs, doc_types=["specs", "rfp"]),
+              _specs, doc_types=["specs", "rfp"], derived=True),
 ]
