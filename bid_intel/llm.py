@@ -27,7 +27,7 @@ def _load_dotenv() -> None:
 
 _load_dotenv()
 MODEL = os.environ.get("BID_INTEL_LLM_MODEL", "claude-opus-5-5")
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
 
 
 def provider() -> str | None:
@@ -49,7 +49,8 @@ def _complete(system: str, user: str, max_tokens: int = 2048) -> dict:
     if provider() == "gemini":
         from google import genai
         from google.genai import types
-        client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"))
+        client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"),
+                              http_options=types.HttpOptions(timeout=30_000))  # ms; slow calls fall back
         r = client.models.generate_content(
             model=GEMINI_MODEL, contents=user,
             config=types.GenerateContentConfig(system_instruction=system, max_output_tokens=max_tokens,
