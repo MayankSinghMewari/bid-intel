@@ -8,3 +8,4 @@ fastembed>=0.4
 numpy>=1.26
 anthropic>=0.70
 beautifulsoup4>=4.12
+google-genai>=1.0

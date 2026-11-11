@@ -47,7 +47,7 @@
       ],
       "chunks": 176
     },
-    "latency_ms": 1582.2
+    "latency_ms": 1405.0
   },
   {
     "step": 2,
@@ -99,15 +99,15 @@
         }
       ]
     },
-    "latency_ms": 1582.3
+    "latency_ms": 1405.1
   },
   {
     "step": 3,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Bid Number",
-      "query": "solicitation number RFP number bid number",
+      "field": "contact_info",
+      "query": "procurement officer point of contact email phone",
       "doc_types": null,
       "top_k": 8,
       "attempt": 1
@@ -115,67 +115,67 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
-          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p46:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 46,
           "score": 0.0325
         },
         {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 4,
-          "score": 0.0308
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p12:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 12,
+          "score": 0.0315
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p43:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p61:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 43,
+          "page": 61,
           "score": 0.0308
         },
         {
           "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 42,
-          "score": 0.0308
+          "score": 0.0296
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:2",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.0307
+          "page": 9,
+          "score": 0.0296
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p13:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.0292
+          "page": 13,
+          "score": 0.0284
         },
         {
           "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 44,
-          "score": 0.029
+          "score": 0.0283
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p12:1",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0288
+          "page": 12,
+          "score": 0.0282
         }
       ]
     },
-    "latency_ms": 1218.8
+    "latency_ms": 1131.9
   },
   {
     "step": 4,
     "agent": "extractor:identity",
     "action": "extract",
     "input": {
-      "field": "Bid Number",
+      "field": "contact_info",
       "evidence": 8
     },
     "output": {
-      "value": "JA-207652",
+      "value": "Procurement Services; 972-925-3700; ProcurementCS@dallasisd.org",
       "sources": [
         "Bid1:Student and Staff Computing Devices __SO:p1:0"
       ]
@@ -187,8 +187,8 @@
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Bid Number",
-      "value": "JA-207652"
+      "field": "contact_info",
+      "value": "Procurement Services; 972-925-3700; ProcurementCS@dallasisd.org"
     },
     "output": {
       "passed": true,
@@ -198,101 +198,6 @@
   },
   {
     "step": 6,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "company_name",
-      "query": "issuing organization agency district office",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
-          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0289
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.0282
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 48,
-          "score": 0.0279
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0278
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p32:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 32,
-          "score": 0.0265
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p61:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 61,
-          "score": 0.0265
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p25:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 25,
-          "score": 0.0263
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p18:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 18,
-          "score": 0.0255
-        }
-      ]
-    },
-    "latency_ms": 1286.9
-  },
-  {
-    "step": 7,
-    "agent": "extractor:identity",
-    "action": "extract",
-    "input": {
-      "field": "company_name",
-      "evidence": 8
-    },
-    "output": {
-      "value": "Dallas Independent School District",
-      "sources": [
-        "Bid1:Student and Staff Computing Devices __SO:p1:0"
-      ]
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 8,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "company_name",
-      "value": "Dallas Independent School District"
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 9,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -354,10 +259,10 @@
         }
       ]
     },
-    "latency_ms": 100.9
+    "latency_ms": 150.2
   },
   {
-    "step": 10,
+    "step": 7,
     "agent": "extractor:dates",
     "action": "extract",
     "input": {
@@ -373,7 +278,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 11,
+    "step": 8,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -384,15 +289,15 @@
       "passed": true,
       "reason": "ok"
     },
-    "latency_ms": 0.3
+    "latency_ms": 0.2
   },
   {
-    "step": 12,
+    "step": 9,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Title",
-      "query": "title of the request for proposal",
+      "field": "Bid Submission Type",
+      "query": "how proposals are submitted electronically sealed portal email",
       "doc_types": null,
       "top_k": 8,
       "attempt": 1
@@ -400,80 +305,175 @@
     "output": {
       "hits": [
         {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 9,
+          "score": 0.0323
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 9,
+          "score": 0.032
+        },
+        {
           "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p2:2",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 2,
           "score": 0.0315
         },
         {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0295
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "score": 0.0286
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p30:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 30,
+          "score": 0.0285
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0282
+        },
+        {
           "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p5:0",
           "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
           "page": 5,
-          "score": 0.0308
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0293
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 3,
-          "score": 0.0291
-        },
-        {
-          "chunk_id": "Bid1:Addendum 2 RFP JA-207652 Student and Sta:p1:0",
-          "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 1,
-          "score": 0.028
-        },
+          "score": 0.0274
+        }
+      ]
+    },
+    "latency_ms": 98.7
+  },
+  {
+    "step": 10,
+    "agent": "extractor:dates",
+    "action": "extract",
+    "input": {
+      "field": "Bid Submission Type",
+      "evidence": 8
+    },
+    "output": {
+      "value": "Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time stated.",
+      "sources": [
+        "Bid1:JA-207652 Student and Staff Computing De:p9:2"
+      ]
+    },
+    "latency_ms": 1.5
+  },
+  {
+    "step": 11,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Submission Type",
+      "value": "Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time stated."
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.1
+  },
+  {
+    "step": 12,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "company_name",
+      "query": "issuing organization agency district office",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
         {
           "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
           "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
           "page": 1,
+          "score": 0.0289
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 31,
+          "score": 0.0282
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 48,
+          "score": 0.0279
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 20,
           "score": 0.0278
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p32:2",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.0271
+          "page": 32,
+          "score": 0.0265
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p2:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p61:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 2,
+          "page": 61,
           "score": 0.0265
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p25:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 25,
+          "score": 0.0263
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p18:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 18,
+          "score": 0.0255
         }
       ]
     },
-    "latency_ms": 1423.1
+    "latency_ms": 1383.5
   },
   {
     "step": 13,
     "agent": "extractor:identity",
     "action": "extract",
     "input": {
-      "field": "Title",
+      "field": "company_name",
       "evidence": 8
     },
     "output": {
-      "value": "Student and Staff Computing Devices",
+      "value": "Dallas Independent School District",
       "sources": [
         "Bid1:Student and Staff Computing Devices __SO:p1:0"
       ]
     },
-    "latency_ms": 0.2
+    "latency_ms": 0.0
   },
   {
     "step": 14,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Title",
-      "value": "Student and Staff Computing Devices"
+      "field": "company_name",
+      "value": "Dallas Independent School District"
     },
     "output": {
       "passed": true,
@@ -544,7 +544,7 @@
         }
       ]
     },
-    "latency_ms": 107.2
+    "latency_ms": 70.7
   },
   {
     "step": 16,
@@ -574,188 +574,97 @@
       "passed": true,
       "reason": "ok"
     },
-    "latency_ms": 0.0
+    "latency_ms": 0.1
   },
   {
     "step": 18,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Bid Submission Type",
-      "query": "how proposals are submitted electronically sealed portal email",
-      "doc_types": null,
+      "field": "Term of Bid",
+      "query": "initial term of contract renewal options years",
+      "doc_types": [
+        "rfp",
+        "addendum",
+        "bid_page"
+      ],
       "top_k": 8,
       "attempt": 1
     },
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 9,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 9,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p2:2",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p2:1",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 2,
-          "score": 0.0315
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0295
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 4,
-          "score": 0.0286
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p30:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 30,
-          "score": 0.0285
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0282
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p5:0",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 5,
-          "score": 0.0274
-        }
-      ]
-    },
-    "latency_ms": 124.6
-  },
-  {
-    "step": 19,
-    "agent": "extractor:dates",
-    "action": "extract",
-    "input": {
-      "field": "Bid Submission Type",
-      "evidence": 8
-    },
-    "output": {
-      "value": "Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time stated.",
-      "sources": [
-        "Bid1:JA-207652 Student and Staff Computing De:p9:2"
-      ]
-    },
-    "latency_ms": 1.1
-  },
-  {
-    "step": 20,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Bid Submission Type",
-      "value": "Manual submissions must be delivered to the Procurement Services Department, in a sealed envelope by the date and time stated."
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.1
-  },
-  {
-    "step": 21,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "query": "bid bond bid security guarantee amount percent required",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 52,
           "score": 0.0325
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 17,
-          "score": 0.0315
+          "page": 20,
+          "score": 0.032
         },
         {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:3",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p51:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 51,
+          "score": 0.0292
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p1:2",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 1,
+          "score": 0.0289
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:2",
           "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
           "page": 2,
-          "score": 0.0313
+          "score": 0.027
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p32:3",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.0274
+          "page": 32,
+          "score": 0.027
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 17,
-          "score": 0.0268
+          "page": 31,
+          "score": 0.0269
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 47,
-          "score": 0.0263
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p49:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 49,
-          "score": 0.0262
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 9,
-          "score": 0.0261
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p3:0",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 3,
+          "score": 0.0264
         }
       ]
     },
-    "latency_ms": 31.6
+    "latency_ms": 45.1
   },
   {
-    "step": 22,
+    "step": 19,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
-      "field": "Bid Bond Requirement",
+      "field": "Term of Bid",
       "evidence": 8
     },
     "output": {
       "value": null,
       "sources": []
     },
-    "latency_ms": 2.6
+    "latency_ms": 4.2
   },
   {
-    "step": 23,
+    "step": 20,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Bid Bond Requirement",
+      "field": "Term of Bid",
       "value": null
     },
     "output": {
@@ -765,15 +674,110 @@
     "latency_ms": 0.0
   },
   {
-    "step": 24,
+    "step": 21,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
-      "field": "Bid Bond Requirement",
+      "field": "Term of Bid",
       "attempt": 1
     },
     "output": {
       "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 22,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Bid Number",
+      "query": "solicitation number RFP number bid number",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0325
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "score": 0.0308
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p43:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 43,
+          "score": 0.0308
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 42,
+          "score": 0.0308
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 31,
+          "score": 0.0307
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.0292
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 44,
+          "score": 0.029
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0288
+        }
+      ]
+    },
+    "latency_ms": 1518.6
+  },
+  {
+    "step": 23,
+    "agent": "extractor:identity",
+    "action": "extract",
+    "input": {
+      "field": "Bid Number",
+      "evidence": 8
+    },
+    "output": {
+      "value": "JA-207652",
+      "sources": [
+        "Bid1:Student and Staff Computing Devices __SO:p1:0"
+      ]
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 24,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Number",
+      "value": "JA-207652"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
     },
     "latency_ms": 0.0
   },
@@ -840,7 +844,7 @@
         }
       ]
     },
-    "latency_ms": 69.0
+    "latency_ms": 178.6
   },
   {
     "step": 26,
@@ -854,7 +858,7 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 4.0
+    "latency_ms": 4.2
   },
   {
     "step": 27,
@@ -888,118 +892,8 @@
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Term of Bid",
-      "query": "initial term of contract renewal options years",
-      "doc_types": [
-        "rfp",
-        "addendum",
-        "bid_page"
-      ],
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p2:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 2,
-          "score": 0.0325
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p51:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 51,
-          "score": 0.0292
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p1:2",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 1,
-          "score": 0.0289
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:2",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 2,
-          "score": 0.027
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p32:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 32,
-          "score": 0.027
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.0269
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p3:0",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 3,
-          "score": 0.0264
-        }
-      ]
-    },
-    "latency_ms": 73.0
-  },
-  {
-    "step": 30,
-    "agent": "extractor:commercial",
-    "action": "extract",
-    "input": {
-      "field": "Term of Bid",
-      "evidence": 8
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 4.3
-  },
-  {
-    "step": 31,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Term of Bid",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 32,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Term of Bid",
-      "attempt": 1
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 33,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "contact_info",
-      "query": "procurement officer point of contact email phone",
+      "field": "Title",
+      "query": "title of the request for proposal",
       "doc_types": null,
       "top_k": 8,
       "attempt": 1
@@ -1007,80 +901,80 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p46:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p2:2",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 46,
-          "score": 0.0325
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p12:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 12,
+          "page": 2,
           "score": 0.0315
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p61:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 61,
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p5:0",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 5,
           "score": 0.0308
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 42,
-          "score": 0.0296
+          "page": 20,
+          "score": 0.0293
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:2",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 9,
-          "score": 0.0296
+          "page": 3,
+          "score": 0.0291
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p13:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 13,
-          "score": 0.0284
+          "chunk_id": "Bid1:Addendum 2 RFP JA-207652 Student and Sta:p1:0",
+          "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 1,
+          "score": 0.028
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 44,
-          "score": 0.0283
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0278
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p12:1",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 12,
-          "score": 0.0282
+          "page": 31,
+          "score": 0.0271
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p2:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 2,
+          "score": 0.0265
         }
       ]
     },
-    "latency_ms": 1511.4
+    "latency_ms": 1574.6
   },
   {
-    "step": 34,
+    "step": 30,
     "agent": "extractor:identity",
     "action": "extract",
     "input": {
-      "field": "contact_info",
+      "field": "Title",
       "evidence": 8
     },
     "output": {
-      "value": "Procurement Services; 972-925-3700; ProcurementCS@dallasisd.org",
+      "value": "Student and Staff Computing Devices",
       "sources": [
         "Bid1:Student and Staff Computing Devices __SO:p1:0"
       ]
     },
-    "latency_ms": 0.0
+    "latency_ms": 0.3
   },
   {
-    "step": 35,
+    "step": 31,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "contact_info",
-      "value": "Procurement Services; 972-925-3700; ProcurementCS@dallasisd.org"
+      "field": "Title",
+      "value": "Student and Staff Computing Devices"
     },
     "output": {
       "passed": true,
@@ -1089,267 +983,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 36,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "query": "bid bond bid security guarantee amount percent required",
-      "doc_types": null,
-      "top_k": 16,
-      "attempt": 2
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 52,
-          "score": 0.0325
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 17,
-          "score": 0.0315
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:3",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 2,
-          "score": 0.0313
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.0274
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 17,
-          "score": 0.0268
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 47,
-          "score": 0.0263
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p49:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 49,
-          "score": 0.0262
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 9,
-          "score": 0.0261
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 47,
-          "score": 0.0261
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p18:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 18,
-          "score": 0.0255
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.025
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p22:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 22,
-          "score": 0.0248
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0243
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p46:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 46,
-          "score": 0.0242
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p45:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 45,
-          "score": 0.0236
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 26,
-          "score": 0.0234
-        }
-      ]
-    },
-    "latency_ms": 71.9
-  },
-  {
-    "step": 37,
-    "agent": "extractor:commercial",
-    "action": "extract",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "evidence": 16
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 3.8
-  },
-  {
-    "step": 38,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 39,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Bid Bond Requirement",
-      "attempt": 2
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 40,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Payment Terms",
-      "query": "payment terms net 30 invoice invoicing",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p51:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 51,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p51:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 51,
-          "score": 0.0317
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0307
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0279
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p32:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 32,
-          "score": 0.0269
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 48,
-          "score": 0.0266
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0257
-        }
-      ]
-    },
-    "latency_ms": 27.0
-  },
-  {
-    "step": 41,
-    "agent": "extractor:commercial",
-    "action": "extract",
-    "input": {
-      "field": "Payment Terms",
-      "evidence": 8
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 4.6
-  },
-  {
-    "step": 42,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Payment Terms",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 43,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Payment Terms",
-      "attempt": 1
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 44,
+    "step": 32,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -1463,10 +1097,10 @@
         }
       ]
     },
-    "latency_ms": 43.8
+    "latency_ms": 73.4
   },
   {
-    "step": 45,
+    "step": 33,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
@@ -1479,10 +1113,10 @@
         "Bid1:JA-207652 Student and Staff Computing De:p2:0"
       ]
     },
-    "latency_ms": 4.4
+    "latency_ms": 4.9
   },
   {
-    "step": 46,
+    "step": 34,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -1493,10 +1127,116 @@
       "passed": true,
       "reason": "ok"
     },
-    "latency_ms": 0.1
+    "latency_ms": 0.2
   },
   {
-    "step": 47,
+    "step": 35,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "query": "bid bond bid security guarantee amount percent required",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 52,
+          "score": 0.0325
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "score": 0.0315
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:3",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 2,
+          "score": 0.0313
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.0274
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "score": 0.0268
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 47,
+          "score": 0.0263
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p49:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 49,
+          "score": 0.0262
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 9,
+          "score": 0.0261
+        }
+      ]
+    },
+    "latency_ms": 67.8
+  },
+  {
+    "step": 36,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "evidence": 8
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 4.2
+  },
+  {
+    "step": 37,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 38,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "attempt": 1
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 39,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -1606,10 +1346,10 @@
         }
       ]
     },
-    "latency_ms": 56.6
+    "latency_ms": 32.2
   },
   {
-    "step": 48,
+    "step": 40,
     "agent": "extractor:dates",
     "action": "extract",
     "input": {
@@ -1620,10 +1360,10 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 6.3
+    "latency_ms": 11.3
   },
   {
-    "step": 49,
+    "step": 41,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -1637,7 +1377,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 50,
+    "step": 42,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
@@ -1650,186 +1390,90 @@
     "latency_ms": 0.0
   },
   {
-    "step": 51,
+    "step": 43,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Bid Bond Requirement",
-      "query": "bid bond bid security guarantee amount percent required",
+      "field": "Payment Terms",
+      "query": "payment terms net 30 invoice invoicing",
       "doc_types": null,
-      "top_k": 24,
-      "attempt": 3
+      "top_k": 8,
+      "attempt": 1
     },
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 52,
-          "score": 0.0325
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 17,
-          "score": 0.0315
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:3",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 2,
-          "score": 0.0313
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.0274
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 17,
-          "score": 0.0268
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 47,
-          "score": 0.0263
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p49:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 49,
-          "score": 0.0262
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 9,
-          "score": 0.0261
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 47,
-          "score": 0.0261
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p18:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 18,
-          "score": 0.0255
-        },
-        {
           "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 31,
-          "score": 0.025
+          "score": 0.0318
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p22:2",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p51:1",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 22,
-          "score": 0.0248
+          "page": 51,
+          "score": 0.0318
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p51:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0243
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p46:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 46,
-          "score": 0.0242
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p45:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 45,
-          "score": 0.0236
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 26,
-          "score": 0.0234
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:1",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 2,
-          "score": 0.0233
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p30:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 30,
-          "score": 0.0231
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p35:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 35,
-          "score": 0.0231
+          "page": 51,
+          "score": 0.0317
         },
         {
           "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 20,
-          "score": 0.0228
+          "score": 0.0307
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 20,
+          "score": 0.0279
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p32:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 32,
+          "score": 0.0269
         },
         {
           "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 48,
-          "score": 0.0226
+          "score": 0.0266
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p25:3",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 25,
-          "score": 0.0225
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p50:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 50,
-          "score": 0.0224
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.0219
+          "page": 14,
+          "score": 0.0257
         }
       ]
     },
-    "latency_ms": 27.8
+    "latency_ms": 44.8
   },
   {
-    "step": 52,
+    "step": 44,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
-      "field": "Bid Bond Requirement",
-      "evidence": 24
+      "field": "Payment Terms",
+      "evidence": 8
     },
     "output": {
       "value": null,
       "sources": []
     },
-    "latency_ms": 12.0
+    "latency_ms": 7.7
   },
   {
-    "step": 53,
+    "step": 45,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Bid Bond Requirement",
+      "field": "Payment Terms",
       "value": null
     },
     "output": {
@@ -1839,12 +1483,12 @@
     "latency_ms": 0.0
   },
   {
-    "step": 54,
+    "step": 46,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
-      "field": "Bid Bond Requirement",
-      "attempt": 3
+      "field": "Payment Terms",
+      "attempt": 1
     },
     "output": {
       "reason": "Not found in documents"
@@ -1852,7 +1496,106 @@
     "latency_ms": 0.0
   },
   {
-    "step": 55,
+    "step": 47,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Any Additional Documentation Required",
+      "query": "required forms affidavit certificate insurance W-9 Form 1295 submit with proposal",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "score": 0.0328
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "score": 0.0308
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0306
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0281
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0277
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p5:0",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 5,
+          "score": 0.0271
+        },
+        {
+          "chunk_id": "Bid1:Addendum 2 RFP JA-207652 Student and Sta:p1:0",
+          "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 1,
+          "score": 0.0268
+        }
+      ]
+    },
+    "latency_ms": 46.8
+  },
+  {
+    "step": 48,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Any Additional Documentation Required",
+      "evidence": 8
+    },
+    "output": {
+      "value": "FORM 1295; CERTIFICATE OF INTERESTED PARTIES; certificate of insurance; Form 1295",
+      "sources": [
+        "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
+        "Bid1:JA-207652 Student and Staff Computing De:p17:0",
+        "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+        "Bid1:JA-207652 Student and Staff Computing De:p14:1",
+        "Bid1:JA-207652 Student and Staff Computing De:p14:0"
+      ]
+    },
+    "latency_ms": 9.8
+  },
+  {
+    "step": 49,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Any Additional Documentation Required",
+      "value": "FORM 1295; CERTIFICATE OF INTERESTED PARTIES; certificate of insurance; Form 1295"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.2
+  },
+  {
+    "step": 50,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -2010,10 +1753,10 @@
         }
       ]
     },
-    "latency_ms": 27.1
+    "latency_ms": 32.1
   },
   {
-    "step": 56,
+    "step": 51,
     "agent": "extractor:dates",
     "action": "extract",
     "input": {
@@ -2024,10 +1767,10 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 6.5
+    "latency_ms": 7.6
   },
   {
-    "step": 57,
+    "step": 52,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -2041,7 +1784,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 58,
+    "step": 53,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
@@ -2054,7 +1797,256 @@
     "latency_ms": 0.0
   },
   {
+    "step": 54,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "query": "bid bond bid security guarantee amount percent required",
+      "doc_types": null,
+      "top_k": 16,
+      "attempt": 2
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 52,
+          "score": 0.0325
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "score": 0.0315
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:3",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 2,
+          "score": 0.0313
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.0274
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "score": 0.0268
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 47,
+          "score": 0.0263
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p49:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 49,
+          "score": 0.0262
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 9,
+          "score": 0.0261
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 47,
+          "score": 0.0261
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p18:3",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 18,
+          "score": 0.0255
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 31,
+          "score": 0.025
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p22:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 22,
+          "score": 0.0248
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0243
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p46:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 46,
+          "score": 0.0242
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p45:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 45,
+          "score": 0.0236
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 26,
+          "score": 0.0234
+        }
+      ]
+    },
+    "latency_ms": 67.9
+  },
+  {
+    "step": 55,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "evidence": 16
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 2.5
+  },
+  {
+    "step": 56,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 57,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "attempt": 2
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 58,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Contract or Cooperative to use",
+      "query": "cooperative purchasing interlocal master contract vehicle piggyback",
+      "doc_types": null,
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p19:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 19,
+          "score": 0.0313
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 20,
+          "score": 0.0296
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p19:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 19,
+          "score": 0.0293
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 52,
+          "score": 0.0283
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p43:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 43,
+          "score": 0.0279
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 20,
+          "score": 0.0277
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 52,
+          "score": 0.0269
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p53:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 53,
+          "score": 0.0252
+        }
+      ]
+    },
+    "latency_ms": 26.6
+  },
+  {
     "step": 59,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Contract or Cooperative to use",
+      "evidence": 8
+    },
+    "output": {
+      "value": "member of the Educational Purchasing Cooperative of North Texas (EPCNT)",
+      "sources": [
+        "Bid1:JA-207652 Student and Staff Computing De:p19:1"
+      ]
+    },
+    "latency_ms": 1.7
+  },
+  {
+    "step": 60,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Contract or Cooperative to use",
+      "value": "member of the Educational Purchasing Cooperative of North Texas (EPCNT)"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.1
+  },
+  {
+    "step": 61,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -2164,10 +2156,10 @@
         }
       ]
     },
-    "latency_ms": 60.8
+    "latency_ms": 69.7
   },
   {
-    "step": 60,
+    "step": 62,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
@@ -2178,10 +2170,10 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 5.4
+    "latency_ms": 9.9
   },
   {
-    "step": 61,
+    "step": 63,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -2195,7 +2187,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 62,
+    "step": 64,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
@@ -2208,12 +2200,214 @@
     "latency_ms": 0.0
   },
   {
-    "step": 63,
+    "step": 65,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Any Additional Documentation Required",
-      "query": "required forms affidavit certificate insurance W-9 Form 1295 submit with proposal",
+      "field": "Bid Bond Requirement",
+      "query": "bid bond bid security guarantee amount percent required",
+      "doc_types": null,
+      "top_k": 24,
+      "attempt": 3
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 52,
+          "score": 0.0325
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "score": 0.0315
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:3",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 2,
+          "score": 0.0313
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.0274
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 17,
+          "score": 0.0268
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 47,
+          "score": 0.0263
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p49:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 49,
+          "score": 0.0262
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p9:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 9,
+          "score": 0.0261
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 47,
+          "score": 0.0261
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p18:3",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 18,
+          "score": 0.0255
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 31,
+          "score": 0.025
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p22:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 22,
+          "score": 0.0248
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0243
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p46:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 46,
+          "score": 0.0242
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p45:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 45,
+          "score": 0.0236
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 26,
+          "score": 0.0234
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:1",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 2,
+          "score": 0.0233
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p30:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 30,
+          "score": 0.0231
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p35:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 35,
+          "score": 0.0231
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 20,
+          "score": 0.0228
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 48,
+          "score": 0.0226
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p25:3",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 25,
+          "score": 0.0225
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p50:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 50,
+          "score": 0.0224
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.0219
+        }
+      ]
+    },
+    "latency_ms": 49.9
+  },
+  {
+    "step": 66,
+    "agent": "extractor:commercial",
+    "action": "extract",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "evidence": 24
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 3.8
+  },
+  {
+    "step": 67,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 68,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Bid Bond Requirement",
+      "attempt": 3
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 69,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "MFG for Registration",
+      "query": "authorized reseller manufacturer authorization registered OEM",
       "doc_types": null,
       "top_k": 8,
       "attempt": 1
@@ -2221,93 +2415,100 @@
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 4,
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 3,
           "score": 0.0328
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:3",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 17,
-          "score": 0.032
+          "page": 3,
+          "score": 0.0323
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p17:1",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:3",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 17,
-          "score": 0.0308
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
+          "page": 48,
           "score": 0.0306
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:2",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0281
+          "page": 48,
+          "score": 0.0302
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0277
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p5:0",
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:1",
           "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 5,
-          "score": 0.0271
+          "page": 2,
+          "score": 0.0286
         },
         {
-          "chunk_id": "Bid1:Addendum 2 RFP JA-207652 Student and Sta:p1:0",
-          "file": "Addendum 2 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 1,
-          "score": 0.0268
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:0",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 2,
+          "score": 0.0264
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.0262
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p3:2",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 3,
+          "score": 0.026
         }
       ]
     },
-    "latency_ms": 61.8
+    "latency_ms": 46.7
   },
   {
-    "step": 64,
-    "agent": "extractor:commercial",
+    "step": 70,
+    "agent": "extractor:product",
     "action": "extract",
     "input": {
-      "field": "Any Additional Documentation Required",
+      "field": "MFG for Registration",
       "evidence": 8
     },
     "output": {
-      "value": "FORM 1295; CERTIFICATE OF INTERESTED PARTIES; certificate of insurance; Form 1295",
-      "sources": [
-        "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:0",
-        "Bid1:JA-207652 Student and Staff Computing De:p17:0",
-        "Bid1:JA-207652 Student and Staff Computing De:p17:1",
-        "Bid1:JA-207652 Student and Staff Computing De:p14:1",
-        "Bid1:JA-207652 Student and Staff Computing De:p14:0"
-      ]
+      "value": null,
+      "sources": []
     },
-    "latency_ms": 11.6
+    "latency_ms": 2.2
   },
   {
-    "step": 65,
+    "step": 71,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Any Additional Documentation Required",
-      "value": "FORM 1295; CERTIFICATE OF INTERESTED PARTIES; certificate of insurance; Form 1295"
+      "field": "MFG for Registration",
+      "value": null
     },
     "output": {
-      "passed": true,
-      "reason": "ok"
+      "passed": false,
+      "reason": "no value"
     },
-    "latency_ms": 0.2
+    "latency_ms": 0.0
   },
   {
-    "step": 66,
+    "step": 72,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "MFG for Registration",
+      "attempt": 1
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 73,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -2369,10 +2570,10 @@
         }
       ]
     },
-    "latency_ms": 28.6
+    "latency_ms": 65.4
   },
   {
-    "step": 67,
+    "step": 74,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
@@ -2385,10 +2586,10 @@
         "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:1"
       ]
     },
-    "latency_ms": 0.7
+    "latency_ms": 0.6
   },
   {
-    "step": 68,
+    "step": 75,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -2402,102 +2603,381 @@
     "latency_ms": 0.1
   },
   {
-    "step": 69,
+    "step": 76,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Contract or Cooperative to use",
-      "query": "cooperative purchasing interlocal master contract vehicle piggyback",
+      "field": "MFG for Registration",
+      "query": "authorized reseller manufacturer authorization registered OEM",
       "doc_types": null,
+      "top_k": 16,
+      "attempt": 2
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 3,
+          "score": 0.0328
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:3",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 3,
+          "score": 0.0323
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:3",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 48,
+          "score": 0.0306
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 48,
+          "score": 0.0302
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:1",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 2,
+          "score": 0.0286
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:0",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 2,
+          "score": 0.0264
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.0262
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p3:2",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 3,
+          "score": 0.026
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 47,
+          "score": 0.026
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.0253
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p32:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 32,
+          "score": 0.0248
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 48,
+          "score": 0.0239
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p50:3",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 50,
+          "score": 0.0236
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 20,
+          "score": 0.0228
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:2",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "score": 0.0217
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p1:2",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 1,
+          "score": 0.0213
+        }
+      ]
+    },
+    "latency_ms": 28.6
+  },
+  {
+    "step": 77,
+    "agent": "extractor:product",
+    "action": "extract",
+    "input": {
+      "field": "MFG for Registration",
+      "evidence": 16
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 2.9
+  },
+  {
+    "step": 78,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "MFG for Registration",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 79,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "MFG for Registration",
+      "attempt": 2
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 80,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Model_no",
+      "query": "model number product model",
+      "doc_types": [
+        "rfp",
+        "specs",
+        "bid_page"
+      ],
       "top_k": 8,
       "attempt": 1
     },
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p19:1",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p39:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 19,
-          "score": 0.0313
+          "page": 39,
+          "score": 0.032
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0296
+          "page": 37,
+          "score": 0.0318
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p19:2",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:1",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 19,
-          "score": 0.0293
+          "page": 37,
+          "score": 0.0304
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:1",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p36:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 52,
+          "page": 36,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 44,
+          "score": 0.0288
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 31,
           "score": 0.0283
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p43:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p30:3",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 43,
-          "score": 0.0279
+          "page": 30,
+          "score": 0.028
         },
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:1",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0277
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p52:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 52,
-          "score": 0.0269
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p53:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 53,
-          "score": 0.0252
+          "page": 42,
+          "score": 0.0272
         }
       ]
     },
-    "latency_ms": 51.8
+    "latency_ms": 36.3
   },
   {
-    "step": 70,
-    "agent": "extractor:commercial",
+    "step": 81,
+    "agent": "extractor:product",
     "action": "extract",
     "input": {
-      "field": "Contract or Cooperative to use",
+      "field": "Model_no",
       "evidence": 8
     },
     "output": {
-      "value": "member of the Educational Purchasing Cooperative of North Texas (EPCNT)",
-      "sources": [
-        "Bid1:JA-207652 Student and Staff Computing De:p19:1"
-      ]
+      "value": null,
+      "sources": []
     },
-    "latency_ms": 1.7
+    "latency_ms": 4.8
   },
   {
-    "step": 71,
+    "step": 82,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Contract or Cooperative to use",
-      "value": "member of the Educational Purchasing Cooperative of North Texas (EPCNT)"
+      "field": "Model_no",
+      "value": null
     },
     "output": {
-      "passed": true,
-      "reason": "ok"
+      "passed": false,
+      "reason": "no value"
     },
-    "latency_ms": 0.1
+    "latency_ms": 0.0
   },
   {
-    "step": 72,
+    "step": 83,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Model_no",
+      "attempt": 1
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 84,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Part_no",
+      "query": "part number SKU item number",
+      "doc_types": [
+        "rfp",
+        "specs",
+        "bid_page"
+      ],
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.0313
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.03
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.029
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p35:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 35,
+          "score": 0.0284
+        },
+        {
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0276
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p34:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 34,
+          "score": 0.0271
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 26,
+          "score": 0.027
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p12:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 12,
+          "score": 0.027
+        }
+      ]
+    },
+    "latency_ms": 37.8
+  },
+  {
+    "step": 85,
+    "agent": "extractor:product",
+    "action": "extract",
+    "input": {
+      "field": "Part_no",
+      "evidence": 8
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 2.5
+  },
+  {
+    "step": 86,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Part_no",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 87,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Part_no",
+      "attempt": 1
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 88,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -2655,10 +3135,10 @@
         }
       ]
     },
-    "latency_ms": 48.9
+    "latency_ms": 61.8
   },
   {
-    "step": 73,
+    "step": 89,
     "agent": "extractor:commercial",
     "action": "extract",
     "input": {
@@ -2669,494 +3149,14 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 12.4
-  },
-  {
-    "step": 74,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Payment Terms",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 75,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Payment Terms",
-      "attempt": 3
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 76,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "MFG for Registration",
-      "query": "authorized reseller manufacturer authorization registered OEM",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 3,
-          "score": 0.0328
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 3,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 48,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 48,
-          "score": 0.0302
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:1",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 2,
-          "score": 0.0286
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:0",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 2,
-          "score": 0.0264
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.0262
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p3:2",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 3,
-          "score": 0.026
-        }
-      ]
-    },
-    "latency_ms": 49.0
-  },
-  {
-    "step": 77,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "MFG for Registration",
-      "evidence": 8
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 3.3
-  },
-  {
-    "step": 78,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "MFG for Registration",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 79,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "MFG for Registration",
-      "attempt": 1
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 80,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Part_no",
-      "query": "part number SKU item number",
-      "doc_types": [
-        "rfp",
-        "specs",
-        "bid_page"
-      ],
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.0313
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.03
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.029
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p35:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 35,
-          "score": 0.0284
-        },
-        {
-          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
-          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0276
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p34:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 34,
-          "score": 0.0271
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 26,
-          "score": 0.027
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p12:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 12,
-          "score": 0.027
-        }
-      ]
-    },
-    "latency_ms": 48.7
-  },
-  {
-    "step": 81,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "Part_no",
-      "evidence": 8
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 2.0
-  },
-  {
-    "step": 82,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Part_no",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 83,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Part_no",
-      "attempt": 1
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 84,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Model_no",
-      "query": "model number product model",
-      "doc_types": [
-        "rfp",
-        "specs",
-        "bid_page"
-      ],
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p39:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 39,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 37,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 37,
-          "score": 0.0304
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p36:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 36,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 44,
-          "score": 0.0288
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.0283
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p30:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 30,
-          "score": 0.028
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 42,
-          "score": 0.0272
-        }
-      ]
-    },
-    "latency_ms": 55.8
-  },
-  {
-    "step": 85,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "Model_no",
-      "evidence": 8
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 4.8
-  },
-  {
-    "step": 86,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Model_no",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 87,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Model_no",
-      "attempt": 1
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 88,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Model_no",
-      "query": "model number product model",
-      "doc_types": null,
-      "top_k": 16,
-      "attempt": 2
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p39:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 39,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 37,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 37,
-          "score": 0.0304
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p36:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 36,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 44,
-          "score": 0.0284
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p30:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 30,
-          "score": 0.0278
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.0278
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p40:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 40,
-          "score": 0.0269
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 42,
-          "score": 0.0269
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.0265
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 3,
-          "score": 0.0264
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p10:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 10,
-          "score": 0.0258
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p38:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 38,
-          "score": 0.0255
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0254
-        },
-        {
-          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
-          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.025
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.0243
-        }
-      ]
-    },
-    "latency_ms": 25.0
-  },
-  {
-    "step": 89,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "Model_no",
-      "evidence": 16
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 10.2
+    "latency_ms": 15.1
   },
   {
     "step": 90,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Model_no",
+      "field": "Payment Terms",
       "value": null
     },
     "output": {
@@ -3170,8 +3170,8 @@
     "agent": "orchestrator",
     "action": "retry",
     "input": {
-      "field": "Model_no",
-      "attempt": 2
+      "field": "Payment Terms",
+      "attempt": 3
     },
     "output": {
       "reason": "Not found in documents"
@@ -3180,409 +3180,6 @@
   },
   {
     "step": 92,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "MFG for Registration",
-      "query": "authorized reseller manufacturer authorization registered OEM",
-      "doc_types": null,
-      "top_k": 16,
-      "attempt": 2
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 3,
-          "score": 0.0328
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 3,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 48,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 48,
-          "score": 0.0302
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:1",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 2,
-          "score": 0.0286
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p2:0",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 2,
-          "score": 0.0264
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.0262
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p3:2",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 3,
-          "score": 0.026
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p47:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 47,
-          "score": 0.026
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.0253
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p32:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 32,
-          "score": 0.0248
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p48:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 48,
-          "score": 0.0239
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p50:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 50,
-          "score": 0.0236
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0228
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:2",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 4,
-          "score": 0.0217
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p1:2",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 1,
-          "score": 0.0213
-        }
-      ]
-    },
-    "latency_ms": 48.6
-  },
-  {
-    "step": 93,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "MFG for Registration",
-      "evidence": 16
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 3.1
-  },
-  {
-    "step": 94,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "MFG for Registration",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 95,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "MFG for Registration",
-      "attempt": 2
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 96,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Part_no",
-      "query": "part number SKU item number",
-      "doc_types": null,
-      "top_k": 16,
-      "attempt": 2
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.0311
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.0294
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.0284
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p35:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 35,
-          "score": 0.0283
-        },
-        {
-          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
-          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0272
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p34:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 34,
-          "score": 0.0267
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 26,
-          "score": 0.0264
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p12:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 12,
-          "score": 0.0263
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:3",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 21,
-          "score": 0.0253
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 42,
-          "score": 0.0252
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 44,
-          "score": 0.0245
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p45:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 45,
-          "score": 0.0241
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 26,
-          "score": 0.0235
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p10:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 10,
-          "score": 0.0229
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 14,
-          "score": 0.0228
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p43:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 43,
-          "score": 0.0227
-        }
-      ]
-    },
-    "latency_ms": 47.9
-  },
-  {
-    "step": 97,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "Part_no",
-      "evidence": 16
-    },
-    "output": {
-      "value": null,
-      "sources": []
-    },
-    "latency_ms": 3.2
-  },
-  {
-    "step": 98,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Part_no",
-      "value": null
-    },
-    "output": {
-      "passed": false,
-      "reason": "no value"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 99,
-    "agent": "orchestrator",
-    "action": "retry",
-    "input": {
-      "field": "Part_no",
-      "attempt": 2
-    },
-    "output": {
-      "reason": "Not found in documents"
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 100,
-    "agent": "retriever",
-    "action": "search",
-    "input": {
-      "field": "Product",
-      "query": "product description quantity laptops desktops devices",
-      "doc_types": null,
-      "top_k": 8,
-      "attempt": 1
-    },
-    "output": {
-      "hits": [
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p35:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 35,
-          "score": 0.0325
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p38:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 38,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p36:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 36,
-          "score": 0.0306
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p40:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 40,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 37,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p39:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 39,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:2",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 4,
-          "score": 0.0295
-        },
-        {
-          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
-          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
-          "page": 1,
-          "score": 0.0286
-        }
-      ]
-    },
-    "latency_ms": 63.0
-  },
-  {
-    "step": 101,
-    "agent": "extractor:product",
-    "action": "extract",
-    "input": {
-      "field": "Product",
-      "evidence": 8
-    },
-    "output": {
-      "value": "Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Proposal (RFP) may submit proposals for one, several, or all categories of devices required by the District. Within each category of device, the District reserves the right to award contracts to a single vendor or multiple vendors. The specifications listed in t",
-      "sources": [
-        "Bid1:Student and Staff Computing Devices __SO:p1:0"
-      ]
-    },
-    "latency_ms": 0.0
-  },
-  {
-    "step": 102,
-    "agent": "validator",
-    "action": "validate",
-    "input": {
-      "field": "Product",
-      "value": "Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Proposal (RFP) may submit proposals for one, several, or all categories of devices required by the District. Within each category of device, the District reserves the right to award contracts to a single vendor or multiple vendors. The specifications listed in t"
-    },
-    "output": {
-      "passed": true,
-      "reason": "ok"
-    },
-    "latency_ms": 0.1
-  },
-  {
-    "step": 103,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -3740,10 +3337,10 @@
         }
       ]
     },
-    "latency_ms": 31.2
+    "latency_ms": 37.1
   },
   {
-    "step": 104,
+    "step": 93,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
@@ -3754,10 +3351,10 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 7.6
+    "latency_ms": 7.9
   },
   {
-    "step": 105,
+    "step": 94,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -3771,7 +3368,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 106,
+    "step": 95,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
@@ -3784,15 +3381,169 @@
     "latency_ms": 0.0
   },
   {
-    "step": 107,
+    "step": 96,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Model_no",
+      "query": "model number product model",
+      "doc_types": null,
+      "top_k": 16,
+      "attempt": 2
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p39:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 39,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 37,
+          "score": 0.0318
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 37,
+          "score": 0.0304
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p36:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 36,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 44,
+          "score": 0.0284
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p30:3",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 30,
+          "score": 0.0278
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 31,
+          "score": 0.0278
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p40:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 40,
+          "score": 0.0269
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 42,
+          "score": 0.0269
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.0265
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p3:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 3,
+          "score": 0.0264
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p10:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 10,
+          "score": 0.0258
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p38:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 38,
+          "score": 0.0255
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 20,
+          "score": 0.0254
+        },
+        {
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.025
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.0243
+        }
+      ]
+    },
+    "latency_ms": 40.7
+  },
+  {
+    "step": 97,
+    "agent": "extractor:product",
+    "action": "extract",
+    "input": {
+      "field": "Model_no",
+      "evidence": 16
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 4.0
+  },
+  {
+    "step": 98,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Model_no",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 99,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Model_no",
+      "attempt": 2
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 100,
     "agent": "retriever",
     "action": "search",
     "input": {
       "field": "Part_no",
       "query": "part number SKU item number",
       "doc_types": null,
-      "top_k": 24,
-      "attempt": 3
+      "top_k": 16,
+      "attempt": 2
     },
     "output": {
       "hits": [
@@ -3891,75 +3642,27 @@
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 43,
           "score": 0.0227
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 20,
-          "score": 0.0227
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p23:4",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 23,
-          "score": 0.0214
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:2",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 4,
-          "score": 0.0213
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p13:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 13,
-          "score": 0.0212
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p23:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 23,
-          "score": 0.0212
-        },
-        {
-          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:1",
-          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
-          "page": 4,
-          "score": 0.0208
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 31,
-          "score": 0.0203
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 41,
-          "score": 0.0194
         }
       ]
     },
-    "latency_ms": 36.0
+    "latency_ms": 50.9
   },
   {
-    "step": 108,
+    "step": 101,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
       "field": "Part_no",
-      "evidence": 24
+      "evidence": 16
     },
     "output": {
       "value": null,
       "sources": []
     },
-    "latency_ms": 6.0
+    "latency_ms": 3.7
   },
   {
-    "step": 109,
+    "step": 102,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -3973,12 +3676,12 @@
     "latency_ms": 0.0
   },
   {
-    "step": 110,
+    "step": 103,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
       "field": "Part_no",
-      "attempt": 3
+      "attempt": 2
     },
     "output": {
       "reason": "Not found in documents"
@@ -3986,96 +3689,93 @@
     "latency_ms": 0.0
   },
   {
-    "step": 111,
+    "step": 104,
     "agent": "retriever",
     "action": "search",
     "input": {
-      "field": "Product Specification",
-      "query": "minimum specifications processor memory storage display warranty",
-      "doc_types": [
-        "specs",
-        "rfp"
-      ],
+      "field": "Product",
+      "query": "product description quantity laptops desktops devices",
+      "doc_types": null,
       "top_k": 8,
       "attempt": 1
     },
     "output": {
       "hits": [
         {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p5:0",
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p35:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 5,
-          "score": 0.0323
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p6:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 6,
-          "score": 0.032
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p4:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 4,
-          "score": 0.0318
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p6:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 6,
-          "score": 0.0315
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p5:1",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 5,
-          "score": 0.031
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p4:0",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 4,
-          "score": 0.0303
-        },
-        {
-          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p4:2",
-          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
-          "page": 4,
-          "score": 0.0299
+          "page": 35,
+          "score": 0.0325
         },
         {
           "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p38:0",
           "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
           "page": 38,
-          "score": 0.0296
+          "score": 0.0306
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p36:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 36,
+          "score": 0.0306
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p40:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 40,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p37:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 37,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p39:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 39,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:2",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "score": 0.0295
+        },
+        {
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0286
         }
       ]
     },
-    "latency_ms": 41.1
+    "latency_ms": 50.5
   },
   {
-    "step": 112,
+    "step": 105,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
-      "field": "Product Specification",
+      "field": "Product",
       "evidence": 8
     },
     "output": {
-      "value": "CPU: Intel i5 Processor, 14th Gen or equiva; RAM: 16GB RAM DDR5 Memory; Storage: 256 GB NVMe; Display: 10.2\" Retina Integrated Camera: 8MP Wide came; OS: Windows 11 Pro",
+      "value": "Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Proposal (RFP) may submit proposals for one, several, or all categories of devices required by the District. Within each category of device, the District reserves the right to award contracts to a single vendor or multiple vendors. The specifications listed in t",
       "sources": [
-        "Bid1:JA-207652 Student and Staff Computing De:p5:0"
+        "Bid1:Student and Staff Computing Devices __SO:p1:0"
       ]
     },
-    "latency_ms": 2.5
+    "latency_ms": 0.0
   },
   {
-    "step": 113,
+    "step": 106,
     "agent": "validator",
     "action": "validate",
     "input": {
-      "field": "Product Specification",
-      "value": "CPU: Intel i5 Processor, 14th Gen or equiva; RAM: 16GB RAM DDR5 Memory; Storage: 256 GB NVMe; Display: 10.2\" Retina Integrated Camera: 8MP Wide came; OS: Windows 11 Pro"
+      "field": "Product",
+      "value": "Specifications include, but are not limited to: This Request for Proposal (RFP) will be for student and staff computing devices, including laptops, desktops, tablet devices, and display monitors. Vendors participating in this Request for Proposal (RFP) may submit proposals for one, several, or all categories of devices required by the District. Within each category of device, the District reserves the right to award contracts to a single vendor or multiple vendors. The specifications listed in t"
     },
     "output": {
       "passed": true,
@@ -4084,7 +3784,7 @@
     "latency_ms": 0.1
   },
   {
-    "step": 114,
+    "step": 107,
     "agent": "retriever",
     "action": "search",
     "input": {
@@ -4242,10 +3942,10 @@
         }
       ]
     },
-    "latency_ms": 55.4
+    "latency_ms": 37.0
   },
   {
-    "step": 115,
+    "step": 108,
     "agent": "extractor:product",
     "action": "extract",
     "input": {
@@ -4256,10 +3956,10 @@
       "value": null,
       "sources": []
     },
-    "latency_ms": 6.2
+    "latency_ms": 7.3
   },
   {
-    "step": 116,
+    "step": 109,
     "agent": "validator",
     "action": "validate",
     "input": {
@@ -4273,7 +3973,7 @@
     "latency_ms": 0.0
   },
   {
-    "step": 117,
+    "step": 110,
     "agent": "orchestrator",
     "action": "retry",
     "input": {
@@ -4284,6 +3984,306 @@
       "reason": "Not found in documents"
     },
     "latency_ms": 0.0
+  },
+  {
+    "step": 111,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Part_no",
+      "query": "part number SKU item number",
+      "doc_types": null,
+      "top_k": 24,
+      "attempt": 3
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.0311
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.0294
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.0284
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p35:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 35,
+          "score": 0.0283
+        },
+        {
+          "chunk_id": "Bid1:Student and Staff Computing Devices __SO:p1:0",
+          "file": "Student and Staff Computing Devices __SOURCING #168884__ - Bid Information - {3} _ BidNet Direct.html",
+          "page": 1,
+          "score": 0.0272
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p34:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 34,
+          "score": 0.0267
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 26,
+          "score": 0.0264
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p12:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 12,
+          "score": 0.0263
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p21:3",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 21,
+          "score": 0.0253
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p42:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 42,
+          "score": 0.0252
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p44:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 44,
+          "score": 0.0245
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p45:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 45,
+          "score": 0.0241
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p26:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 26,
+          "score": 0.0235
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p10:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 10,
+          "score": 0.0229
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p14:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 14,
+          "score": 0.0228
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p43:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 43,
+          "score": 0.0227
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p20:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 20,
+          "score": 0.0227
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p23:4",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 23,
+          "score": 0.0214
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:2",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "score": 0.0213
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p13:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 13,
+          "score": 0.0212
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p23:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 23,
+          "score": 0.0212
+        },
+        {
+          "chunk_id": "Bid1:Addendum 1 RFP JA-207652 Student and Sta:p4:1",
+          "file": "Addendum 1 RFP JA-207652 Student and Staff Computing Devices.pdf",
+          "page": 4,
+          "score": 0.0208
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p31:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 31,
+          "score": 0.0203
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p41:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 41,
+          "score": 0.0194
+        }
+      ]
+    },
+    "latency_ms": 32.5
+  },
+  {
+    "step": 112,
+    "agent": "extractor:product",
+    "action": "extract",
+    "input": {
+      "field": "Part_no",
+      "evidence": 24
+    },
+    "output": {
+      "value": null,
+      "sources": []
+    },
+    "latency_ms": 3.5
+  },
+  {
+    "step": 113,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Part_no",
+      "value": null
+    },
+    "output": {
+      "passed": false,
+      "reason": "no value"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 114,
+    "agent": "orchestrator",
+    "action": "retry",
+    "input": {
+      "field": "Part_no",
+      "attempt": 3
+    },
+    "output": {
+      "reason": "Not found in documents"
+    },
+    "latency_ms": 0.0
+  },
+  {
+    "step": 115,
+    "agent": "retriever",
+    "action": "search",
+    "input": {
+      "field": "Product Specification",
+      "query": "minimum specifications processor memory storage display warranty",
+      "doc_types": [
+        "specs",
+        "rfp"
+      ],
+      "top_k": 8,
+      "attempt": 1
+    },
+    "output": {
+      "hits": [
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p5:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 5,
+          "score": 0.0323
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p6:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 6,
+          "score": 0.032
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p4:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 4,
+          "score": 0.0318
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p6:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 6,
+          "score": 0.0315
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p5:1",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 5,
+          "score": 0.031
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p4:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 4,
+          "score": 0.0303
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p4:2",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 4,
+          "score": 0.0299
+        },
+        {
+          "chunk_id": "Bid1:JA-207652 Student and Staff Computing De:p38:0",
+          "file": "JA-207652 Student and Staff Computing Devices FINAL.pdf",
+          "page": 38,
+          "score": 0.0296
+        }
+      ]
+    },
+    "latency_ms": 56.7
+  },
+  {
+    "step": 116,
+    "agent": "extractor:product",
+    "action": "extract",
+    "input": {
+      "field": "Product Specification",
+      "evidence": 8
+    },
+    "output": {
+      "value": "CPU: Intel i5 Processor, 14th Gen or equiva; RAM: 16GB RAM DDR5 Memory; Storage: 256 GB NVMe; Display: 10.2\" Retina Integrated Camera: 8MP Wide came; OS: Windows 11 Pro",
+      "sources": [
+        "Bid1:JA-207652 Student and Staff Computing De:p5:0"
+      ]
+    },
+    "latency_ms": 1.9
+  },
+  {
+    "step": 117,
+    "agent": "validator",
+    "action": "validate",
+    "input": {
+      "field": "Product Specification",
+      "value": "CPU: Intel i5 Processor, 14th Gen or equiva; RAM: 16GB RAM DDR5 Memory; Storage: 256 GB NVMe; Display: 10.2\" Retina Integrated Camera: 8MP Wide came; OS: Windows 11 Pro"
+    },
+    "output": {
+      "passed": true,
+      "reason": "ok"
+    },
+    "latency_ms": 0.1
   },
   {
     "step": 118,
@@ -4311,6 +4311,6 @@
       "failed": 0,
       "not_found": 6
     },
-    "latency_ms": 3379.3
+    "latency_ms": 6175.8
   }
 ]
