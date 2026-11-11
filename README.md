@@ -18,6 +18,18 @@ The first run downloads the embedding model (`BAAI/bge-small-en-v1.5`, about 70 
 
 LLM (the generation step of RAG): copy `.env.example` to `.env` and set `GEMINI_API_KEY` (free key from https://aistudio.google.com/apikey; model `GEMINI_MODEL`, default `gemini-3.5-flash`) or `ANTHROPIC_API_KEY`. `.env` is git-ignored. With a key, Q&A answers and the Bid Summary field are written by the LLM from retrieved passages / validated fields only, and every answer must cite passages as [n] or it is rejected. Without a key, or when the LLM call fails (timeout, 503, quota), the system falls back to the validated extraction record and cited sentences, and the trace records the reason. Tests run with the LLM disabled.
 
+## Run with Docker (no Python setup)
+
+The image is built, smoke-tested and published by CI on every push to `main`, with the search index and the
+embedding model already inside it.
+
+```bash
+docker run -p 8000:8000 ghcr.io/mayanksinghmewari/bid-intel                     # REST API, docs at /docs
+docker run -p 8501:8501 ghcr.io/mayanksinghmewari/bid-intel     streamlit run app.py --server.address 0.0.0.0                                 # web UI
+docker run -p 8501:8501 -e BID_INTEL_DEMO=1 ghcr.io/mayanksinghmewari/bid-intel     streamlit run app.py --server.address 0.0.0.0                                 # read-only public demo
+# optional: -e GEMINI_API_KEY=... for LLM answers, -e LANGFUSE_PUBLIC_KEY/SECRET_KEY/BASE_URL for tracing
+```
+
 ## How to run
 
 ```bash
@@ -131,6 +143,8 @@ The LLM layer is what generalises to unseen bids: the rules were written while r
 
 **Web UI.** `app.py` (Streamlit) calls the same service layer as the CLI and the REST API. The Extraction tab shows the 20 fields with confidence, validation status, method (rules, LLM, addendum) and the cited evidence per field; Search exposes hybrid search with bid and document-type filters, mode and re-ranking; Ask is a chat whose answers cite passages and link the Langfuse trace; Add bid uploads a new folder (file names reduced to their basename), indexes it incrementally and runs the agents; Evaluation shows the retrieval and extraction results. `.streamlit/config.toml` binds the server to localhost because the app has no login and its chat spends the LLM quota. A headless test (`tests/test_app.py`, Streamlit AppTest) renders every tab and checks search and chat results offline.
 
+**CI/CD.** `.github/workflows/ci.yml` has two jobs. `test` installs the dependencies, runs the offline test suite and the retrieval evaluation, and uploads the report. `docker` runs only if the tests pass: it builds the image, starts the container, calls `/health`, a filtered search and a question, checks that the container runs as a non-root user, and only then publishes `ghcr.io/mayanksinghmewari/bid-intel:latest` and `:<commit>` (pushes to `main` only; pull requests build and test without publishing). `.dockerignore` keeps `.env`, `.venv`, caches and `.git` out of the image. The index is built at image build time, so containers answer immediately. `BID_INTEL_DEMO=1` turns the UI into a safe public demo: LLM and tracing forced off, uploads and re-runs hidden.
+
 **Prompts.** The LLM prompts are in `bid_intel/llm.py`. They require answers only from the numbered passages, an explicit "Not found in documents", and a citation on every claim; answers that cite passages that were not provided are rejected.
 
 ## Retrieval evaluation
@@ -201,4 +215,3 @@ tests/                 offline test suite
 - Bid1's RFP specifies several device tiers; Product Specification reports one tier.
 - Tables are read as text in layout order; there is no cell-level table extraction. No OCR (scanned pages are logged and skipped).
 - The 20 evaluation questions and their labels were written by the author.
-- The Docker image and CI workflow were not run locally.

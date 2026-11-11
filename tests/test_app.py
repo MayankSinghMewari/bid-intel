@@ -45,3 +45,17 @@ def test_chat_answers_with_citations():
     assert len(at.chat_message) == 2
     assistant = at.chat_message[1]
     assert "June" in assistant.markdown[0].value or "06/10/2024" in assistant.markdown[0].value
+
+
+def test_public_demo_mode_is_read_only_and_never_uses_the_llm(monkeypatch):
+    monkeypatch.setenv("BID_INTEL_DEMO", "1")
+    monkeypatch.setenv("GEMINI_API_KEY", "would-be-spent-if-demo-mode-failed")
+    monkeypatch.delenv("BID_INTEL_LLM", raising=False)
+    at = AppTest.from_file(APP, default_timeout=120).run()
+    assert not at.exception
+    labels = [t.label for t in at.tabs]
+    assert not any("Add bid" in label for label in labels) and len(labels) == 4
+    assert not any(b.label == "Run extraction" for b in at.button)
+    assert any("Public read-only demo" in i.value for i in at.info)
+    assert os.environ["BID_INTEL_LLM"] == "off"
+    assert any("No LLM key" in i.value for i in at.sidebar.info)

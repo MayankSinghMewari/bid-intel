@@ -2,17 +2,28 @@
 
 Tabs: Extraction (20 fields with citations), Search (hybrid search with filters), Ask (cited chat over the
 bids), Add bid (upload a new folder, index and extract it), Evaluation (retrieval and extraction results).
-The UI calls the same service layer as the CLI and the REST API (bid_intel/service.py)."""
+The UI calls the same service layer as the CLI and the REST API (bid_intel/service.py).
+
+BID_INTEL_DEMO=1 turns it into a safe public demo: the LLM and tracing are forced off (strangers cannot spend
+the owner's quota) and write actions (upload, re-run extraction) are hidden."""
 from __future__ import annotations
 
 import json
+import os
 import re
 from pathlib import Path
 
-import pandas as pd
-import streamlit as st
+DEMO = os.environ.get("BID_INTEL_DEMO", "").lower() in ("1", "true", "yes", "on")
+if DEMO:  # set before bid_intel is imported, so no LLM or tracing client is ever created
+    os.environ["BID_INTEL_LLM"] = "off"
+    os.environ["BID_INTEL_TRACING"] = "off"
 
-from bid_intel import llm, observability, service
+import pandas as pd  # noqa: E402
+import streamlit as st  # noqa: E402
+
+from bid_intel import llm, observability, service  # noqa: E402
+
+REPO_URL = "https://github.com/MayankSinghMewari/bid-intel"
 
 ROOT = Path(__file__).resolve().parent
 DOC_TYPES = ["bid_page", "rfp", "addendum", "specs", "affidavit"]
@@ -55,17 +66,27 @@ with st.sidebar:
     else:
         st.caption("Tracing: local JSON only (no Langfuse keys)")
 
-tab_extract, tab_search, tab_ask, tab_add, tab_eval = st.tabs(
-    [":material/table_view: Extraction", ":material/search: Search", ":material/forum: Ask",
-     ":material/upload_file: Add bid", ":material/analytics: Evaluation"])
+if DEMO:
+    st.info(f"**Public read-only demo.** LLM generation is off here, so answers are the validated extraction "
+            f"record plus cited passages, and uploads are disabled. Source, evaluation and the LLM-enabled version: "
+            f"[GitHub]({REPO_URL}).", icon=":material/visibility:")
+
+TAB_LABELS = [":material/table_view: Extraction", ":material/search: Search", ":material/forum: Ask",
+              ":material/upload_file: Add bid", ":material/analytics: Evaluation"]
+if DEMO:
+    TAB_LABELS.remove(":material/upload_file: Add bid")
+tabs = dict(zip(TAB_LABELS, st.tabs(TAB_LABELS)))
+tab_extract, tab_search, tab_ask, tab_eval = (tabs[":material/table_view: Extraction"], tabs[":material/search: Search"],
+                                              tabs[":material/forum: Ask"], tabs[":material/analytics: Evaluation"])
+tab_add = tabs.get(":material/upload_file: Add bid")
 
 # ---------------------------------------------------------------- extraction
 with tab_extract:
     ids = bid_ids()
     col_pick, col_run = st.columns([3, 1], vertical_alignment="bottom")
     bid = col_pick.selectbox("Bid folder", ids, key="extract_bid")
-    if col_run.button("Run extraction", icon=":material/play_arrow:", width="stretch",
-                      help="Runs the LangGraph agents on this folder and overwrites outputs/<bid>.json"):
+    if not DEMO and col_run.button("Run extraction", icon=":material/play_arrow:", width="stretch",
+                                   help="Runs the LangGraph agents on this folder and overwrites outputs/<bid>.json"):
         with st.status(f"Extracting {bid}...", expanded=False) as status:
             result, trace = service.extract(service.FOLDERS / bid)
             status.update(label=f"Done: {result['validation']}", state="complete")
@@ -169,27 +190,28 @@ with tab_ask:
         st.session_state.chat = []
         st.rerun()
 
-# ---------------------------------------------------------------- add bid
-with tab_add:
-    st.markdown("Upload the files of **one** bid (HTML bid page, RFP, addendums, specs, affidavits). "
-                "They are saved as a new bid folder, indexed incrementally, and extracted by the agents.")
-    new_id = st.text_input("Bid folder name", placeholder="e.g. Bid3")
-    files = st.file_uploader("Bid documents", type=["pdf", "html", "htm"], accept_multiple_files=True)
-    if st.button("Index and extract", icon=":material/rocket_launch:", disabled=not (new_id and files)):
-        if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", new_id):
-            st.error("Use letters, digits, '-' or '_' only (max 40 characters).")
-        elif (service.FOLDERS / new_id).exists():
-            st.error(f"A bid folder named {new_id} already exists.")
-        else:
-            folder = service.FOLDERS / new_id
-            folder.mkdir(parents=True)
-            for f in files:
-                (folder / Path(f.name).name).write_bytes(f.getvalue())  # basename only: no path traversal
-            with st.status(f"Processing {new_id}...", expanded=True) as status:
-                st.write(service.index_folder(folder)["status"])
-                result, _ = service.extract(folder)
-                status.update(label=f"{new_id}: {result['validation']}", state="complete")
-            st.success(f"Done. Open the **Extraction** tab and pick {new_id}.")
+# ---------------------------------------------------------------- add bid (not in the public demo)
+if tab_add is not None:
+    with tab_add:
+        st.markdown("Upload the files of **one** bid (HTML bid page, RFP, addendums, specs, affidavits). "
+                    "They are saved as a new bid folder, indexed incrementally, and extracted by the agents.")
+        new_id = st.text_input("Bid folder name", placeholder="e.g. Bid3")
+        files = st.file_uploader("Bid documents", type=["pdf", "html", "htm"], accept_multiple_files=True)
+        if st.button("Index and extract", icon=":material/rocket_launch:", disabled=not (new_id and files)):
+            if not re.fullmatch(r"[A-Za-z0-9_-]{1,40}", new_id):
+                st.error("Use letters, digits, '-' or '_' only (max 40 characters).")
+            elif (service.FOLDERS / new_id).exists():
+                st.error(f"A bid folder named {new_id} already exists.")
+            else:
+                folder = service.FOLDERS / new_id
+                folder.mkdir(parents=True)
+                for f in files:
+                    (folder / Path(f.name).name).write_bytes(f.getvalue())  # basename only: no path traversal
+                with st.status(f"Processing {new_id}...", expanded=True) as status:
+                    st.write(service.index_folder(folder)["status"])
+                    result, _ = service.extract(folder)
+                    status.update(label=f"{new_id}: {result['validation']}", state="complete")
+                st.success(f"Done. Open the **Extraction** tab and pick {new_id}.")
 
 # ---------------------------------------------------------------- evaluation
 with tab_eval:
